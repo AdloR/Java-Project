@@ -9,7 +9,7 @@ Ensimag 2A POO - TP 2022/23
 
 - cartes: quelques exemples de fichiers de donnees
 
-- bin/gui.jar: archive Java contenant les classes de l'interface graphique. Voir un exemple d'utilisation dans TestInvader.java
+- build/gui.jar: archive Java contenant les classes de l'interface graphique. Voir un exemple d'utilisation dans TestInvader.java
 
 - doc: la documentation (API) des classes de l'interface graphique contenues dans gui.jar. Point d'entrée: index.html
 
