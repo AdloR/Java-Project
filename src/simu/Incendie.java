@@ -1,7 +1,12 @@
 package simu;
+
 import terrain.Case;
 
 public class Incendie {
+    /**
+     * @param fireCase position of fire.
+     * @param nbL nb of litters to extinct fire.
+     */
     private Case fireCase;
     private int nbL;
 
