@@ -11,9 +11,9 @@
 #     Les classes d'un package toto sont dans src/toto
 #     Les classes du package par defaut sont dans src
 #
-#  2) Les bytecodes (*.class) se trouvent dans le repertoire bin
+#  2) Les bytecodes (*.class) se trouvent dans le repertoire build
 #     La hierarchie des sources (par package) est conservee.
-#     L'archive bin/gui.jar contient les classes de l'interface graphique
+#     L'archive build/gui.jar contient les classes de l'interface graphique
 #
 # Compilation:
 #  Options de javac:
@@ -24,21 +24,21 @@
 all: testInvader testLecture
 
 testInvader:
-	javac -d bin -classpath bin/gui.jar -sourcepath src src/TestInvader.java
+	javac -d build -classpath build/gui.jar -sourcepath src src/TestInvader.java
 
 testLecture:
-	javac -d bin -sourcepath src src/TestLecteurDonnees.java
+	javac -d build -sourcepath src src/TestLecteurDonnees.java
 
 # Execution:
 # on peut taper directement la ligne de commande :
-#   > java -classpath bin:bin/gui.jar TestInvader
+#   > java -classpath build:build/gui.jar TestInvader
 # ou bien lancer l'execution en passant par ce Makefile:
 #   > make exeInvader
 exeInvader: 
-	java -classpath bin:bin/gui.jar TestInvader
+	java -classpath build:build/gui.jar TestInvader
 
 exeLecture: 
-	java -classpath bin TestLecteurDonnees cartes/carteSujet.map
+	java -classpath build TestLecteurDonnees cartes/carteSujet.map
 
 clean:
-	rm -rf bin/*.class
+	rm -rf build/*.class

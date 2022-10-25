@@ -128,15 +128,15 @@ public class LecteurDonnees {
     private void lireIncendies() throws DataFormatException {
         ignorerCommentaires();
         try {
-            int nbIncendies = scanner.nextInt();
-            System.out.println("Nb d'incendies = " + nbIncendies);
-            for (int i = 0; i < nbIncendies; i++) {
+            int nbuildcendies = scanner.nextInt();
+            System.out.println("Nb d'incendies = " + nbuildcendies);
+            for (int i = 0; i < nbuildcendies; i++) {
                 lireIncendie(i);
             }
 
         } catch (NoSuchElementException e) {
             throw new DataFormatException("Format invalide. "
-                    + "Attendu: nbIncendies");
+                    + "Attendu: nbuildcendies");
         }
     }
 
