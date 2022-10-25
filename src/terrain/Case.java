@@ -5,10 +5,10 @@ public class Case {
     private int coordCol;
     private NatureTerrain type;
 
-    public int getCoordLig() {
+    public int getLigne() {
         return coordLig;
     }
-    public int getCoordCol() {
+    public int getColonne() {
         return coordCol;
     }
     public NatureTerrain getType() {
