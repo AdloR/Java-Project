@@ -5,7 +5,8 @@ import terrain.Case;
 public abstract class Robot {
     private Case position;
     private int speed;
-    private int reservoir;
+    private int reservoirMax;
+    private int	reservoir;
     private int timeRefill;
     private int volumeIntervention;
     private int timeIntervention;
@@ -20,11 +21,11 @@ public abstract class Robot {
         return speed;
     }
 
-    public void pourWater(int vol) {
-        // TO DO
+    public int deverserEau(int vol) {
+        return Integer.min(vol, reservoir);
     }
 
-    public void fillWater() {
-        //TO DO
+    public void remplirReservoir() {
+        reservoir = reservoirMax;
     }
 }
