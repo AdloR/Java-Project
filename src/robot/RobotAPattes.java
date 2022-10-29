@@ -1,6 +1,7 @@
 package robot;
 
 import terrain.Case;
+import terrain.NatureTerrain;
 
 public class RobotAPattes extends Robot{
     public RobotAPattes(Case position)
@@ -19,4 +20,13 @@ public class RobotAPattes extends Robot{
 
     @Override
     public void remplirReservoir() {}
+
+    @Override
+    public void setPosition(Case position)
+    {
+        if (position.getType() == NatureTerrain.EAU)
+        {
+            return;
+        }
+        super.setPosition(position);
 }
