@@ -1,5 +1,7 @@
 package robot;
 
+import terrain.Case;
+
 public class RobotAChenille extends Robot{
     public void RobotAChenille(Case position)
     {
@@ -12,7 +14,7 @@ public class RobotAChenille extends Robot{
         this.timeIntervention = 8;
     }
 
-    @override
+    @Override
     public void setSpeed(int speed)
     {
         assert(speed <= 80);

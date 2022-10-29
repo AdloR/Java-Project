@@ -1,5 +1,7 @@
 package robot;
 
+import terrain.Case;
+
 public class Drone extends Robot {
     public void Drone(Case position)
     {
@@ -12,7 +14,7 @@ public class Drone extends Robot {
         this.timeIntervention = 30;
     }
 
-    @override
+    @Override
     public void setSpeed(int speed)
     {
         assert(speed <= 150);

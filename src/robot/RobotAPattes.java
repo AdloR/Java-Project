@@ -1,5 +1,7 @@
 package robot;
 
+import terrain.Case;
+
 public class RobotAPattes extends Robot{
     public void RobotAChenille(Case position)
     {
@@ -9,12 +11,12 @@ public class RobotAPattes extends Robot{
         this.timeIntervention = 1;
     }
 
-    @override
+    @Override
     public int deverserEau(int vol)
     {
         return vol;
     }
 
-    @override
+    @Override
     public void remplirReservoir() {}
 }
