@@ -13,7 +13,6 @@ public class Carte {
         cases = new Case[lignes * colonnes];
     }
 
-    
     /**
      * Gets the number of lines.
      * 
@@ -32,7 +31,6 @@ public class Carte {
         return colonnes;
     }
 
-    
     /**
      * Gets cases' size.
      * 
@@ -42,8 +40,7 @@ public class Carte {
         return tailleCases;
     }
 
-    
-    /** 
+    /**
      * Finds a case on the terrain.
      * 
      * @param lig the line of the wanted case
@@ -58,8 +55,16 @@ public class Carte {
         return cases;
     }
 
-    
-    /** 
+    /**
+     * Add Given case on the terrain.
+     * 
+     * @param case
+     */
+    public void setCase(Case c) {
+        this.cases[c.getColonne() * colonnes + c.getLigne()] = c;
+    }
+
+    /**
      * Checks if the given neighbor of the src case exists.
      * 
      * @param src origin case
@@ -81,8 +86,7 @@ public class Carte {
         }
     }
 
-    
-    /** 
+    /**
      * Gets a neighbor from a given case.
      * 
      * @param src origin case
