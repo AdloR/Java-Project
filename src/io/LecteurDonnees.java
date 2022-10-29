@@ -228,20 +228,16 @@ public class LecteurDonnees {
             switch (type) {
                 case "DRONE":
                     robot = new Drone(carte.getCase(lig, col));
-                    ;
-
+                    break;
                 case "ROUES":
                     robot = new RobotARoues(carte.getCase(lig, col));
-                    ;
-
+                    break;
                 case "CHENILLES":
                     robot = new RobotAChenille(carte.getCase(lig, col));
-                    ;
-
+                    break;
                 case "PATTES":
                     robot = new RobotAPattes(carte.getCase(lig,col));
-                    ;
-
+                    break;
                 default:
                     throw new DataFormatException("type de robot invalide. Attendu: DRONE | ROUES | CHENILLES | PATTES");
             }
