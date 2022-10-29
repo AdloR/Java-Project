@@ -1,7 +1,10 @@
 package io;
 
-
+import robot.Drone;
 import robot.Robot;
+import robot.RobotAChenille;
+import robot.RobotAPattes;
+import robot.RobotARoues;
 import simu.DonneesSimulation;
 import simu.Incendie;
 import terrain.Carte;
@@ -11,7 +14,6 @@ import terrain.NatureTerrain;
 import java.io.*;
 import java.util.*;
 import java.util.zip.DataFormatException;
-
 
 /**
  * Lecteur de cartes au format spectifié dans le sujet.
@@ -35,7 +37,6 @@ import java.util.zip.DataFormatException;
  */
 public class LecteurDonnees {
 
-
     /**
      * Lit et affiche le contenu d'un fichier de donnees (cases,
      * robots et incendies).
@@ -55,7 +56,6 @@ public class LecteurDonnees {
         System.out.println("\n == Lecture terminee");
         return new DonneesSimulation(carte, incendies, robots);
     }
-
 
     // Tout le reste de la classe est prive!
 
@@ -82,7 +82,7 @@ public class LecteurDonnees {
         try {
             int nbLignes = scanner.nextInt();
             int nbColonnes = scanner.nextInt();
-            int tailleCases = scanner.nextInt();    // en m
+            int tailleCases = scanner.nextInt(); // en m
             System.out.println("Carte " + nbLignes + "x" + nbColonnes
                     + "; taille des cases = " + tailleCases);
             Carte carte = new Carte(nbLignes, nbColonnes);
@@ -100,7 +100,6 @@ public class LecteurDonnees {
         // une ExceptionFormat levee depuis lireCase est remontee telle quelle
     }
 
-
     /**
      * Lit et affiche les donnees d'une case.
      */
@@ -114,7 +113,7 @@ public class LecteurDonnees {
             chaineNature = scanner.next();
             // si NatureTerrain est un Enum, vous pouvez recuperer la valeur
             // de l'enum a partir d'une String avec:
-            //			NatureTerrain nature = NatureTerrain.valueOf(chaineNature);
+            // NatureTerrain nature = NatureTerrain.valueOf(chaineNature);
 
             verifieLigneTerminee();
 
@@ -128,7 +127,6 @@ public class LecteurDonnees {
         System.out.println();
         return new Case(carte, lig, col, nature);
     }
-
 
     /**
      * Lit et affiche les donnees des incendies.
@@ -149,7 +147,6 @@ public class LecteurDonnees {
         }
         return incendies;
     }
-
 
     /**
      * Lit et affiche les donnees du i-eme incendie.
@@ -181,7 +178,6 @@ public class LecteurDonnees {
         }
     }
 
-
     /**
      * Lit et affiche les donnees des robots.
      */
@@ -192,7 +188,7 @@ public class LecteurDonnees {
             int nbRobots = scanner.nextInt();
             System.out.println("Nb de robots = " + nbRobots);
             for (int i = 0; i < nbRobots; i++) {
-                robots.add(lireRobot(i));
+                robots.add(lireRobot(carte, i));
             }
 
         } catch (NoSuchElementException e) {
@@ -201,7 +197,6 @@ public class LecteurDonnees {
         }
         return robots;
     }
-
 
     /**
      * Lit et affiche les donnees du i-eme robot.
@@ -224,29 +219,25 @@ public class LecteurDonnees {
             switch (type) {
                 case "DRONE":
                     robot = new Drone(carte.getCase(lig, col));
-                    ;
-
+                    break;
                 case "ROUES":
                     robot = new RobotARoues(carte.getCase(lig, col));
-                    ;
-
+                    break;
                 case "CHENILLES":
                     robot = new RobotAChenille(carte.getCase(lig, col));
-                    ;
-
+                    break;
                 case "PATTES":
-                    robot = new RobotAPattes(carte.getCase);
-                    ;
-
+                    robot = new RobotAPattes(carte.getCase(lig, col));
+                    break;
                 default:
-                    throw new DataFormatException("type de robot invalide. Attendu: DRONE | ROUES | CHENILLES | PATTES");
+                    throw new DataFormatException(
+                            "type de robot invalide. Attendu: DRONE | ROUES | CHENILLES | PATTES");
             }
-
 
             // lecture eventuelle d'une vitesse du robot (entier)
             System.out.print("; \t vitesse = ");
-            String s = scanner.findInLine("(\\d+)");    // 1 or more digit(s) ?
-            // pour lire un flottant:    ("(\\d+(\\.\\d+)?)");
+            String s = scanner.findInLine("(\\d+)"); // 1 or more digit(s) ?
+            // pour lire un flottant: ("(\\d+(\\.\\d+)?)");
 
             if (s == null) {
                 System.out.print("valeur par defaut");
@@ -259,13 +250,13 @@ public class LecteurDonnees {
 
             System.out.println();
 
+            return robot;
+
         } catch (NoSuchElementException e) {
             throw new DataFormatException("format de robot invalide. "
                     + "Attendu: ligne colonne type [valeur_specifique]");
         }
-        return robot;
     }
-
 
     /**
      * Ignore toute (fin de) ligne commencant par '#'
