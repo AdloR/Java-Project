@@ -1,11 +1,7 @@
 package io;
 
 
-import robot.Drone;
 import robot.Robot;
-import robot.RobotAChenille;
-import robot.RobotAPattes;
-import robot.RobotARoues;
 import simu.DonneesSimulation;
 import simu.Incendie;
 import terrain.Carte;
@@ -53,11 +49,11 @@ public class LecteurDonnees {
         System.out.println("\n == Lecture du fichier" + fichierDonnees);
         LecteurDonnees lecteur = new LecteurDonnees(fichierDonnees);
         Carte carte = lecteur.lireCarte();
-        ArrayList<Incendie> incendies = lecteur.lireIncendies(carte, type);
+        ArrayList<Incendie> incendies = lecteur.lireIncendies(carte);
         ArrayList<Robot> robots = lecteur.lireRobots(carte);
         scanner.close();
         System.out.println("\n == Lecture terminee");
-        return new DonneesSimulation(carte, incendie, robot)
+        return new DonneesSimulation(carte, incendies, robots);
     }
 
 
@@ -144,7 +140,7 @@ public class LecteurDonnees {
             int nbuildcendies = scanner.nextInt();
             System.out.println("Nb d'incendies = " + nbuildcendies);
             for (int i = 0; i < nbuildcendies; i++) {
-                lireIncendie(i, incendies, carte, type);
+                lireIncendie(i, incendies, carte);
             }
 
         } catch (NoSuchElementException e) {
@@ -176,7 +172,7 @@ public class LecteurDonnees {
 
             System.out.println("position = (" + lig + "," + col
                     + ");\t intensite = " + intensite);
-            Case c = new Case(carte, lig, col, type);
+            Case c = new Case(carte, lig, col, carte.getCase(lig, col).getType());
             Incendie incendie = new Incendie(c, intensite);
             incendies.add(incendie);
         } catch (NoSuchElementException e) {
@@ -196,7 +192,7 @@ public class LecteurDonnees {
             int nbRobots = scanner.nextInt();
             System.out.println("Nb de robots = " + nbRobots);
             for (int i = 0; i < nbRobots; i++) {
-                robots.add(lireRobot(carte, i));
+                robots.add(lireRobot(i));
             }
 
         } catch (NoSuchElementException e) {
@@ -228,16 +224,20 @@ public class LecteurDonnees {
             switch (type) {
                 case "DRONE":
                     robot = new Drone(carte.getCase(lig, col));
-                    break;
+                    ;
+
                 case "ROUES":
                     robot = new RobotARoues(carte.getCase(lig, col));
-                    break;
+                    ;
+
                 case "CHENILLES":
                     robot = new RobotAChenille(carte.getCase(lig, col));
-                    break;
+                    ;
+
                 case "PATTES":
-                    robot = new RobotAPattes(carte.getCase(lig,col));
-                    break;
+                    robot = new RobotAPattes(carte.getCase);
+                    ;
+
                 default:
                     throw new DataFormatException("type de robot invalide. Attendu: DRONE | ROUES | CHENILLES | PATTES");
             }
@@ -259,12 +259,11 @@ public class LecteurDonnees {
 
             System.out.println();
 
-            return robot;
-
         } catch (NoSuchElementException e) {
             throw new DataFormatException("format de robot invalide. "
                     + "Attendu: ligne colonne type [valeur_specifique]");
         }
+        return robot;
     }
 
 
