@@ -3,7 +3,7 @@ package robot;
 import terrain.Case;
 
 public class RobotAChenille extends Robot{
-    public void RobotAChenille(Case position)
+    public RobotAChenille(Case position)
     {
         this.position = position;
         this.speed = 60;

@@ -3,7 +3,7 @@ package robot;
 import terrain.Case;
 
 public class Drone extends Robot {
-    public void Drone(Case position)
+    public Drone(Case position)
     {
         this.position = position;
         this.speed = 100;

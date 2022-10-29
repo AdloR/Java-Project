@@ -1,9 +1,5 @@
 package robot;
 
-import java.awt.Color;
-
-import gui.GUISimulator;
-import gui.Rectangle;
 import terrain.Case;
 
 public abstract class Robot {
