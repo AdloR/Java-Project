@@ -37,15 +37,16 @@ public class LecteurDonnees {
      * LecteurDonnees.lire(fichierDonnees)
      * @param fichierDonnees nom du fichier à lire
      */
-    public static void lire(String fichierDonnees)
+    public static DonneesSimulation lire(String fichierDonnees)
         throws FileNotFoundException, DataFormatException {
         System.out.println("\n == Lecture du fichier" + fichierDonnees);
         LecteurDonnees lecteur = new LecteurDonnees(fichierDonnees);
         Carte carte = lecteur.lireCarte();
-        lecteur.lireIncendies();
-        lecteur.lireRobots();
+        ArrayList<Incendie> incendies = lecteur.lireIncendies();
+        ArrayList<Robot> robots = lecteur.lireRobots();
         scanner.close();
         System.out.println("\n == Lecture terminee");
+        return new DonneesSimulation(carte, incendie, robot)
     }
 
 
@@ -81,7 +82,7 @@ public class LecteurDonnees {
 
             for (int lig = 0; lig < nbLignes; lig++) {
                 for (int col = 0; col < nbColonnes; col++) {
-                    lireCase(carte, lig, col); // TODO: insert created case in carte
+                    carte.setCase(lireCase(carte, lig, col));
                 }
             }
 
@@ -98,7 +99,7 @@ public class LecteurDonnees {
     /**
      * Lit et affiche les donnees d'une case.
      */
-    private void lireCase(Carte carte, int lig, int col) throws DataFormatException {
+    private Case lireCase(Carte carte, int lig, int col) throws DataFormatException {
         ignorerCommentaires();
         System.out.print("Case (" + lig + "," + col + "): ");
         String chaineNature = new String();
