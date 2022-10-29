@@ -11,11 +11,11 @@ public class DonneesSimulation {
      * @param carte the map of the interface.
      * @param robot the robots in charge of extincting the fire.
      */
-    private Incendie incendie;
+    private Incendie[] incendies;
     private Carte carte;
-    private Robot robot;
+    private Robot[] robots;
 
-    public DonneesSimulation(Incendie incendie, Carte carte, Robot robot) {
+    public DonneesSimulation(Carte carte, Incendie incendie, Robot robot) {
         this.incendie = incendie;
         this.carte = carte;
         this.robot = robot;
