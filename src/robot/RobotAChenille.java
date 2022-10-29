@@ -1,9 +1,9 @@
 package robot;
 
 public class RobotAChenille extends Robot{
-    public void RobotAChenille(Case case)
+    public void RobotAChenille(Case position)
     {
-        this.position = case;
+        this.position = position;
         this.speed = 60;
         this.reservoirMax = 5000;
         this.reservoir = 0;
