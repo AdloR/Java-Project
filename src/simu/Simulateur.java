@@ -1,13 +1,20 @@
 package simu;
 
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.PriorityQueue;
 
+import gui.GUISimulator;
+import gui.Simulable;
 import simu.evenements.Evenement;
 
-public class Simulateur {
+public class Simulateur implements Simulable {
+    GUISimulator gui;
+
     private long dateSimulation;
-    private Queue<Evenement> evenements = new LinkedList<>();
+    private PriorityQueue<Evenement> evenements = new PriorityQueue<>();
+
+    public Simulateur(GUISimulator gui) {
+        this.gui = gui;
+    }
 
     public void ajouteEvenement(Evenement e) {
         evenements.add(e);
@@ -19,5 +26,24 @@ public class Simulateur {
 
     public boolean simulationTerminee() {
         return evenements.isEmpty();
+    }
+
+    @Override
+    public void next() {
+        incrementeDate();
+        while (evenements.peek().getDate() == dateSimulation) {
+            evenements.poll().execute();
+        }
+        draw();
+    }
+
+    @Override
+    public void restart() {
+        // TODO Auto-generated method stub
+
+    }
+
+    public void draw() {
+
     }
 }
