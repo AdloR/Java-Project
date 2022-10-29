@@ -1,5 +1,8 @@
 package simu;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import robot.Robot;
 import terrain.Carte;
 
@@ -11,14 +14,26 @@ public class DonneesSimulation {
      * @param carte the map of the interface.
      * @param robot the robots in charge of extincting the fire.
      */
-    private Incendie[] incendies;
+    private List<Incendie> incendies;
     private Carte carte;
-    private Robot[] robots;
+    private List<Robot> robots;
 
-    public DonneesSimulation(Carte carte, Incendie incendie, Robot robot) {
-        this.incendie = incendie;
+    public DonneesSimulation(Carte carte, List<Incendie> incendies, List<Robot> robot) {
+        this.incendies = incendies;
         this.carte = carte;
-        this.robot = robot;
+        this.robots = robots;
+    }
+
+    public List<Incendie> getIncendies() {
+        return incendies;
+    }
+
+    public Carte getCarte() {
+        return carte;
+    }
+
+    public List<Robot> getRobots() {
+        return robots;
     }
 
 
