@@ -254,6 +254,7 @@ public class LecteurDonnees {
                     + "Attendu: ligne colonne type [valeur_specifique]");
         }
         robot.setPosition(carte.getCase(lig, col));
+        return robot;
     }
 
 
