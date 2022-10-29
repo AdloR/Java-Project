@@ -1,10 +1,10 @@
 package robot;
 
 import terrain.Case;
+import terrain.NatureTerrain;
 
-public class RobotAPattes extends Robot{
-    public RobotAPattes(Case position)
-    {
+public class RobotAPattes extends Robot {
+    public RobotAPattes(Case position) {
         this.position = position;
         this.speed = 30;
         this.volumeIntervention = 10;
@@ -12,11 +12,24 @@ public class RobotAPattes extends Robot{
     }
 
     @Override
-    public int deverserEau(int vol)
-    {
+    public int getSpeed() {
+        return this.position.getType() == NatureTerrain.ROCHE ? 10 : super.getSpeed();
+    }
+
+    @Override
+    public int deverserEau(int vol) {
         return vol;
     }
 
     @Override
-    public void remplirReservoir() {}
+    public void remplirReservoir() {
+    }
+
+    @Override
+    public void setPosition(Case position) {
+        if (position.getType() == NatureTerrain.EAU) {
+            return;
+        }
+        super.setPosition(position);
+    }
 }
