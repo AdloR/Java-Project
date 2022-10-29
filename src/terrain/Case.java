@@ -1,9 +1,9 @@
 package terrain;
 
 public class Case {
+    private Carte carte;
     private int coordLig;
     private int coordCol;
-    private Carte carte;
     private NatureTerrain type;
 
     public Case(Carte carte, int lig, int col, NatureTerrain type) {
