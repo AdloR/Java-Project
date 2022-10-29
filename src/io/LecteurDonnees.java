@@ -109,7 +109,7 @@ public class LecteurDonnees {
         ignorerCommentaires();
         System.out.print("Case (" + lig + "," + col + "): ");
         String chaineNature = new String();
-        NatureTerrain nature = NatureTerrain.valueOf(chaineNature);
+        NatureTerrain nature;
 
         try {
             chaineNature = scanner.next();
@@ -120,6 +120,7 @@ public class LecteurDonnees {
             verifieLigneTerminee();
 
             System.out.print("nature = " + chaineNature);
+            nature = NatureTerrain.valueOf(chaineNature);
 
         } catch (NoSuchElementException e) {
             throw new DataFormatException("format de case invalide. "
