@@ -1,6 +1,5 @@
 package simu;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import robot.Robot;
@@ -18,7 +17,7 @@ public class DonneesSimulation {
     private Carte carte;
     private List<Robot> robots;
 
-    public DonneesSimulation(Carte carte, List<Incendie> incendies, List<Robot> robot) {
+    public DonneesSimulation(Carte carte, List<Incendie> incendies, List<Robot> robots) {
         this.incendies = incendies;
         this.carte = carte;
         this.robots = robots;
