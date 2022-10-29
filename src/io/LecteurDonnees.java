@@ -1,7 +1,11 @@
 package io;
 
 
+import robot.Drone;
 import robot.Robot;
+import robot.RobotAChenille;
+import robot.RobotAPattes;
+import robot.RobotARoues;
 import simu.DonneesSimulation;
 import simu.Incendie;
 import terrain.Carte;
@@ -192,7 +196,7 @@ public class LecteurDonnees {
             int nbRobots = scanner.nextInt();
             System.out.println("Nb de robots = " + nbRobots);
             for (int i = 0; i < nbRobots; i++) {
-                robots.add(lireRobot(i));
+                robots.add(lireRobot(carte, i));
             }
 
         } catch (NoSuchElementException e) {
@@ -235,7 +239,7 @@ public class LecteurDonnees {
                     ;
 
                 case "PATTES":
-                    robot = new RobotAPattes(carte.getCase);
+                    robot = new RobotAPattes(carte.getCase(lig,col));
                     ;
 
                 default:
@@ -259,11 +263,12 @@ public class LecteurDonnees {
 
             System.out.println();
 
+            return robot;
+
         } catch (NoSuchElementException e) {
             throw new DataFormatException("format de robot invalide. "
                     + "Attendu: ligne colonne type [valeur_specifique]");
         }
-        return robot;
     }
 
 
