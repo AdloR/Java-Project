@@ -29,4 +29,5 @@ public class RobotAPattes extends Robot{
             return;
         }
         super.setPosition(position);
+    }
 }
