@@ -7,7 +7,7 @@ public class Carte {
     private final int tailleCases = 1;
     private Case[] cases;
 
-    Carte(int nbLignes, int nbColonnes) {
+    public Carte(int nbLignes, int nbColonnes) {
         lignes = nbLignes;
         colonnes = nbColonnes;
         cases = new Case[lignes * colonnes];

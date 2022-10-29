@@ -1,8 +1,9 @@
 package robot;
 
+import gui.Simulable;
 import terrain.Case;
 
-public abstract class Robot {
+public abstract class Robot implements Simulable{
     private Case position;
     private int speed;
     private int reservoirMax;

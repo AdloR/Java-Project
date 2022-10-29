@@ -1,16 +1,23 @@
 package simu;
 
-import gui.Simulable;
+import java.util.LinkedList;
+import java.util.Queue;
 
-public class Simulateur implements Simulable {
+import simu.evenements.Evenement;
 
-    @Override
-    public void next() {
-        // TODO
+public class Simulateur {
+    private long dateSimulation;
+    private Queue<Evenement> evenements = new LinkedList<>();
+
+    public void ajouteEvenement(Evenement e) {
+        evenements.add(e);
     }
 
-    @Override
-    public void restart() {
-        // TODO
+    public void incrementeDate() {
+        dateSimulation++;
+    }
+
+    public boolean simulationTerminee() {
+        return evenements.isEmpty();
     }
 }
