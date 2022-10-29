@@ -27,6 +27,10 @@ public abstract class Robot {
         return speed;
     }
 
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
     public int deverserEau(int vol) {
         return Integer.min(vol, reservoir);
     }

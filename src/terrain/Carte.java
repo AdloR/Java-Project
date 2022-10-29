@@ -54,6 +54,15 @@ public class Carte {
         return cases[lig * colonnes + col];
     }
 
+    /**
+     * Add Given case on the terrain.
+     * 
+     * @param case
+     */
+    public void setCase(Case case)
+    {
+        this.cases[case.getColonne, case.getLigne] = case;
+    }
     
     /** 
      * Checks if the given neighbor of the src case exists.
