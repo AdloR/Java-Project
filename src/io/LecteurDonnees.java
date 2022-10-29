@@ -93,6 +93,8 @@ public class LecteurDonnees {
                 }
             }
 
+            return carte;
+
         } catch (NoSuchElementException e) {
             throw new DataFormatException("Format invalide. "
                     + "Attendu: nbLignes nbColonnes tailleCases");
