@@ -7,13 +7,13 @@ import gui.Rectangle;
 import terrain.Case;
 
 public abstract class Robot {
-    private Case position;
-    private int speed;
-    private int reservoirMax;
-    private int reservoir;
-    private int timeRefill;
-    private int volumeIntervention;
-    private int timeIntervention;
+    protected Case position;
+    protected int speed;
+    protected int reservoirMax;
+    protected int reservoir;
+    protected int timeRefill;
+    protected int volumeIntervention;
+    protected int timeIntervention;
 
     public Case getPosition() {
         return position;

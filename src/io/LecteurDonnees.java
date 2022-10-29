@@ -49,7 +49,7 @@ public class LecteurDonnees {
         System.out.println("\n == Lecture du fichier" + fichierDonnees);
         LecteurDonnees lecteur = new LecteurDonnees(fichierDonnees);
         Carte carte = lecteur.lireCarte();
-        ArrayList<Incendie> incendies = lecteur.lireIncendies();
+        ArrayList<Incendie> incendies = lecteur.lireIncendies(carte, type);
         ArrayList<Robot> robots = lecteur.lireRobots(carte);
         scanner.close();
         System.out.println("\n == Lecture terminee");
@@ -133,7 +133,7 @@ public class LecteurDonnees {
     /**
      * Lit et affiche les donnees des incendies.
      */
-    private ArrayList<Incendie> lireIncendies(Carte carte, NatureTerrain type) throws DataFormatException {
+    private ArrayList<Incendie> lireIncendies(Carte carte) throws DataFormatException {
         ignorerCommentaires();
         ArrayList<Incendie> incendies = new ArrayList<Incendie>();
         try {
