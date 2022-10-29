@@ -32,7 +32,9 @@ public abstract class Robot {
     }
 
     public int deverserEau(int vol) {
-        return Integer.min(vol, reservoir);
+        int tmpVol = Integer.min(vol, reservoir);
+        reservoir -= tmpVol;
+        return tmpVol;
     }
 
     public void remplirReservoir() {

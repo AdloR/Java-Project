@@ -223,19 +223,19 @@ public class LecteurDonnees {
             Robot robot;
             switch (type) {
                 case "DRONE":
-                    robot = new Drone(); // TODO: add parameters to constructor
+                    robot = new Drone(carte.getCase(lig, col));
                     ;
 
                 case "ROUES":
-                    robot = new RobotARoues(); // TODO: add parameters to constructor
+                    robot = new RobotARoues(carte.getCase(lig, col));
                     ;
 
                 case "CHENILLES":
-                    robot = new RobotAChenille(); // TODO: add parameters to constructor
+                    robot = new RobotAChenille(carte.getCase(lig, col));
                     ;
 
                 case "PATTES":
-                    robot = new RobotAPattes(); // TODO: add parameters to constructor
+                    robot = new RobotAPattes(carte.getCase);
                     ;
 
                 default:
@@ -263,7 +263,6 @@ public class LecteurDonnees {
             throw new DataFormatException("format de robot invalide. "
                     + "Attendu: ligne colonne type [valeur_specifique]");
         }
-        robot.setPosition(carte.getCase(lig, col));
         return robot;
     }
 

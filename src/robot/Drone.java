@@ -1,9 +1,9 @@
 package robot;
 
 public class Drone extends Robot {
-    public void Drone(Case case)
+    public void Drone(Case position)
     {
-        this.position = case;
+        this.position = position;
         this.speed = 100;
         this.reservoirMax = 10000;
         this.reservoir = 0;
@@ -15,10 +15,7 @@ public class Drone extends Robot {
     @override
     public void setSpeed(int speed)
     {
-        if (speed > 150)
-        {
-            throw new // TODO: throw an exception : Given speed out of bound, max 150.
-        }
+        assert(speed <= 150);
         super.setSpeed(speed);
     }
 }
