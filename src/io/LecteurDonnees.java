@@ -160,7 +160,7 @@ public class LecteurDonnees {
      *
      * @param i
      */
-    private void lireIncendie(int i, ArrayList<Incendie> incendies, Carte carte, NatureTerrain type) throws DataFormatException {
+    private void lireIncendie(int i, ArrayList<Incendie> incendies, Carte carte) throws DataFormatException {
         ignorerCommentaires();
         System.out.print("Incendie " + i + ": ");
 
