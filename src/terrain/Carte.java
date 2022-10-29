@@ -54,6 +54,10 @@ public class Carte {
         return cases[lig * colonnes + col];
     }
 
+    public Case[] getCases() {
+        return cases;
+    }
+
     
     /** 
      * Checks if the given neighbor of the src case exists.
