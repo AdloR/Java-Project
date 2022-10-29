@@ -7,8 +7,6 @@ import gui.Rectangle;
 import terrain.Case;
 
 public abstract class Robot {
-    private GUISimulator gui;
-
     private Case position;
     private int speed;
     private int reservoirMax;
@@ -16,10 +14,6 @@ public abstract class Robot {
     private int timeRefill;
     private int volumeIntervention;
     private int timeIntervention;
-
-    public Robot(GUISimulator gui) {
-        this.gui = gui;
-    }
 
     public Case getPosition() {
         return position;
@@ -39,12 +33,5 @@ public abstract class Robot {
 
     public void remplirReservoir() {
         reservoir = reservoirMax;
-    }
-
-    public void draw() {
-        int tailleCases = getPosition().getCarte().getTailleCases();
-        int x = getPosition().getColonne();
-        int y = getPosition().getLigne();
-        gui.addGraphicalElement(new Rectangle(x*tailleCases, y*tailleCases, Color.CYAN, Color.CYAN, tailleCases));
     }
 }
