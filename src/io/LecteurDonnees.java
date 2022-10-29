@@ -43,7 +43,7 @@ public class LecteurDonnees {
         LecteurDonnees lecteur = new LecteurDonnees(fichierDonnees);
         Carte carte = lecteur.lireCarte();
         ArrayList<Incendie> incendies = lecteur.lireIncendies();
-        ArrayList<Robot> robots = lecteur.lireRobots();
+        ArrayList<Robot> robots = lecteur.lireRobots(carte);
         scanner.close();
         System.out.println("\n == Lecture terminee");
         return new DonneesSimulation(carte, incendie, robot)
@@ -175,19 +175,21 @@ public class LecteurDonnees {
     /**
      * Lit et affiche les donnees des robots.
      */
-    private void lireRobots() throws DataFormatException {
+    private ArrayList<Robot> lireRobots(Carte carte) throws DataFormatException {
+        ArrayList<Robot> robots = new ArrayList<Robot> ();
         ignorerCommentaires();
         try {
             int nbRobots = scanner.nextInt();
             System.out.println("Nb de robots = " + nbRobots);
             for (int i = 0; i < nbRobots; i++) {
-                lireRobot(i);
+                robots.add(lireRobot(i));
             }
 
         } catch (NoSuchElementException e) {
             throw new DataFormatException("Format invalide. "
                     + "Attendu: nbRobots");
         }
+        return robots;
     }
 
 
@@ -195,7 +197,7 @@ public class LecteurDonnees {
      * Lit et affiche les donnees du i-eme robot.
      * @param i
      */
-    private void lireRobot(int i) throws DataFormatException {
+    private Robot lireRobot(Carte carte, int i) throws DataFormatException {
         ignorerCommentaires();
         System.out.print("Robot " + i + ": ");
 
@@ -205,7 +207,30 @@ public class LecteurDonnees {
             System.out.print("position = (" + lig + "," + col + ");");
             String type = scanner.next();
 
+            /* Create Robot of matching type */
             System.out.print("\t type = " + type);
+            Robot robot;
+            switch (type)
+            {
+                case "DRONE":
+                robot = new Drone(); // TODO: add parameters to constructor
+                ;
+
+                case "ROUES":
+                robot = new RobotARoues(); // TODO: add parameters to constructor
+                ;
+
+                case "CHENILLES":
+                robot = new RobotAChenille(); // TODO: add parameters to constructor
+                ;
+
+                case "PATTES":
+                robot = new RobotAPattes(); // TODO: add parameters to constructor
+                ;
+
+                default:
+                throw new DataFormatException("type de robot invalide. Attendu: DRONE | ROUES | CHENILLES | PATTES");
+            }
 
 
             // lecture eventuelle d'une vitesse du robot (entier)
@@ -218,6 +243,7 @@ public class LecteurDonnees {
             } else {
                 int vitesse = Integer.parseInt(s);
                 System.out.print(vitesse);
+                robot.setSpeed(vitesse);
             }
             verifieLigneTerminee();
 
@@ -227,6 +253,7 @@ public class LecteurDonnees {
             throw new DataFormatException("format de robot invalide. "
                     + "Attendu: ligne colonne type [valeur_specifique]");
         }
+        robot.setPosition(carte.getCase(lig, col));
     }
 
 
