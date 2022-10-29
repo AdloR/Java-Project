@@ -41,7 +41,7 @@ public class LecteurDonnees {
         throws FileNotFoundException, DataFormatException {
         System.out.println("\n == Lecture du fichier" + fichierDonnees);
         LecteurDonnees lecteur = new LecteurDonnees(fichierDonnees);
-        lecteur.lireCarte();
+        Carte carte = lecteur.lireCarte();
         lecteur.lireIncendies();
         lecteur.lireRobots();
         scanner.close();
@@ -69,7 +69,7 @@ public class LecteurDonnees {
      * Lit et affiche les donnees de la carte.
      * @throws ExceptionFormatDonnees
      */
-    private void lireCarte() throws DataFormatException {
+    private Carte lireCarte() throws DataFormatException {
         ignorerCommentaires();
         try {
             int nbLignes = scanner.nextInt();
@@ -77,10 +77,11 @@ public class LecteurDonnees {
             int tailleCases = scanner.nextInt();	// en m
             System.out.println("Carte " + nbLignes + "x" + nbColonnes
                     + "; taille des cases = " + tailleCases);
+            Carte carte = new Carte(nbLignes, nbColonnes);
 
             for (int lig = 0; lig < nbLignes; lig++) {
                 for (int col = 0; col < nbColonnes; col++) {
-                    lireCase(lig, col);
+                    lireCase(carte, lig, col); // TODO: insert created case in carte
                 }
             }
 
@@ -97,11 +98,11 @@ public class LecteurDonnees {
     /**
      * Lit et affiche les donnees d'une case.
      */
-    private void lireCase(int lig, int col) throws DataFormatException {
+    private void lireCase(Carte carte, int lig, int col) throws DataFormatException {
         ignorerCommentaires();
         System.out.print("Case (" + lig + "," + col + "): ");
         String chaineNature = new String();
-        //		NatureTerrain nature;
+        NatureTerrain nature = NatureTerrain.valueOf(chaineNature);
 
         try {
             chaineNature = scanner.next();
@@ -119,6 +120,7 @@ public class LecteurDonnees {
         }
 
         System.out.println();
+        return new Case(carte, lig, col, nature);
     }
 
 
