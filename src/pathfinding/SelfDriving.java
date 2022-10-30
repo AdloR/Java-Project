@@ -1,9 +1,11 @@
-package robot;
+package pathfinding;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.PriorityQueue;
+import java.lang.Exception;
+import java.lang.reflect.Constructor;
 
 import terrain.Carte;
 import terrain.Case;
@@ -14,6 +16,22 @@ public abstract class SelfDriving {
         private Case position;
         private int cost;
         private int heuristic;
+        private Node previous;
+
+        public Node(Case position) {
+            this.position = position;
+            this.cost = 0;
+            this.heuristic = 0;
+            this.previous = null;
+        }
+
+        public void setPrevious(Node previous) {
+            this.previous = previous;
+        }
+
+        public Node getPrevious() {
+            return previous;
+        }
 
         public void setCost(int cost) {
             this.cost = cost;
@@ -21,12 +39,6 @@ public abstract class SelfDriving {
 
         public void setHeuristic(int heuristic) {
             this.heuristic = heuristic;
-        }
-
-        public Node(Case position) {
-            this.position = position;
-            this.cost = 0;
-            this.heuristic = 0;
         }
 
         public Case getPosition() {
@@ -42,9 +54,6 @@ public abstract class SelfDriving {
         }
     }
 
-    private Carte carte;
-    private HashMap<Case, Node> graph;
-
     class NodeComparator implements Comparator<Node> {
         @Override
         public int compare(Node arg0, Node arg1) {
@@ -56,6 +65,14 @@ public abstract class SelfDriving {
             return -1;
         }
     }
+
+    class UnreachableCaseException extends Exception {
+        public UnreachableCaseException(String message) {
+            super(message);
+        }
+    }
+
+    private HashMap<Case, Node> graph;
 
     private Node getNode(Case position) {
         if (graph.containsKey(position)) {
@@ -79,45 +96,21 @@ public abstract class SelfDriving {
             }
             for (Case position : carte.getVoisins(origin)) {
                 Node v = getNode(position);
-                if (
-                        (!closedList.contains(v)) ||
-                                (openList.contains(v) &&
-                                        v.getCost() < u.getCost()
-                                )
-                ) {
+                if ((!closedList.contains(v)) ||
+                        (openList.contains(v) &&
+                                v.getCost() < u.getCost())) {
                     v.setCost(u.getCost() + 1);
                     v.setHeuristic(
                             v.cost +
                                     (int) (Math.pow(position.getLigne() - destination.getLigne(), 2) +
-                                            Math.pow(position.getColonne() - destination.getColonne(), 2))
-                    );
+                                            Math.pow(position.getColonne() - destination.getColonne(), 2)));
                     openList.add(v);
+                    v.setPrevious(u);
                 }
             }
             closedList.add(u);
         }
-        throw
-
-        /*
-         * closedList = File()
-         * openList = FilePrioritaire(comparateur = compareParHeuristique)
-         * openList.ajouter(depart)
-         * tant que openList n'est pas vide
-         * u = openList.defiler()
-         * si u.x == objectif.x et u.y == objectif.y
-         * reconstituerChemin(u)
-         * terminer le programme
-         * pour chaque voisin v de u dans g
-         * si non( v existe dans closedList
-         * ou v existe dans openList avec un coût inférieur)
-         * v.cout = u.cout +1
-         * v.heuristique = v.cout + distance([v.x, v.y], [objectif.x, objectif.y])
-         * openList.ajouter(v)
-         * closedList.ajouter(u)
-         * terminer le programme (avec erreur)
-         */
-
-        return 0;
+        throw new UnreachableCaseException("Target unreachable");
     }
 
 }
