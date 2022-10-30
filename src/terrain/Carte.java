@@ -118,13 +118,13 @@ public class Carte {
      * @param dest destination case, must be a neighbour of src
      * @return the direction
      */
-    public Direction getdir(Case src, Case dest) {
+    public Direction getdir(Case src, Case dest) throws NotNeighboringCasesException {
         for (Direction dir : Direction.values()) {
             if (getVoisin(src, dir).equals(dest)) {
                 return dir;
             }
         }
-        throw new NotNeighboringCasesException();
+        throw new NotNeighboringCasesException("thrown from Carte.getdir");
     }
 
     /**

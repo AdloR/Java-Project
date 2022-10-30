@@ -2,7 +2,8 @@ package exceptions;
 
 public class NotNeighboringCasesException extends Exception {
 
-    public NotNeighboringCasesException() {
+    public NotNeighboringCasesException(String message) {
+        super(message);
     }
 
 }

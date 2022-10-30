@@ -1,5 +1,6 @@
 package simu.evenements;
 
+import exceptions.ForbiddenMoveException;
 import robot.Robot;
 import terrain.Case;
 
@@ -14,7 +15,7 @@ public class RobotBougeEven extends Evenement {
     }
 
     @Override
-    public void execute() {
+    public void execute() throws ForbiddenMoveException {
         robot.setPosition(dest);
     }
 

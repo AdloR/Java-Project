@@ -5,10 +5,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
 
+import exceptions.ForbiddenMoveException;
 import gui.GUISimulator;
 import gui.ImageElement;
-import gui.Oval;
-import gui.Rectangle;
 import gui.Simulable;
 import gui.Text;
 import robot.Robot;
@@ -46,7 +45,10 @@ public class Simulateur implements Simulable {
         incrementeDate();
         while (evenements.peek().getDate() == dateSimulation) {
             Evenement e = evenements.poll();
-            e.execute();
+            try {
+                e.execute();
+            } catch (ForbiddenMoveException exception) {
+            }
             history.add(e);
         }
         draw();

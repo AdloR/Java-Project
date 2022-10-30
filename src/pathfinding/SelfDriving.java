@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.PriorityQueue;
 
+import exceptions.NotNeighboringCasesException;
 import exceptions.UnreachableCaseException;
 import terrain.Carte;
 import terrain.Case;
@@ -78,7 +79,8 @@ public abstract class SelfDriving {
         return node;
     }
 
-    public Path aStar(Carte carte, Case origin, Case destination) throws UnreachableCaseException {
+    public Path aStar(Carte carte, Case origin, Case destination)
+            throws UnreachableCaseException, NotNeighboringCasesException {
         graph = new HashMap<Case, Node>();
         ArrayList<Node> closedList = new ArrayList<Node>();
         PriorityQueue<Node> openList = new PriorityQueue<Node>(new NodeComparator());
@@ -108,7 +110,7 @@ public abstract class SelfDriving {
         throw new UnreachableCaseException("Target unreachable");
     }
 
-    private Path generatePath(Carte carte, Node node) {
+    private Path generatePath(Carte carte, Node node) throws NotNeighboringCasesException {
         Path path = new Path(carte, this, node.getPosition());
         node = node.previous;
         while (node != null) {

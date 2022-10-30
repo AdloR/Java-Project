@@ -3,7 +3,6 @@ package pathfinding;
 import java.util.LinkedList;
 
 import exceptions.NotNeighboringCasesException;
-import robot.Robot;
 import terrain.Carte;
 import terrain.Case;
 import terrain.Direction;
@@ -25,7 +24,11 @@ public class Path {
         this.path = new LinkedList<Direction>();
     }
 
-    public void addStep(Case place) {
+    public int getDuration() {
+        return duration;
+    }
+
+    public void addStep(Case place) throws NotNeighboringCasesException {
         try {
             Direction dir = carte.getdir(place, start);
             path.addFirst(dir);
@@ -42,7 +45,7 @@ public class Path {
             return;
         } catch (NotNeighboringCasesException e) {
         }
-        throw new NotNeighboringCasesException();
+        throw new NotNeighboringCasesException("thrown from Path.addStep");
     }
 
 }
