@@ -9,15 +9,11 @@ import simu.evenements.Evenement;
 import simu.evenements.InterventionEven;
 import simu.evenements.RemplissageEven;
 import simu.evenements.mouvements.RobotBougeDirEven;
-import simu.evenements.mouvements.RobotTeleportEven;
 import terrain.Carte;
 import terrain.Direction;
 
 class Scenario0 {
     public static void main(String[] args) {
-        Carte carte = new Carte(10, 10);
-        GUISimulator gui = new GUISimulator(800, 800, Color.BLACK);
-
         DonneesSimulation donnees;
         try {
             donnees = LecteurDonnees.lire("cartes/carteSujet.map");
@@ -25,6 +21,10 @@ class Scenario0 {
             e.printStackTrace();
             return;
         }
+        Carte carte = donnees.getCarte();
+        int width = carte.getNbColonnes() * Simulateur.LARGEUR_TILES;
+        int height = carte.getNbLignes() * Simulateur.LARGEUR_TILES;
+        GUISimulator gui = new GUISimulator(width, height, Color.BLACK);
 
         Evenement e1 = new RobotBougeDirEven(1, donnees.getRobots().get(0), Direction.NORD);
         Evenement e2 = new RobotBougeDirEven(2, donnees.getRobots().get(0), Direction.NORD);
@@ -41,7 +41,6 @@ class Scenario0 {
 
 class Scenario1 {
     public static void main(String[] args) {
-        GUISimulator gui = new GUISimulator(800, 800, Color.BLACK);
 
         DonneesSimulation donnees;
         try {
@@ -50,6 +49,10 @@ class Scenario1 {
             e.printStackTrace();
             return;
         }
+        Carte carte = donnees.getCarte();
+        int width = carte.getNbColonnes() * Simulateur.LARGEUR_TILES;
+        int height = carte.getNbLignes() * Simulateur.LARGEUR_TILES;
+        GUISimulator gui = new GUISimulator(width, height, Color.BLACK);
 
         Robot r = donnees.getRobots().get(1);
         Simulateur sim = new Simulateur(gui, donnees);
