@@ -7,6 +7,10 @@ import terrain.Carte;
 import terrain.Case;
 import terrain.Direction;
 
+/**
+ * Represent a path with a LinkedList of Directions and the duration it will
+ * take to the robot to follow it.
+ */
 public class Path {
     private Carte carte;
     private SelfDriving robot;
@@ -15,12 +19,19 @@ public class Path {
     private Case end;
     private LinkedList<Direction> path;
 
-    public Path(Carte carte, SelfDriving robot, Case origin) {
+    /**
+     * Path Constructor
+     * 
+     * @param carte The Carte where the crossed Cases are.
+     * @param robot The Robot that will follow the Path.
+     * @param end   End of the Path.
+     */
+    public Path(Carte carte, SelfDriving robot, Case end) {
         this.carte = carte;
         this.robot = robot;
         this.duration = 0;
-        this.start = origin;
-        this.end = origin;
+        this.start = end;
+        this.end = end;
         this.path = new LinkedList<Direction>();
     }
 
@@ -28,7 +39,14 @@ public class Path {
         return duration;
     }
 
+    /**
+     * Add a step at the beginning of the path.
+     * 
+     * @param place A Case neighboring the start of the path to be added to the
+     *              path.
+     */
     public void addStep(Case place) throws NotNeighboringCasesException {
+        /* Case place is neigboring start. */
         try {
             Direction dir = carte.getdir(place, start);
             path.addFirst(dir);
@@ -37,14 +55,7 @@ public class Path {
             return;
         } catch (NotNeighboringCasesException e) {
         }
-        try {
-            Direction dir = carte.getdir(end, place);
-            path.addLast(dir);
-            duration += carte.getTailleCases() / robot.getSpeedOn(end);
-            this.end = place;
-            return;
-        } catch (NotNeighboringCasesException e) {
-        }
+        /* Case place is somewhere else. */
         throw new NotNeighboringCasesException("thrown from Path.addStep");
     }
 
