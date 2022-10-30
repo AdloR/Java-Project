@@ -10,7 +10,6 @@ import gui.GUISimulator;
 import gui.ImageElement;
 import gui.Rectangle;
 import gui.Simulable;
-import gui.Text;
 import io.LecteurDonnees;
 import robot.Drone;
 import robot.Robot;
@@ -264,7 +263,8 @@ public class Simulateur implements Simulable {
                             new ImageElement(x, y, "assets/habitat.png", LARGEUR_TILES, LARGEUR_TILES, gui));
                     break;
                 default:
-                    gui.addGraphicalElement(new Text(x, y, Color.RED, "E"));
+                    gui.addGraphicalElement(
+                            new ImageElement(x, y, "assets/erreur.png", LARGEUR_TILES, LARGEUR_TILES, gui));
             }
         }
 
@@ -292,9 +292,9 @@ public class Simulateur implements Simulable {
             else if (r instanceof RobotAPattes)
                 gui.addGraphicalElement(
                         new ImageElement(x, y, "assets/pattes.png", LARGEUR_TILES, LARGEUR_TILES, gui));
-
             else
-                gui.addGraphicalElement(new Text(x, y, Color.CYAN, "R"));
+                gui.addGraphicalElement(
+                        new ImageElement(x, y, "assets/erreur.png", LARGEUR_TILES, LARGEUR_TILES, gui));
         }
     }
 }
