@@ -1,8 +1,9 @@
 package robot;
 
+import pathfinding.SelfDriving;
 import terrain.Case;
 
-public abstract class Robot {
+public abstract class Robot extends SelfDriving {
     protected Case position;
     protected int speed;
     protected int reservoirMax;
@@ -20,6 +21,11 @@ public abstract class Robot {
     }
 
     public int getSpeed() {
+        return getSpeedOn(this.position);
+    }
+
+    @Override
+    public int getSpeedOn(Case place) {
         return speed;
     }
 

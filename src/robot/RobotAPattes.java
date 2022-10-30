@@ -12,8 +12,8 @@ public class RobotAPattes extends Robot {
     }
 
     @Override
-    public int getSpeed() {
-        return this.position.getType() == NatureTerrain.ROCHE ? 10 : super.getSpeed();
+    public int getSpeedOn(Case place) {
+        return place.getType() == NatureTerrain.ROCHE ? 10 : super.getSpeedOn(place);
     }
 
     @Override

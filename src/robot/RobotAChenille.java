@@ -16,8 +16,8 @@ public class RobotAChenille extends Robot {
     }
 
     @Override
-    public int getSpeed() {
-        return this.position.getType() == NatureTerrain.FORET ? super.getSpeed() / 2 : super.getSpeed();
+    public int getSpeedOn(Case place) {
+        return place.getType() == NatureTerrain.FORET ? super.getSpeedOn(place) / 2 : super.getSpeedOn(place);
     }
 
     @Override

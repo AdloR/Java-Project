@@ -3,12 +3,13 @@ package pathfinding;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.lang.Exception;
-import java.lang.reflect.Constructor;
 
 import terrain.Carte;
 import terrain.Case;
+import terrain.Direction;
 
 public abstract class SelfDriving {
 
@@ -74,6 +75,8 @@ public abstract class SelfDriving {
 
     private HashMap<Case, Node> graph;
 
+    public abstract int getSpeedOn(Case place);
+
     private Node getNode(Case position) {
         if (graph.containsKey(position)) {
             return graph.get(position);
@@ -91,7 +94,7 @@ public abstract class SelfDriving {
         while (!closedList.isEmpty()) {
             Node u = openList.remove();
             if (u.getPosition().equals(destination)) {
-                // TODO : reconstituerChemin(u)
+                Path path = generatePath(carte, u);
                 return 1; // TODO : return length
             }
             for (Case position : carte.getVoisins(origin)) {
@@ -113,4 +116,9 @@ public abstract class SelfDriving {
         throw new UnreachableCaseException("Target unreachable");
     }
 
+    private Path generatePath(Carte carte, Node node) {
+        Path path = new Path(carte, this, node.getPosition());
+
+        return path;
+    }
 }

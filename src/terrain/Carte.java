@@ -110,6 +110,22 @@ public class Carte {
     }
 
     /**
+     * Return direction from src to dest.
+     * 
+     * @param src  origin case
+     * @param dest destination case, must be a neighbour of src
+     * @return the direction
+     */
+    public Direction getdir(Case src, Case dest) {
+        for (Direction dir : Direction.values()) {
+            if (getVoisin(src, dir).equals(dest)) {
+                return dir;
+            }
+        }
+        throw new NotNeighboringCasesExceptiion();
+    }
+
+    /**
      * Return ArrayList with all available neigbors.
      * 
      * @param src Origin case
