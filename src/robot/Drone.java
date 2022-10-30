@@ -1,10 +1,10 @@
 package robot;
 
 import terrain.Case;
+import terrain.NatureTerrain;
 
 public class Drone extends Robot {
-    public Drone(Case position)
-    {
+    public Drone(Case position) {
         this.position = position;
         this.speed = 100;
         this.reservoirMax = 10000;
@@ -15,9 +15,13 @@ public class Drone extends Robot {
     }
 
     @Override
-    public void setSpeed(int speed)
-    {
-        assert(speed <= 150);
+    protected boolean findWater() {
+        return this.position.getType() == NatureTerrain.EAU;
+    }
+
+    @Override
+    public void setSpeed(int speed) {
+        assert (speed <= 150);
         super.setSpeed(speed);
     }
 }

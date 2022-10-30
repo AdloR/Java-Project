@@ -17,6 +17,16 @@ public class RobotAChenille extends Robot {
     }
 
     @Override
+    protected boolean findWater() {
+        for (Case place : this.position.getCarte().getVoisins(position)) {
+            if (place.getType() == NatureTerrain.EAU) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
     public int getSpeedOn(Case place) {
         return place.getType() == NatureTerrain.FORET ? super.getSpeedOn(place) / 2 : super.getSpeedOn(place);
     }

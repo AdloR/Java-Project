@@ -13,6 +13,11 @@ public class RobotAPattes extends Robot {
     }
 
     @Override
+    protected boolean findWater() {
+        return true;
+    }
+
+    @Override
     public int getSpeedOn(Case place) {
         return place.getType() == NatureTerrain.ROCHE ? 10 : super.getSpeedOn(place);
     }

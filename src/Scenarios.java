@@ -57,11 +57,9 @@ class Scenario1 {
         sim.ajouteEvenement(new RobotBougeDirEven(1, r, Direction.NORD));
         sim.ajouteEvenement(new InterventionEven(2, r, sim)); // Jusque 8
         sim.ajouteEvenement(new RobotBougeDirEven(8, r, Direction.OUEST));
-        sim.ajouteEvenement(new RobotBougeDirEven(9, r, Direction.OUEST));
         sim.ajouteEvenement(new RobotBougeDirEven(10, r, Direction.OUEST));
         sim.ajouteEvenement(new RemplissageEven(11, r, sim));
         sim.ajouteEvenement(new RobotBougeDirEven(612, r, Direction.EST));
-        sim.ajouteEvenement(new RobotBougeDirEven(613, r, Direction.EST));
         sim.ajouteEvenement(new RobotBougeDirEven(614, r, Direction.EST));
         sim.ajouteEvenement(new InterventionEven(615, r, sim));
 

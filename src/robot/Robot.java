@@ -80,7 +80,15 @@ public abstract class Robot extends SelfDriving {
     }
 
     /**
-     * Refills the reservoir. If it was already filled, will still try to full it, and
+     * Return True if there is water accessible.
+     * 
+     * @return the boolean.
+     */
+    protected abstract boolean findWater();
+
+    /**
+     * Refills the reservoir. If it was already filled, will still try to full it,
+     * and
      * therefore take unnecessary time.
      * 
      * @return time left for emptying the reservoir or setting off the fire.
@@ -92,8 +100,8 @@ public abstract class Robot extends SelfDriving {
         if (currentAction != Action.ATTENTE && currentAction != Action.REMPLISSAGE)
             throw new IllegalStateException("The robot is already occupied !");
 
-        if (getPosition().getType() != NatureTerrain.EAU)
-            throw new IllegalStateException("There is no water under the robot !");
+        if (!this.findWater())
+            throw new IllegalStateException("There is no water accessible for the robot !");
 
         if (timeCurrentAction == 0) { // Starting to intervene
             currentAction = Action.REMPLISSAGE;
@@ -101,7 +109,7 @@ public abstract class Robot extends SelfDriving {
         } else // Merely decreasing time left
             timeCurrentAction--;
 
-            System.out.println(timeCurrentAction);
+        System.out.println(timeCurrentAction);
 
         if (timeCurrentAction == 0) { // This time it means we have ended
             currentAction = Action.ATTENTE;

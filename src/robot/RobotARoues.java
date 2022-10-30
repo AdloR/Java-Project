@@ -2,6 +2,7 @@ package robot;
 
 import exceptions.ForbiddenMoveException;
 import terrain.Case;
+import terrain.NatureTerrain;
 
 import static terrain.NatureTerrain.*;
 
@@ -15,6 +16,16 @@ public class RobotARoues extends Robot {
         this.timeRefill = 10 * 60;
         this.volumeIntervention = 100;
         this.timeIntervention = 5;
+    }
+
+    @Override
+    protected boolean findWater() {
+        for (Case place : this.position.getCarte().getVoisins(position)) {
+            if (place.getType() == NatureTerrain.EAU) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
