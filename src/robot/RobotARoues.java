@@ -2,12 +2,10 @@ package robot;
 
 import exceptions.ForbiddenMoveException;
 import terrain.Case;
-import terrain.NatureTerrain;
 
 import static terrain.NatureTerrain.*;
 
 public class RobotARoues extends Robot {
-
 
     public RobotARoues(Case position) {
         this.position = position;

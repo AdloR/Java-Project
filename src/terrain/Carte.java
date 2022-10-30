@@ -3,6 +3,8 @@ package terrain;
 import java.lang.IllegalArgumentException;
 import java.util.ArrayList;
 
+import exceptions.NotNeighboringCasesException;
+
 public class Carte {
     private int lignes, colonnes;
     private final int tailleCases = 1;
@@ -122,7 +124,7 @@ public class Carte {
                 return dir;
             }
         }
-        throw new NotNeighboringCasesExceptiion();
+        throw new NotNeighboringCasesException();
     }
 
     /**
