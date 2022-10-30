@@ -1,10 +1,10 @@
 package robot;
 
+import exceptions.ForbiddenMoveException;
 import terrain.Case;
 import terrain.NatureTerrain;
 
-import static terrain.NatureTerrain.HABITAT;
-import static terrain.NatureTerrain.TERRAIN_LIBRE;
+import static terrain.NatureTerrain.*;
 
 public class RobotARoues extends Robot {
 
@@ -20,9 +20,10 @@ public class RobotARoues extends Robot {
     }
 
     @Override
-    public void setPosition(Case position) {
-        if (position.getType() == TERRAIN_LIBRE || position.getType() == HABITAT) {
-            this.position = position;
+    public void setPosition(Case position) throws ForbiddenMoveException {
+        if (position.getType() == EAU || position.getType() == FORET || position.getType() == ROCHE) {
+            throw new ForbiddenMoveException("Trying to reach inappropriate case type");
         }
+        this.position = position;
     }
 }

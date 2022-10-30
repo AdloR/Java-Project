@@ -1,6 +1,7 @@
 package robot;
 
 import pathfinding.SelfDriving;
+import exceptions.ForbiddenMoveException;
 import terrain.Case;
 
 public abstract class Robot extends SelfDriving {
@@ -16,7 +17,7 @@ public abstract class Robot extends SelfDriving {
         return position;
     }
 
-    public void setPosition(Case position) {
+    public void setPosition(Case position) throws ForbiddenMoveException {
         this.position = position;
     }
 

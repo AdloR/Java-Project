@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.lang.Exception;
 
+import exceptions.UnreachableCaseException;
 import terrain.Carte;
 import terrain.Case;
 import terrain.Direction;
@@ -67,12 +68,6 @@ public abstract class SelfDriving {
         }
     }
 
-    class UnreachableCaseException extends Exception {
-        public UnreachableCaseException(String message) {
-            super(message);
-        }
-    }
-
     private HashMap<Case, Node> graph;
 
     public abstract int getSpeedOn(Case place);
@@ -86,7 +81,7 @@ public abstract class SelfDriving {
         return node;
     }
 
-    public int aStar(Carte carte, Case origin, Case destination) {
+    public int aStar(Carte carte, Case origin, Case destination) throws UnreachableCaseException {
         graph = new HashMap<Case, Node>();
         ArrayList<Node> closedList = new ArrayList<Node>();
         PriorityQueue<Node> openList = new PriorityQueue<Node>(new NodeComparator());

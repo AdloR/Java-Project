@@ -1,5 +1,6 @@
 package robot;
 
+import exceptions.ForbiddenMoveException;
 import terrain.Case;
 import terrain.NatureTerrain;
 
@@ -26,9 +27,9 @@ public class RobotAPattes extends Robot {
     }
 
     @Override
-    public void setPosition(Case position) {
+    public void setPosition(Case position) throws ForbiddenMoveException {
         if (position.getType() == NatureTerrain.EAU) {
-            return;
+            throw new ForbiddenMoveException("Trying to reach inappropriate case type");
         }
         super.setPosition(position);
     }
