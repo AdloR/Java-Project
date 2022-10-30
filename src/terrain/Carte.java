@@ -2,18 +2,21 @@ package terrain;
 
 import java.lang.IllegalArgumentException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 
 import exceptions.NotNeighboringCasesException;
 
 public class Carte {
     private int lignes, colonnes;
-    private final int tailleCases = 1;
+    private int tailleCases = 1;
     private Case[] cases;
 
-    public Carte(int nbLignes, int nbColonnes) {
+    public Carte(int nbLignes, int nbColonnes, int tailleCases) {
         lignes = nbLignes;
         colonnes = nbColonnes;
         cases = new Case[lignes * colonnes];
+        this.tailleCases = tailleCases;
     }
 
     /**
@@ -53,11 +56,16 @@ public class Carte {
     public Case getCase(int lig, int col) {
         if (lig < 0 || lig >= lignes || col < 0 || col >= colonnes)
             throw new IllegalArgumentException("la case à (" + lig + ", " + col + ") n'existe pas !");
-        return cases[col * colonnes + lig];
+        return cases[lig * colonnes + col];
     }
 
-    public Case[] getCases() {
-        return cases;
+    /**
+     * Gets all the cases as an Iterable, useful for drawing for example.
+     * @return Iterable over the whole Array.
+     */
+
+    public Iterable<Case> getCases() {
+        return Arrays.asList(cases);
     }
 
     /**
@@ -66,7 +74,7 @@ public class Carte {
      * @param case
      */
     public void setCase(Case c) {
-        this.cases[c.getColonne() * colonnes + c.getLigne()] = c;
+        this.cases[c.getLigne() * colonnes + c.getColonne()] = c;
     }
 
     /**
@@ -79,13 +87,13 @@ public class Carte {
     public boolean voisinExiste(Case src, Direction dir) {
         switch (dir) {
             case NORD:
-                return src.getLigne() > 1;
+                return src.getLigne() > 0;
             case SUD:
                 return src.getLigne() < lignes - 1;
             case EST:
-                return src.getColonne() > 1;
-            case OUEST:
                 return src.getColonne() < colonnes - 1;
+            case OUEST:
+                return src.getColonne() > 0;
             default:
                 throw new IllegalArgumentException("This is awkward...");
         }

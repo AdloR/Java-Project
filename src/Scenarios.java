@@ -69,3 +69,24 @@ class Scenario1 {
         sim.draw();
     }
 }
+
+class Inondation {
+    public static void main(String[] args) {
+
+        DonneesSimulation donnees;
+        try {
+            donnees = LecteurDonnees.lire("cartes/testEau.map");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+        Carte carte = donnees.getCarte();
+        int width = carte.getNbColonnes() * Simulateur.LARGEUR_TILES;
+        int height = carte.getNbLignes() * Simulateur.LARGEUR_TILES;
+        GUISimulator gui = new GUISimulator(width, height, Color.BLACK);
+        
+        Simulateur sim = new Simulateur(gui, donnees);
+
+        sim.draw();
+    }
+}
