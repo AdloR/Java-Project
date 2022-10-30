@@ -71,29 +71,25 @@ public abstract class SelfDriving {
         ArrayList<Node> closedList = new ArrayList<Node>();
         PriorityQueue<Node> openList = new PriorityQueue<Node>(new NodeComparator());
         openList.add(getNode(origin));
-        while (!closedList.isEmpty())
-        {
+        while (!closedList.isEmpty()) {
             Node u = openList.remove();
-            if (u.getPosition().equals(destination))
-            {
+            if (u.getPosition().equals(destination)) {
                 // TODO : reconstituerChemin(u)
                 return 1; // TODO : return length
             }
-            for (Case position : carte.getVoisins(origin))
-            {
+            for (Case position : carte.getVoisins(origin)) {
                 Node v = getNode(position);
                 if (
-                    (!closedList.contains(v)) ||
-                    (openList.contains(v) &&
-                    v.getCost() < u.getCost()
-                    )
-                )
-                {
+                        (!closedList.contains(v)) ||
+                                (openList.contains(v) &&
+                                        v.getCost() < u.getCost()
+                                )
+                ) {
                     v.setCost(u.getCost() + 1);
                     v.setHeuristic(
-                        v.cost +
-                        (int)(Math.pow(position.getLigne() - destination.getLigne(), 2) +
-                        Math.pow(position.getColonne() - destination.getColonne(), 2))
+                            v.cost +
+                                    (int) (Math.pow(position.getLigne() - destination.getLigne(), 2) +
+                                            Math.pow(position.getColonne() - destination.getColonne(), 2))
                     );
                     openList.add(v);
                 }
