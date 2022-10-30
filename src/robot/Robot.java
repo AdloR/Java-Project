@@ -1,5 +1,6 @@
 package robot;
 
+import exceptions.ForbiddenMove;
 import terrain.Case;
 
 public abstract class Robot {
@@ -15,7 +16,7 @@ public abstract class Robot {
         return position;
     }
 
-    public void setPosition(Case position) {
+    public void setPosition(Case position) throws ForbiddenMove {
         this.position = position;
     }
 
