@@ -20,8 +20,6 @@ public class RobotBougeDirEven extends Evenement {
     @Override
     public void execute() {
         Case c = robot.getPosition();
-        int x = c.getColonne();
-        int y = c.getLigne();
         Carte carte = c.getCarte();
 
         try {

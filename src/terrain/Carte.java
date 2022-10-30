@@ -1,9 +1,7 @@
 package terrain;
 
-import java.lang.IllegalArgumentException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 
 import exceptions.NotNeighboringCasesException;
 

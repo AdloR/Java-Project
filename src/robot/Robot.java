@@ -1,10 +1,9 @@
 package robot;
 
-import simu.Incendie;
-import pathfinding.SelfDriving;
 import exceptions.ForbiddenMoveException;
+import pathfinding.SelfDriving;
+import simu.Incendie;
 import terrain.Case;
-import terrain.NatureTerrain;
 
 public abstract class Robot extends SelfDriving {
     protected Case position;
