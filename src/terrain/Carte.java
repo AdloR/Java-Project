@@ -1,6 +1,9 @@
 package terrain;
 
 import java.lang.IllegalArgumentException;
+import java.util.ArrayList;
+
+import exceptions.NotNeighboringCasesException;
 
 public class Carte {
     private int lignes, colonnes;
@@ -108,6 +111,38 @@ public class Carte {
             default:
                 throw new IllegalArgumentException("This is awkward...");
         }
+    }
+
+    /**
+     * Return direction from src to dest.
+     * 
+     * @param src  origin case
+     * @param dest destination case, must be a neighbour of src
+     * @return the direction
+     */
+    public Direction getdir(Case src, Case dest) throws NotNeighboringCasesException {
+        for (Direction dir : Direction.values()) {
+            if (getVoisin(src, dir).equals(dest)) {
+                return dir;
+            }
+        }
+        throw new NotNeighboringCasesException("thrown from Carte.getdir");
+    }
+
+    /**
+     * Return ArrayList with all available neigbors.
+     * 
+     * @param src Origin case
+     * @return
+     */
+    public ArrayList<Case> getVoisins(Case src) {
+        ArrayList<Case> voisins = new ArrayList<Case>();
+        for (Direction dir : Direction.values()) {
+            if (voisinExiste(src, dir)) {
+                voisins.add(getVoisin(src, dir));
+            }
+        }
+        return voisins;
     }
 
 }

@@ -1,5 +1,7 @@
 package simu.evenements;
 
+import exceptions.ForbiddenMoveException;
+
 public abstract class Evenement implements Comparable<Evenement> {
     private long date;
 
@@ -11,7 +13,7 @@ public abstract class Evenement implements Comparable<Evenement> {
         return date;
     }
 
-    abstract public void execute();
+    abstract public void execute() throws ForbiddenMoveException;
 
     @Override
     public int compareTo(Evenement e) {

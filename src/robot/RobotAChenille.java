@@ -1,5 +1,6 @@
 package robot;
 
+import exceptions.ForbiddenMoveException;
 import terrain.Case;
 import terrain.NatureTerrain;
 
@@ -16,8 +17,8 @@ public class RobotAChenille extends Robot {
     }
 
     @Override
-    public int getSpeed() {
-        return this.position.getType() == NatureTerrain.FORET ? super.getSpeed() / 2 : super.getSpeed();
+    public int getSpeedOn(Case place) {
+        return place.getType() == NatureTerrain.FORET ? super.getSpeedOn(place) / 2 : super.getSpeedOn(place);
     }
 
     @Override
@@ -27,12 +28,9 @@ public class RobotAChenille extends Robot {
     }
 
     @Override
-    public void setPosition(Case position) {
-        if (position.getType() == NatureTerrain.EAU) {
-            return;
-        }
-        if (position.getType() == NatureTerrain.ROCHE) {
-            return;
+    public void setPosition(Case position) throws ForbiddenMoveException {
+        if (position.getType() == NatureTerrain.EAU || position.getType() == NatureTerrain.ROCHE) {
+            throw new ForbiddenMoveException("Trying to reach inappropriate case type");
         }
         super.setPosition(position);
     }

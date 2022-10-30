@@ -1,10 +1,12 @@
 package robot;
 
 import simu.Incendie;
+import pathfinding.SelfDriving;
+import exceptions.ForbiddenMoveException;
 import terrain.Case;
 import terrain.NatureTerrain;
 
-public abstract class Robot {
+public abstract class Robot extends SelfDriving {
     protected Case position;
     protected int speed;
     protected int reservoirMax;
@@ -20,11 +22,16 @@ public abstract class Robot {
         return position;
     }
 
-    public void setPosition(Case position) {
+    public void setPosition(Case position) throws ForbiddenMoveException {
         this.position = position;
     }
 
     public int getSpeed() {
+        return getSpeedOn(this.position);
+    }
+
+    @Override
+    public int getSpeedOn(Case place) {
         return speed;
     }
 
