@@ -54,7 +54,7 @@ public class LecteurDonnees {
         ArrayList<Robot> robots = lecteur.lireRobots(carte);
         scanner.close();
         System.out.println("\n == Lecture terminee");
-        return new DonneesSimulation(carte, incendies, robots);
+        return new DonneesSimulation(carte, incendies, robots, fichierDonnees);
     }
 
     // Tout le reste de la classe est prive!
@@ -172,8 +172,7 @@ public class LecteurDonnees {
 
             System.out.println("position = (" + lig + "," + col
                     + ");\t intensite = " + intensite);
-            Case c = new Case(carte, lig, col, carte.getCase(lig, col).getType());
-            Incendie incendie = new Incendie(c, intensite);
+            Incendie incendie = new Incendie(carte.getCase(lig, col), intensite);
             incendies.add(incendie);
         } catch (NoSuchElementException e) {
             throw new DataFormatException("format d'incendie invalide. "

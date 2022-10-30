@@ -11,7 +11,7 @@ public class RobotARoues extends Robot {
         this.position = position;
         this.speed = 80;
         this.reservoirMax = 5000;
-        this.reservoir = 0;
+        this.reservoir = reservoirMax;
         this.timeRefill = 10 * 60;
         this.volumeIntervention = 100;
         this.timeIntervention = 5;
