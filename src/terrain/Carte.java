@@ -1,6 +1,7 @@
 package terrain;
 
 import java.lang.IllegalArgumentException;
+import java.util.ArrayList;
 
 public class Carte {
     private int lignes, colonnes;
@@ -106,6 +107,22 @@ public class Carte {
             default:
                 throw new IllegalArgumentException("This is awkward...");
         }
+    }
+
+    /**
+     * Return ArrayList with all available neigbors.
+     * 
+     * @param src Origin case
+     * @return
+     */
+    public ArrayList<Case> getVoisins(Case src) {
+        ArrayList<Case> voisins = new ArrayList<Case>();
+        for (Direction dir : Direction.values()) {
+            if (voisinExiste(src, dir)) {
+                voisins.add(getVoisin(src, dir));
+            }
+        }
+        return voisins;
     }
 
 }
