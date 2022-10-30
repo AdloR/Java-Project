@@ -48,7 +48,9 @@ public class Carte {
      * @return the wanted case
      */
     public Case getCase(int lig, int col) {
-        return cases[lig * colonnes + col];
+        if (lig < 0 || lig >= lignes || col < 0 || col >= colonnes)
+            throw new IllegalArgumentException("la case à (" + lig + ", " + col + ") n'existe pas !");
+        return cases[col * colonnes + lig];
     }
 
     public Case[] getCases() {

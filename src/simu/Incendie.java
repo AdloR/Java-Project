@@ -13,6 +13,7 @@ public class Incendie {
     public Incendie(Case fireCase, int nbL) {
         this.fireCase = fireCase;
         this.nbL = nbL;
+        fireCase.setIncendie(this);
     }
 
     public String toString() {

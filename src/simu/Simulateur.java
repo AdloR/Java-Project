@@ -7,10 +7,10 @@ import java.util.PriorityQueue;
 
 import gui.GUISimulator;
 import gui.ImageElement;
-import gui.Oval;
-import gui.Rectangle;
 import gui.Simulable;
 import gui.Text;
+import io.LecteurDonnees;
+import robot.Drone;
 import robot.Robot;
 import simu.evenements.Evenement;
 import terrain.Case;
@@ -44,7 +44,7 @@ public class Simulateur implements Simulable {
     @Override
     public void next() {
         incrementeDate();
-        while (evenements.peek().getDate() == dateSimulation) {
+        while (evenements.peek() != null && evenements.peek().getDate() == dateSimulation) {
             Evenement e = evenements.poll();
             e.execute();
             history.add(e);
@@ -54,13 +54,20 @@ public class Simulateur implements Simulable {
 
     @Override
     public void restart() {
-        for (Evenement e : history) {
-            history.remove(e);
-            evenements.add(e);
+        evenements.addAll(history);
+        history = new LinkedList<>();
+        dateSimulation = 0;
+        try {
+            donnees = LecteurDonnees.lire(donnees.getFichierDonnees());
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e.getCause());
         }
     }
 
     public void draw() {
+        gui.reset();
+
         int largeur = 64;
         for (Case c : donnees.getCarte().getCases()) {
             int x = c.getColonne() * largeur;
@@ -92,6 +99,8 @@ public class Simulateur implements Simulable {
         }
 
         for (Incendie i : donnees.getIncendies()) {
+            if (i.getNbL() <= 0)
+                continue;
             int x = i.getFireCase().getColonne() * largeur;
             int y = i.getFireCase().getLigne() * largeur;
             gui.addGraphicalElement(
@@ -101,7 +110,11 @@ public class Simulateur implements Simulable {
         for (Robot r : donnees.getRobots()) {
             int x = r.getPosition().getColonne() * largeur;
             int y = r.getPosition().getLigne() * largeur;
-            gui.addGraphicalElement(new Text(x, y, Color.CYAN, "R"));
+            if (r instanceof Drone)
+                gui.addGraphicalElement(
+                        new ImageElement(x, y, "assets/drone.png", largeur, largeur, gui));
+            else
+                gui.addGraphicalElement(new Text(x, y, Color.CYAN, "R"));
         }
     }
 }

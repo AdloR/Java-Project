@@ -8,7 +8,7 @@ public class Drone extends Robot {
         this.position = position;
         this.speed = 100;
         this.reservoirMax = 10000;
-        this.reservoir = 0;
+        this.reservoir = reservoirMax;
         this.timeRefill = 30 * 60;
         this.volumeIntervention = 10000;
         this.timeIntervention = 30;
