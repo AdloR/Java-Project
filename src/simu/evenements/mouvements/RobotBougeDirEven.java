@@ -1,5 +1,6 @@
 package simu.evenements.mouvements;
 
+import exceptions.ForbiddenMoveException;
 import robot.Robot;
 import simu.evenements.Evenement;
 import terrain.Carte;
@@ -23,7 +24,11 @@ public class RobotBougeDirEven extends Evenement {
         int y = c.getLigne();
         Carte carte = c.getCarte();
 
-        robot.setPosition(carte.getVoisin(c, dir));
+        try {
+            robot.setPosition(carte.getVoisin(c, dir));
+        } catch (ForbiddenMoveException e) {
+            e.printStackTrace();
+        }
     }
     
 }
