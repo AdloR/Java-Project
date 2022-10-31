@@ -42,16 +42,11 @@ public class Simulateur implements Simulable {
     private PriorityQueue<Evenement> evenements = new PriorityQueue<>();
     private List<Evenement> history = new LinkedList<>();
 
-<<<<<<< HEAD
     public long getDateSimulation() {
         return dateSimulation;
     }
 
-    public Simulateur(GUISimulator gui, DonneesSimulation donnees) {
-        this.gui = gui;
-=======
     public Simulateur(DonneesSimulation donnees) {
->>>>>>> dev
         this.donnees = donnees;
         Carte carte = donnees.getCarte();
         width = carte.getNbColonnes() * Simulateur.LARGEUR_TILES;
@@ -118,7 +113,8 @@ public class Simulateur implements Simulable {
 
     public void draw() {
         gui.reset();
-        gui.addGraphicalElement(new ImageElement(0, 0, tmpBackgroundPath, width, height, gui)); // Background already created
+        gui.addGraphicalElement(new ImageElement(0, 0, tmpBackgroundPath, width, height, gui)); // Background already
+                                                                                                // created
 
         for (Incendie i : donnees.getIncendies()) {
             if (i.getNbL() <= 0) {
@@ -135,17 +131,17 @@ public class Simulateur implements Simulable {
             int y = r.getPosition().getLigne() * LARGEUR_TILES;
             if (r instanceof Drone) {
                 gui.addGraphicalElement(
-                        new ImageElement(x, y, "assets/drone.png", LARGEUR_TILES, LARGEUR_TILES, gui)); 
-            }else if (r instanceof RobotARoues) {
+                        new ImageElement(x, y, "assets/drone.png", LARGEUR_TILES, LARGEUR_TILES, gui));
+            } else if (r instanceof RobotARoues) {
                 gui.addGraphicalElement(
-                        new ImageElement(x, y, "assets/roues.png", LARGEUR_TILES, LARGEUR_TILES, gui)); 
-            }else if (r instanceof RobotAChenille) {
+                        new ImageElement(x, y, "assets/roues.png", LARGEUR_TILES, LARGEUR_TILES, gui));
+            } else if (r instanceof RobotAChenille) {
                 gui.addGraphicalElement(
-                        new ImageElement(x, y, "assets/chenille.png", LARGEUR_TILES, LARGEUR_TILES, gui)); 
-            }else if (r instanceof RobotAPattes) {
+                        new ImageElement(x, y, "assets/chenille.png", LARGEUR_TILES, LARGEUR_TILES, gui));
+            } else if (r instanceof RobotAPattes) {
                 gui.addGraphicalElement(
-                        new ImageElement(x, y, "assets/pattes.png", LARGEUR_TILES, LARGEUR_TILES, gui)); 
-            }else {
+                        new ImageElement(x, y, "assets/pattes.png", LARGEUR_TILES, LARGEUR_TILES, gui));
+            } else {
                 gui.addGraphicalElement(
                         new ImageElement(x, y, "assets/erreur.png", LARGEUR_TILES, LARGEUR_TILES, gui));
             }
@@ -178,8 +174,8 @@ public class Simulateur implements Simulable {
                                 && carte.getVoisin(c, Direction.OUEST).getType() != NatureTerrain.EAU) // And a border
                         // west -> corner
                         {
-                            g.drawImage(tiles.get("eau-no"), x, y, LARGEUR_TILES / 2, LARGEUR_TILES / 2, null); 
-                        }else // But no border west -> no corner
+                            g.drawImage(tiles.get("eau-no"), x, y, LARGEUR_TILES / 2, LARGEUR_TILES / 2, null);
+                        } else // But no border west -> no corner
                         {
                             g.drawImage(tiles.get("eau-nord"), x, y, LARGEUR_TILES / 2, LARGEUR_TILES / 2, null);
                         }
@@ -187,8 +183,8 @@ public class Simulateur implements Simulable {
                         if (carte.voisinExiste(c, Direction.EST)
                                 && carte.getVoisin(c, Direction.EST).getType() != NatureTerrain.EAU) {
                             g.drawImage(tiles.get("eau-ne"), x + LARGEUR_TILES / 2, y, LARGEUR_TILES / 2,
-                                    LARGEUR_TILES / 2, null); 
-                        }else {
+                                    LARGEUR_TILES / 2, null);
+                        } else {
                             g.drawImage(tiles.get("eau-nord"), x + LARGEUR_TILES / 2, y, LARGEUR_TILES / 2,
                                     LARGEUR_TILES / 2, null);
                         }
@@ -212,8 +208,8 @@ public class Simulateur implements Simulable {
                                 && carte.getVoisin(c, Direction.OUEST).getType() != NatureTerrain.EAU) {
                             g.drawImage(tiles.get("eau-so"), x, y + LARGEUR_TILES / 2,
                                     LARGEUR_TILES / 2,
-                                    LARGEUR_TILES / 2, null); 
-                        }else {
+                                    LARGEUR_TILES / 2, null);
+                        } else {
                             g.drawImage(tiles.get("eau-sud"), x, y + LARGEUR_TILES / 2,
                                     LARGEUR_TILES / 2,
                                     LARGEUR_TILES / 2, null);
@@ -223,8 +219,8 @@ public class Simulateur implements Simulable {
                                 && carte.getVoisin(c, Direction.EST).getType() != NatureTerrain.EAU) {
                             g.drawImage(tiles.get("eau-se"), x + LARGEUR_TILES / 2, y + LARGEUR_TILES / 2,
                                     LARGEUR_TILES / 2,
-                                    LARGEUR_TILES / 2, null); 
-                        }else {
+                                    LARGEUR_TILES / 2, null);
+                        } else {
                             g.drawImage(tiles.get("eau-sud"), x + LARGEUR_TILES / 2, y + LARGEUR_TILES / 2,
                                     LARGEUR_TILES / 2,
                                     LARGEUR_TILES / 2, null);
