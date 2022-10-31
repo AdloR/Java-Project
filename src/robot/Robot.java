@@ -146,8 +146,8 @@ public abstract class Robot extends SelfDriving {
      *
      * @return True if the robot is not occupied.
      */
-    public boolean isWaiting(Simulateur simu) {
-        return simu.getDateSimulation() >= this.timeFree;
+    public boolean isWaiting() {
+        return this.simu.getDateSimulation() >= this.timeFree;
     }
 
     public void followPath(Path path, Carte carte) throws UnknownDirectionException {
