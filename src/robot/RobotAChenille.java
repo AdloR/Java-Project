@@ -1,7 +1,6 @@
 package robot;
 
 import exceptions.ForbiddenMoveException;
-import simu.Simulateur;
 import terrain.Case;
 import terrain.NatureTerrain;
 
