@@ -16,4 +16,5 @@ public abstract class FireFighterChief {
         this.incendies = incendies;
         this.carte = carte;
     }
+
 }

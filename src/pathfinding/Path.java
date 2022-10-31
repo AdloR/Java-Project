@@ -39,6 +39,10 @@ public class Path {
         return duration;
     }
 
+    public LinkedList<Direction> getPath() {
+        return path;
+    }
+
     /**
      * Add a step at the beginning of the path.
      * 

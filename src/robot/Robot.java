@@ -1,9 +1,14 @@
 package robot;
 
-import exceptions.ForbiddenMoveException;
+import exceptions.UnknownDirectionException;
+import pathfinding.Path;
 import pathfinding.SelfDriving;
 import simu.Incendie;
+import terrain.Carte;
 import terrain.Case;
+import terrain.Direction;
+
+import static terrain.Direction.*;
 
 public abstract class Robot extends SelfDriving {
     protected Case position;
@@ -21,7 +26,7 @@ public abstract class Robot extends SelfDriving {
         return position;
     }
 
-    public void setPosition(Case position) throws ForbiddenMoveException {
+    public void setPosition(Case position) {
         this.position = position;
     }
 
@@ -49,7 +54,7 @@ public abstract class Robot extends SelfDriving {
     /**
      * Intervene on current fire (the fire on the position case). If the reservoir
      * is not full enough, it will be emptied on the fire;
-     * 
+     *
      * @return time left for emptying the reservoir or setting off the fire.
      * @throws IllegalStateException in case of no fire present on the current
      *                               case.
@@ -82,7 +87,7 @@ public abstract class Robot extends SelfDriving {
 
     /**
      * Return True if there is water accessible.
-     * 
+     *
      * @return the boolean.
      */
     protected abstract boolean findWater();
@@ -91,7 +96,7 @@ public abstract class Robot extends SelfDriving {
      * Refills the reservoir. If it was already filled, will still try to full it,
      * and
      * therefore take unnecessary time.
-     * 
+     *
      * @return time left for emptying the reservoir or setting off the fire.
      * @throws IllegalStateException in case the current case is not water.
      * @throws IllegalStateException if the robot was already doing something
@@ -127,10 +132,31 @@ public abstract class Robot extends SelfDriving {
     /**
      * A robot can be occupied either by extinguishing a wildfire, by moving or by
      * filling up.
-     * 
+     *
      * @return True if the robot is not occupied.
      */
     public boolean isWaiting() {
         return this.currentAction == Action.ATTENTE;
+    }
+
+    public void followPath(Path path, Carte carte) throws UnknownDirectionException {
+        for (Direction direction : path.getPath()) {
+            switch (direction) {
+                case NORD:
+                    this.setPosition(carte.getVoisin(this.getPosition(), NORD));
+                    break;
+                case SUD:
+                    this.setPosition(carte.getVoisin(this.getPosition(), SUD));
+                    break;
+                case EST:
+                    this.setPosition(carte.getVoisin(this.getPosition(), EST));
+                    break;
+                case OUEST:
+                    this.setPosition(carte.getVoisin(this.getPosition(), OUEST));
+                    break;
+                default:
+                    throw new UnknownDirectionException("Unknown direction");
+            }
+        }
     }
 }
