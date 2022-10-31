@@ -31,6 +31,10 @@ public class Simulateur implements Simulable {
     private PriorityQueue<Evenement> evenements = new PriorityQueue<>();
     private List<Evenement> history = new LinkedList<>();
 
+    public long getDateSimulation() {
+        return dateSimulation;
+    }
+
     public Simulateur(GUISimulator gui, DonneesSimulation donnees) {
         this.gui = gui;
         this.donnees = donnees;

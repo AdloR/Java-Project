@@ -3,7 +3,11 @@ package robot;
 import exceptions.ForbiddenMoveException;
 import pathfinding.SelfDriving;
 import simu.Incendie;
+import simu.Simulateur;
+import simu.evenements.ContinuerEven;
+import simu.evenements.InterventionEven;
 import terrain.Case;
+import terrain.Direction;
 
 public abstract class Robot extends SelfDriving {
     protected Case position;
@@ -14,8 +18,9 @@ public abstract class Robot extends SelfDriving {
     protected int volumeIntervention;
     protected int timeIntervention;
 
-    private int timeCurrentAction = 0;
-    private Action currentAction = Action.ATTENTE;
+    private Simulateur simu;
+    private long timeFree = 0;
+    // private Action currentAction = Action.ATTENTE;
 
     public Case getPosition() {
         return position;
@@ -42,6 +47,31 @@ public abstract class Robot extends SelfDriving {
         int tmpVol = Integer.min(vol, reservoir);
         reservoir -= tmpVol;
         return tmpVol;
+    }
+
+    public void move(Direction dir) {
+
+    }
+
+    /**
+     * Intervene on fire. If the reservoir is not full enough, it will be emptied on
+     * the fire;
+     * 
+     * @param incendie    The wildfire on which to intervene.
+     * @param immediately Boolean stating if the intervention should be started
+     *                    immediately, if the robot is occupied, method will throw
+     *                    an IllegalStateException
+     * @throws IllegalStateException
+     */
+    public void intervenir(Incendie incendie, boolean immediately) throws IllegalStateException {
+        if (immediately && simu.getDateSimulation() < this.timeFree) {
+            throw new IllegalStateException("The robot is already occupied !");
+        }
+        this.simu.ajouteEvenement(new InterventionEven(this.timeFree, this, simu));
+        this.timeFree += this.timeIntervention;
+        int used_water = Integer.min(reservoir, incendie.getNbL());
+        deverserEau(used_water);
+        incendie.setNbL(incendie.getNbL() - used_water);
     }
 
     /**
@@ -129,7 +159,7 @@ public abstract class Robot extends SelfDriving {
      * @return True if the robot is not occupied.
      */
     public boolean isWaiting() {
-        return this.currentAction == Action.ATTENTE;
+        return this.currentAction == Action.ATTENTE || this.timeCurrentAction <= 0;
     }
 
 }

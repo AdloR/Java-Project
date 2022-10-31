@@ -21,5 +21,4 @@ public class InterventionEven extends Evenement {
             sim.ajouteEvenement(new ContinuerEven(getDate() + i, robot, Action.INTERVENTION));
         }
     }
-    
 }
