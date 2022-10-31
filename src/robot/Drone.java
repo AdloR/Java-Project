@@ -3,8 +3,6 @@ package robot;
 import terrain.Case;
 import terrain.NatureTerrain;
 
-import static terrain.NatureTerrain.EAU;
-
 public class Drone extends Robot {
     public Drone(Case position) {
         this.position = position;

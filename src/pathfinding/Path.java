@@ -16,7 +16,6 @@ public class Path {
     private SelfDriving robot;
     private int duration;
     private Case start;
-    private Case end;
     private LinkedList<Direction> path;
 
     /**
@@ -26,12 +25,11 @@ public class Path {
      * @param robot The Robot that will follow the Path.
      * @param end   End of the Path.
      */
-    public Path(Carte carte, SelfDriving robot, Case end) {
+    public Path(Carte carte, SelfDriving robot, Case start) {
         this.carte = carte;
         this.robot = robot;
         this.duration = 0;
-        this.start = end;
-        this.end = end;
+        this.start = start;
         this.path = new LinkedList<Direction>();
     }
 

@@ -1,23 +1,18 @@
 package simu.evenements;
 
-import robot.Action;
-import simu.Simulateur;
-import simu.evenements.robot_evenements.RobotEven;
+import robot.Robot;
 
-public class RemplissageEven extends RobotEven {
-    Simulateur sim;
+public class RemplissageEven extends Evenement {
+    Robot robot;
 
-    public RemplissageEven(long date, Simulateur sim, int robotIndex) {
-        super(date, sim, robotIndex);
-        this.sim = sim;
+    public RemplissageEven(long date, Robot robot) {
+        super(date);
+        this.robot = robot;
     }
 
     @Override
     public void execute() {
-        int toContinue = robot.remplir();
-        for (int i = 1; i <= toContinue; i++) {
-            sim.ajouteEvenement(new ContinuerEven(getDate() + i, robot, Action.REMPLISSAGE));
-        }
+        robot.remplirReservoir();
     }
 
 }

@@ -4,8 +4,8 @@ import exceptions.ForbiddenMoveException;
 import pathfinding.SelfDriving;
 import simu.Incendie;
 import simu.Simulateur;
-import simu.evenements.ContinuerEven;
 import simu.evenements.InterventionEven;
+import simu.evenements.RemplissageEven;
 import terrain.Case;
 import terrain.Direction;
 
@@ -94,36 +94,37 @@ public abstract class Robot extends SelfDriving {
 
     /**
      * Refills the reservoir. If it was already filled, will still try to full it,
-     * and
-     * therefore take unnecessary time.
+     * and therefore take unnecessary time.
      * 
-     * @return time left for emptying the reservoir or setting off the fire.
-     * @throws IllegalStateException in case the current case is not water.
-     * @throws IllegalStateException if the robot was already doing something
-     *                               else, such as moving.
+     * @throws IllegalStateException in case there is no available water.
      */
-    public int remplir() {
-        if (currentAction != Action.ATTENTE && currentAction != Action.REMPLISSAGE)
-            throw new IllegalStateException("The robot is already occupied !");
+    public void remplir() {
 
         if (!this.findWater())
             throw new IllegalStateException("There is no water accessible for the robot !");
 
-        if (timeCurrentAction == 0) { // Starting to intervene
-            currentAction = Action.REMPLISSAGE;
-            timeCurrentAction = timeRefill;
-        } else // Merely decreasing time left
-            timeCurrentAction--;
+        long timeEnd = Long.max(this.timeFree, simu.getDateSimulation()) + this.timeRefill;
+        this.simu.ajouteEvenement(new RemplissageEven(timeEnd, this));
+        this.timeFree = timeEnd;
+    }
 
-        if (timeCurrentAction % 50 == 0)
-            System.out.println(timeCurrentAction);
-
-        if (timeCurrentAction == 0) { // This time it means we have ended
-            currentAction = Action.ATTENTE;
-            remplirReservoir();
+    /**
+     * Refills the reservoir. If it was already filled, will still try to full it,
+     * and therefore take unnecessary time.
+     * 
+     * @throws IllegalStateException in case there is no available water.
+     */
+    public void remplir(long date) {
+        if (this.timeFree > date) {
+            throw new IllegalStateException("The robot is already occupied !");
         }
 
-        return timeCurrentAction;
+        if (!this.findWater())
+            throw new IllegalStateException("There is no water accessible for the robot !");
+
+        long timeEnd = date + this.timeRefill;
+        this.simu.ajouteEvenement(new RemplissageEven(timeEnd, this));
+        this.timeFree = timeEnd;
     }
 
     public void remplirReservoir() {
