@@ -58,7 +58,6 @@ public abstract class Robot extends SelfDriving {
      * Intervene on fire. If the reservoir is not full enough, it will be emptied on
      * the fire;
      * 
-     * @param incendie The wildfire on which to intervene.
      * @throws IllegalStateException
      */
     public void intervenir() throws IllegalStateException {
@@ -72,8 +71,7 @@ public abstract class Robot extends SelfDriving {
      * on
      * the fire;
      * 
-     * @param incendie The wildfire on which to intervene.
-     * @param date     Precise the time at which the intervention should start.
+     * @param date Precise the time at which the intervention should start.
      * @throws IllegalStateException
      */
     public void intervenir(long date) throws IllegalStateException {
@@ -111,6 +109,7 @@ public abstract class Robot extends SelfDriving {
      * Refills the reservoir. If it was already filled, will still try to full it,
      * and therefore take unnecessary time.
      * 
+     * @param date Precise the time at which the intervention should start.
      * @throws IllegalStateException in case there is no available water.
      */
     public void remplir(long date) {
@@ -136,7 +135,7 @@ public abstract class Robot extends SelfDriving {
      * 
      * @return True if the robot is not occupied.
      */
-    public boolean isWaiting() {
-        return this.simu.getDateSimulation() >= this.timeFree;
+    public boolean isWaiting(Simulateur simu) {
+        return simu.getDateSimulation() >= this.timeFree;
     }
 }
