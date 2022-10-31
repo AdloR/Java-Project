@@ -2,9 +2,10 @@ package simu.evenements;
 
 import robot.Action;
 import robot.Robot;
+import simu.Incendie;
 import simu.Simulateur;
 
-public class InterventionEven extends Evenement {
+public class InterventionEven extends RobotEven {
     Robot robot;
     Simulateur sim;
 
@@ -16,9 +17,8 @@ public class InterventionEven extends Evenement {
 
     @Override
     public void execute() {
-        int toContinue = robot.intervenir();
-        for (int i = 1; i <= toContinue; i++) {
-            sim.ajouteEvenement(new ContinuerEven(getDate() + i, robot, Action.INTERVENTION));
-        }
+        Incendie incendie = robot.getPosition().getIncendie();
+        int used_water = robot.deverserEau();
+        incendie.setNbL(incendie.getNbL() - used_water);
     }
 }

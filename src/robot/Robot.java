@@ -43,8 +43,8 @@ public abstract class Robot extends SelfDriving {
         this.speed = speed;
     }
 
-    public int deverserEau(int vol) {
-        int tmpVol = Integer.min(vol, reservoir);
+    public int deverserEau() {
+        int tmpVol = Integer.min(volumeIntervention, reservoir);
         reservoir -= tmpVol;
         return tmpVol;
     }
@@ -57,21 +57,30 @@ public abstract class Robot extends SelfDriving {
      * Intervene on fire. If the reservoir is not full enough, it will be emptied on
      * the fire;
      * 
-     * @param incendie    The wildfire on which to intervene.
-     * @param immediately Boolean stating if the intervention should be started
-     *                    immediately, if the robot is occupied, method will throw
-     *                    an IllegalStateException
+     * @param incendie The wildfire on which to intervene.
      * @throws IllegalStateException
      */
-    public void intervenir(Incendie incendie, boolean immediately) throws IllegalStateException {
-        if (immediately && simu.getDateSimulation() < this.timeFree) {
+    public void intervenir(Incendie incendie) throws IllegalStateException {
+        long timeEnd = Long.max(this.timeFree, simu.getDateSimulation()) + this.timeIntervention;
+        this.simu.ajouteEvenement(new InterventionEven(timeEnd, this, simu));
+        this.timeFree = timeEnd;
+    }
+
+    /**
+     * * Intervene on fire. If the reservoir is not full enough, it will be emptied
+     * on
+     * the fire;
+     * 
+     * @param incendie The wildfire on which to intervene.
+     * @param date     Precise the time at which the intervention should start.
+     * @throws IllegalStateException
+     */
+    public void intervenir(Incendie incendie, long date) throws IllegalStateException {
+        if (this.timeFree > date) {
             throw new IllegalStateException("The robot is already occupied !");
         }
-        this.simu.ajouteEvenement(new InterventionEven(this.timeFree, this, simu));
-        this.timeFree += this.timeIntervention;
-        int used_water = Integer.min(reservoir, incendie.getNbL());
-        deverserEau(used_water);
-        incendie.setNbL(incendie.getNbL() - used_water);
+        this.simu.ajouteEvenement(new InterventionEven(date + this.timeIntervention, this, simu));
+        this.timeFree = date + this.timeIntervention;
     }
 
     /**
@@ -125,7 +134,7 @@ public abstract class Robot extends SelfDriving {
      * @return True if the robot is not occupied.
      */
     public boolean isWaiting() {
-        return this.currentAction == Action.ATTENTE || this.timeCurrentAction <= 0;
+        return this.simu.getDateSimulation() >= this.timeFree;
     }
 
 }
