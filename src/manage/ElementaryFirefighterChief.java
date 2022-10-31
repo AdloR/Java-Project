@@ -8,15 +8,9 @@ import terrain.Carte;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class ElementaryFirefighterChief {
-    private ArrayList<Robot> robots;
-    private ArrayList<Incendie> incendies;
-    private Carte carte;
-
+public class ElementaryFirefighterChief extends FireFighterChief{
     public ElementaryFirefighterChief(ArrayList<Robot> robots, ArrayList<Incendie> incendies, Carte carte) {
-        this.robots = robots;
-        this.incendies = incendies;
-        this.carte = carte
+        super(robots, incendies, carte);
     }
 
     public void affectRobot() {
