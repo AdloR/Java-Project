@@ -25,8 +25,8 @@ public class RobotAPattes extends Robot {
     }
 
     @Override
-    public int deverserEau(int vol) {
-        return vol;
+    public int deverserEau() {
+        return this.volumeIntervention;
     }
 
     @Override
