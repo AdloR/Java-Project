@@ -4,6 +4,8 @@ import exceptions.ForbiddenMoveException;
 import terrain.Case;
 import terrain.NatureTerrain;
 
+import static terrain.NatureTerrain.EAU;
+
 public class RobotAPattes extends Robot {
     public RobotAPattes(Case position) {
         this.position = position;
@@ -32,8 +34,16 @@ public class RobotAPattes extends Robot {
     }
 
     @Override
+    public boolean isAccessible(Case position) {
+        if (position.getType() == EAU) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
     public void setPosition(Case position) throws ForbiddenMoveException {
-        if (position.getType() == NatureTerrain.EAU) {
+        if (position.getType() == EAU) {
             throw new ForbiddenMoveException("Trying to reach inappropriate case type");
         }
         super.setPosition(position);

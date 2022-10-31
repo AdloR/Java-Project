@@ -22,7 +22,7 @@ public class DonneesSimulation {
      * Constructor
      * @param incendie the localisation of fire cases.
      * @param carte the map of the interface.
-     * @param robot the robots in charge of extincting the fire.
+     * @param robotIndex the robots in charge of extincting the fire.
      * @param fichierDonnees name of map file, used to restart the simulation.
      */
     public DonneesSimulation(Carte carte, List<Incendie> incendies, List<Robot> robots, String fichierDonnees) {

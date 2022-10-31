@@ -53,6 +53,8 @@ public abstract class Robot extends SelfDriving {
 
     }
 
+    public abstract boolean isAccessible(Case position);
+
     /**
      * Intervene on fire. If the reservoir is not full enough, it will be emptied on
      * the fire;
@@ -113,7 +115,8 @@ public abstract class Robot extends SelfDriving {
         } else // Merely decreasing time left
             timeCurrentAction--;
 
-        System.out.println(timeCurrentAction);
+        if (timeCurrentAction % 50 == 0)
+            System.out.println(timeCurrentAction);
 
         if (timeCurrentAction == 0) { // This time it means we have ended
             currentAction = Action.ATTENTE;
