@@ -75,40 +75,6 @@ public abstract class Robot extends SelfDriving {
     }
 
     /**
-     * Intervene on current fire (the fire on the position case). If the reservoir
-     * is not full enough, it will be emptied on the fire;
-     * 
-     * @return time left for emptying the reservoir or setting off the fire.
-     * @throws IllegalStateException in case of no fire present on the current
-     *                               case.
-     * @throws IllegalStateException if the robot was already doing something
-     *                               else, such as moving.
-     */
-    public int intervenir() {
-        if (currentAction != Action.ATTENTE && currentAction != Action.INTERVENTION)
-            throw new IllegalStateException("The robot is already occupied !");
-
-        Incendie incendie = getPosition().getIncendie();
-        if (incendie == null)
-            throw new IllegalStateException("There is no fire under the robot !");
-
-        if (timeCurrentAction == 0) { // Starting to intervene
-            currentAction = Action.INTERVENTION;
-            timeCurrentAction = timeIntervention;
-        } else // Merely decreasing time left
-            timeCurrentAction--;
-
-        if (timeCurrentAction == 0) { // This time it means we have ended
-            currentAction = Action.ATTENTE;
-            int used_water = Integer.min(reservoir, incendie.getNbL());
-            deverserEau(used_water);
-            incendie.setNbL(incendie.getNbL() - used_water);
-        }
-
-        return timeCurrentAction;
-    }
-
-    /**
      * Return True if there is water accessible.
      * 
      * @return the boolean.
