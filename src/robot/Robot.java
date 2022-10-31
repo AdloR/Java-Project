@@ -14,8 +14,13 @@ public abstract class Robot extends SelfDriving {
     protected int volumeIntervention;
     protected int timeIntervention;
 
-    private int timeCurrentAction = 0;
-    private Action currentAction = Action.ATTENTE;
+    private int timeCurrentAction;
+    private Action currentAction;
+
+    public Robot() {
+        timeCurrentAction = 0;
+        currentAction = Action.ATTENTE;
+    }
 
     public Case getPosition() {
         return position;
@@ -108,7 +113,8 @@ public abstract class Robot extends SelfDriving {
         } else // Merely decreasing time left
             timeCurrentAction--;
 
-        System.out.println(timeCurrentAction);
+        if (timeCurrentAction % 50 == 0)
+            System.out.println(timeCurrentAction);
 
         if (timeCurrentAction == 0) { // This time it means we have ended
             currentAction = Action.ATTENTE;

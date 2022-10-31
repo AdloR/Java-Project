@@ -1,16 +1,14 @@
 package simu.evenements;
 
 import robot.Action;
-import robot.Robot;
 import simu.Simulateur;
+import simu.evenements.robot_evenements.RobotEven;
 
-public class RemplissageEven extends Evenement {
-    Robot robot;
+public class RemplissageEven extends RobotEven {
     Simulateur sim;
 
-    public RemplissageEven(long date, Robot robot, Simulateur sim) {
-        super(date);
-        this.robot = robot;
+    public RemplissageEven(long date, Simulateur sim, int robotIndex) {
+        super(date, sim, robotIndex);
         this.sim = sim;
     }
 
@@ -21,5 +19,5 @@ public class RemplissageEven extends Evenement {
             sim.ajouteEvenement(new ContinuerEven(getDate() + i, robot, Action.REMPLISSAGE));
         }
     }
-    
+
 }
