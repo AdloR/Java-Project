@@ -2,7 +2,6 @@ package robot;
 
 import exceptions.ForbiddenMoveException;
 import pathfinding.SelfDriving;
-import simu.Incendie;
 import simu.Simulateur;
 import simu.evenements.InterventionEven;
 import simu.evenements.RemplissageEven;
@@ -62,7 +61,7 @@ public abstract class Robot extends SelfDriving {
      * @param incendie The wildfire on which to intervene.
      * @throws IllegalStateException
      */
-    public void intervenir(Incendie incendie) throws IllegalStateException {
+    public void intervenir() throws IllegalStateException {
         long timeEnd = Long.max(this.timeFree, simu.getDateSimulation()) + this.timeIntervention;
         this.simu.ajouteEvenement(new InterventionEven(timeEnd, this));
         this.timeFree = timeEnd;
@@ -77,7 +76,7 @@ public abstract class Robot extends SelfDriving {
      * @param date     Precise the time at which the intervention should start.
      * @throws IllegalStateException
      */
-    public void intervenir(Incendie incendie, long date) throws IllegalStateException {
+    public void intervenir(long date) throws IllegalStateException {
         if (this.timeFree > date) {
             throw new IllegalStateException("The robot is already occupied !");
         }
