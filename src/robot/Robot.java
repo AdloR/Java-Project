@@ -121,4 +121,15 @@ public abstract class Robot extends SelfDriving {
     public void remplirReservoir() {
         reservoir = reservoirMax;
     }
+
+    /**
+     * A robot can be occupied either by extinguishing a wildfire, by moving or by
+     * filling up.
+     * 
+     * @return True if the robot is not occupied.
+     */
+    public boolean isWaiting() {
+        return this.currentAction == Action.ATTENTE;
+    }
+
 }
