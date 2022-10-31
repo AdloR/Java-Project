@@ -1,12 +1,15 @@
 package robot;
 
 import exceptions.ForbiddenMoveException;
+import exceptions.UnknownDirectionException;
+import pathfinding.Path;
 import pathfinding.SelfDriving;
 import simu.Simulateur;
 import simu.evenements.InterventionEven;
 import simu.evenements.RemplissageEven;
 import terrain.Case;
 import terrain.Direction;
+import terrain.Carte;
 
 public abstract class Robot extends SelfDriving {
     protected Case position;
@@ -18,6 +21,7 @@ public abstract class Robot extends SelfDriving {
     protected int timeIntervention;
 
     private long timeFree = 0;
+    private Simulateur simu;
     // private Action currentAction = Action.ATTENTE;
 
     public Case getPosition() {
@@ -58,11 +62,14 @@ public abstract class Robot extends SelfDriving {
      * the fire;
      * 
      * @throws IllegalStateException
+     * 
+     *                               TODO : Javadoc
      */
     public void intervenir(Simulateur sim) throws IllegalStateException {
         long timeEnd = Long.max(this.timeFree, sim.getDateSimulation()) + this.timeIntervention;
         sim.ajouteEvenement(new InterventionEven(timeEnd, this));
         this.timeFree = timeEnd;
+        this.simu = sim;
     }
 
     /**
@@ -79,11 +86,12 @@ public abstract class Robot extends SelfDriving {
         }
         sim.ajouteEvenement(new InterventionEven(date + this.timeIntervention, this));
         this.timeFree = date + this.timeIntervention;
+        this.simu = sim;
     }
 
     /**
      * Return True if there is water accessible.
-     * 
+     *
      * @return the boolean.
      */
     protected abstract boolean findWater();
@@ -93,6 +101,8 @@ public abstract class Robot extends SelfDriving {
      * and therefore take unnecessary time.
      * 
      * @throws IllegalStateException in case there is no available water.
+     * 
+     *                               TODO : Javadoc
      */
     public void remplir(Simulateur sim) {
 
@@ -102,6 +112,7 @@ public abstract class Robot extends SelfDriving {
         long timeEnd = Long.max(this.timeFree, sim.getDateSimulation()) + this.timeRefill;
         sim.ajouteEvenement(new RemplissageEven(timeEnd, this));
         this.timeFree = timeEnd;
+        this.simu = sim;
     }
 
     /**
@@ -122,6 +133,7 @@ public abstract class Robot extends SelfDriving {
         long timeEnd = date + this.timeRefill;
         sim.ajouteEvenement(new RemplissageEven(timeEnd, this));
         this.timeFree = timeEnd;
+        this.simu = sim;
     }
 
     public void remplirReservoir() {
@@ -131,10 +143,34 @@ public abstract class Robot extends SelfDriving {
     /**
      * A robot can be occupied either by extinguishing a wildfire, by moving or by
      * filling up.
-     * 
+     *
      * @return True if the robot is not occupied.
      */
     public boolean isWaiting(Simulateur simu) {
         return simu.getDateSimulation() >= this.timeFree;
+    }
+
+    public void followPath(Path path, Carte carte) throws UnknownDirectionException {
+        for (Direction direction : path.getPath()) {
+            try {
+                switch (direction) {
+                    case NORD:
+                        this.setPosition(carte.getVoisin(this.getPosition(), Direction.NORD));
+                        break;
+                    case SUD:
+                        this.setPosition(carte.getVoisin(this.getPosition(), Direction.SUD));
+                        break;
+                    case EST:
+                        this.setPosition(carte.getVoisin(this.getPosition(), Direction.EST));
+                        break;
+                    case OUEST:
+                        this.setPosition(carte.getVoisin(this.getPosition(), Direction.OUEST));
+                        break;
+                    default:
+                        throw new UnknownDirectionException("Unknown direction");
+                }
+            } catch (ForbiddenMoveException e) {
+            }
+        }
     }
 }
