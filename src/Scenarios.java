@@ -1,14 +1,11 @@
-import java.awt.Color;
 
-import gui.GUISimulator;
 import io.LecteurDonnees;
 import simu.DonneesSimulation;
 import simu.Simulateur;
+import simu.evenements.DebInterventionEven;
+import simu.evenements.DebRemplissageEven;
 import simu.evenements.Evenement;
-import simu.evenements.InterventionEven;
-import simu.evenements.RemplissageEven;
 import simu.evenements.mouvements.RobotBougeDirEven;
-import terrain.Carte;
 import terrain.Direction;
 
 class Scenario0 {
@@ -49,13 +46,13 @@ class Scenario1 {
         Simulateur sim = new Simulateur(donnees);
 
         sim.ajouteEvenement(new RobotBougeDirEven(1, sim, 1, Direction.NORD));
-        sim.ajouteEvenement(new InterventionEven(2, sim, 1)); // Jusque 8
+        sim.ajouteEvenement(new DebInterventionEven(2, sim, 1)); // Jusque 8
         sim.ajouteEvenement(new RobotBougeDirEven(8, sim, 1, Direction.OUEST));
         sim.ajouteEvenement(new RobotBougeDirEven(10, sim, 1, Direction.OUEST));
-        sim.ajouteEvenement(new RemplissageEven(11, sim, 1));
+        sim.ajouteEvenement(new DebRemplissageEven(11, sim, 1));
         sim.ajouteEvenement(new RobotBougeDirEven(612, sim, 1, Direction.EST));
         sim.ajouteEvenement(new RobotBougeDirEven(614, sim, 1, Direction.EST));
-        sim.ajouteEvenement(new InterventionEven(615, sim, 1));
+        sim.ajouteEvenement(new DebInterventionEven(615, sim, 1));
 
         sim.draw();
     }
