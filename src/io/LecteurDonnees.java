@@ -1,5 +1,13 @@
 package io;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Locale;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
+import java.util.zip.DataFormatException;
+
 import robot.Drone;
 import robot.Robot;
 import robot.RobotAChenille;
@@ -10,10 +18,6 @@ import simu.Incendie;
 import terrain.Carte;
 import terrain.Case;
 import terrain.NatureTerrain;
-
-import java.io.*;
-import java.util.*;
-import java.util.zip.DataFormatException;
 
 /**
  * Lecteur de cartes au format spectifié dans le sujet.

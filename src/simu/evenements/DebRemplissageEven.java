@@ -12,7 +12,7 @@ public class DebRemplissageEven extends RobotEven {
 
     @Override
     public void execute() throws ForbiddenMoveException {
-        robot.remplir();
+        robot.remplir(getSim());
     }
     
 }

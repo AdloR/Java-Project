@@ -17,7 +17,6 @@ public abstract class Robot extends SelfDriving {
     protected int volumeIntervention;
     protected int timeIntervention;
 
-    private Simulateur simu;
     private long timeFree = 0;
     // private Action currentAction = Action.ATTENTE;
 
@@ -61,9 +60,9 @@ public abstract class Robot extends SelfDriving {
      * @param incendie The wildfire on which to intervene.
      * @throws IllegalStateException
      */
-    public void intervenir() throws IllegalStateException {
-        long timeEnd = Long.max(this.timeFree, simu.getDateSimulation()) + this.timeIntervention;
-        this.simu.ajouteEvenement(new InterventionEven(timeEnd, this));
+    public void intervenir(Simulateur sim) throws IllegalStateException {
+        long timeEnd = Long.max(this.timeFree, sim.getDateSimulation()) + this.timeIntervention;
+        sim.ajouteEvenement(new InterventionEven(timeEnd, this));
         this.timeFree = timeEnd;
     }
 
@@ -76,11 +75,11 @@ public abstract class Robot extends SelfDriving {
      * @param date     Precise the time at which the intervention should start.
      * @throws IllegalStateException
      */
-    public void intervenir(long date) throws IllegalStateException {
+    public void intervenir(Simulateur sim, long date) throws IllegalStateException {
         if (this.timeFree > date) {
             throw new IllegalStateException("The robot is already occupied !");
         }
-        this.simu.ajouteEvenement(new InterventionEven(date + this.timeIntervention, this));
+        sim.ajouteEvenement(new InterventionEven(date + this.timeIntervention, this));
         this.timeFree = date + this.timeIntervention;
     }
 
@@ -97,13 +96,13 @@ public abstract class Robot extends SelfDriving {
      * 
      * @throws IllegalStateException in case there is no available water.
      */
-    public void remplir() {
+    public void remplir(Simulateur sim) {
 
         if (!this.findWater())
             throw new IllegalStateException("There is no water accessible for the robot !");
 
-        long timeEnd = Long.max(this.timeFree, simu.getDateSimulation()) + this.timeRefill;
-        this.simu.ajouteEvenement(new RemplissageEven(timeEnd, this));
+        long timeEnd = Long.max(this.timeFree, sim.getDateSimulation()) + this.timeRefill;
+        sim.ajouteEvenement(new RemplissageEven(timeEnd, this));
         this.timeFree = timeEnd;
     }
 
@@ -113,7 +112,7 @@ public abstract class Robot extends SelfDriving {
      * 
      * @throws IllegalStateException in case there is no available water.
      */
-    public void remplir(long date) {
+    public void remplir(Simulateur sim, long date) {
         if (this.timeFree > date) {
             throw new IllegalStateException("The robot is already occupied !");
         }
@@ -122,7 +121,7 @@ public abstract class Robot extends SelfDriving {
             throw new IllegalStateException("There is no water accessible for the robot !");
 
         long timeEnd = date + this.timeRefill;
-        this.simu.ajouteEvenement(new RemplissageEven(timeEnd, this));
+        sim.ajouteEvenement(new RemplissageEven(timeEnd, this));
         this.timeFree = timeEnd;
     }
 
@@ -137,6 +136,6 @@ public abstract class Robot extends SelfDriving {
      * @return True if the robot is not occupied.
      */
     public boolean isWaiting() {
-        return this.simu.getDateSimulation() >= this.timeFree;
+        return this.sim.getDateSimulation() >= this.timeFree;
     }
 }

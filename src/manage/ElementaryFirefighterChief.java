@@ -19,8 +19,8 @@ public class ElementaryFirefighterChief extends FireFighterChief {
             if (incendie.getNbL() >= 0)
                 for (int i = 0; i < robotsSize; i++) {
                     if (robots.get(i).isWaiting()) {
-                        Path path = robots.get(i).aStar(carte, robots.get(i).getPosition(), incendie.getFireCase());
-                        robots.get(i).followPath(path);
+                        //Path path = robots.get(i).aStar(carte, robots.get(i).getPosition(), incendie.getFireCase());
+                        // robots.get(i).followPath(path);
                     }
                     if (i == robotsSize - 1) {
                         i = 0;

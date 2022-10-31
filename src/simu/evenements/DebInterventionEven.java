@@ -12,7 +12,7 @@ public class DebInterventionEven extends RobotEven {
 
     @Override
     public void execute() throws ForbiddenMoveException {
-        robot.intervenir();
+        robot.intervenir(getSim());
     }
     
     
