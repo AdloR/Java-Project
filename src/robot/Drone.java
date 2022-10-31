@@ -3,6 +3,8 @@ package robot;
 import terrain.Case;
 import terrain.NatureTerrain;
 
+import static terrain.NatureTerrain.EAU;
+
 public class Drone extends Robot {
     public Drone(Case position) {
         this.position = position;
@@ -23,5 +25,10 @@ public class Drone extends Robot {
     public void setSpeed(int speed) {
         assert (speed <= 150);
         super.setSpeed(speed);
+    }
+
+    @Override
+    public boolean isAccessible(Case position) {
+        return true;
     }
 }

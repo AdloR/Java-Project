@@ -44,6 +44,8 @@ public abstract class Robot extends SelfDriving {
         return tmpVol;
     }
 
+    public abstract boolean isAccessible(Case position);
+
     /**
      * Intervene on current fire (the fire on the position case). If the reservoir
      * is not full enough, it will be emptied on the fire;
