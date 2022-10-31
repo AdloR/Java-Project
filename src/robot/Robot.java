@@ -136,5 +136,4 @@ public abstract class Robot extends SelfDriving {
     public boolean isWaiting() {
         return this.simu.getDateSimulation() >= this.timeFree;
     }
-
 }
