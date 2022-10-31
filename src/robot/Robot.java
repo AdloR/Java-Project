@@ -64,7 +64,7 @@ public abstract class Robot extends SelfDriving {
      */
     public void intervenir(Incendie incendie) throws IllegalStateException {
         long timeEnd = Long.max(this.timeFree, simu.getDateSimulation()) + this.timeIntervention;
-        this.simu.ajouteEvenement(new InterventionEven(timeEnd, this, simu));
+        this.simu.ajouteEvenement(new InterventionEven(timeEnd, this));
         this.timeFree = timeEnd;
     }
 
@@ -81,7 +81,7 @@ public abstract class Robot extends SelfDriving {
         if (this.timeFree > date) {
             throw new IllegalStateException("The robot is already occupied !");
         }
-        this.simu.ajouteEvenement(new InterventionEven(date + this.timeIntervention, this, simu));
+        this.simu.ajouteEvenement(new InterventionEven(date + this.timeIntervention, this));
         this.timeFree = date + this.timeIntervention;
     }
 
