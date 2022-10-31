@@ -8,12 +8,12 @@ import terrain.Carte;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class FirefighterChief {
+public class ElementaryFirefighterChief {
     private ArrayList<Robot> robots;
     private ArrayList<Incendie> incendies;
     private Carte carte;
 
-    public FirefighterChief(ArrayList<Robot> robots, ArrayList<Incendie> incendies, Carte carte) {
+    public ElementaryFirefighterChief(ArrayList<Robot> robots, ArrayList<Incendie> incendies, Carte carte) {
         this.robots = robots;
         this.incendies = incendies;
         this.carte = carte
