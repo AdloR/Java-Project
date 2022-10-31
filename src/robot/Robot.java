@@ -131,7 +131,4 @@ public abstract class Robot extends SelfDriving {
     public boolean isWaiting() {
         return this.currentAction == Action.ATTENTE;
     }
-
-    public abstract boolean isAccessible(Case place);
-
 }

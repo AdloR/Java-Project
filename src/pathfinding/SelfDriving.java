@@ -85,6 +85,8 @@ public abstract class SelfDriving {
      */
     public abstract int getSpeedOn(Case place);
 
+    public abstract boolean isAccessible(Case place);
+
     private Node getNode(Case position) {
         if (graph.containsKey(position)) {
             return graph.get(position);
@@ -117,17 +119,19 @@ public abstract class SelfDriving {
                 return path;
             }
             for (Case position : carte.getVoisins(origin)) {
-                Node v = getNode(position);
-                if ((!closedList.contains(v)) ||
-                        (openList.contains(v) &&
-                                v.getCost() < u.getCost())) {
-                    v.setCost(u.getCost() + 1);
-                    v.setHeuristic(
-                            v.cost +
-                                    (int) (Math.pow(position.getLigne() - destination.getLigne(), 2) +
-                                            Math.pow(position.getColonne() - destination.getColonne(), 2)));
-                    openList.add(v);
-                    v.setPrevious(u);
+                if (isAccessible(position)) {
+                    Node v = getNode(position);
+                    if ((!closedList.contains(v)) ||
+                            (openList.contains(v) &&
+                                    v.getCost() < u.getCost())) {
+                        v.setCost(u.getCost() + 1);
+                        v.setHeuristic(
+                                v.cost +
+                                        (int) (Math.pow(position.getLigne() - destination.getLigne(), 2) +
+                                                Math.pow(position.getColonne() - destination.getColonne(), 2)));
+                        openList.add(v);
+                        v.setPrevious(u);
+                    }
                 }
             }
             closedList.add(u);
