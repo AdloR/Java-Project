@@ -51,6 +51,10 @@ public abstract class Robot extends SelfDriving {
         return tmpVol;
     }
 
+    public int getReservoir() {
+        return reservoir;
+    }
+
     public void move(Direction dir) {
 
     }
@@ -67,7 +71,7 @@ public abstract class Robot extends SelfDriving {
      */
     public void intervenir(Simulateur sim) throws IllegalStateException {
         long timeEnd = Long.max(this.timeFree, sim.getDateSimulation()) + this.timeIntervention;
-        sim.ajouteEvenement(new InterventionEven(timeEnd, this));
+        sim.ajouteEvenement(new InterventionEven(timeEnd, this, sim));
         this.timeFree = timeEnd;
         this.simu = sim;
     }
@@ -84,7 +88,7 @@ public abstract class Robot extends SelfDriving {
         if (this.timeFree > date) {
             throw new IllegalStateException("The robot is already occupied !");
         }
-        sim.ajouteEvenement(new InterventionEven(date + this.timeIntervention, this));
+        sim.ajouteEvenement(new InterventionEven(date + this.timeIntervention, this, sim));
         this.timeFree = date + this.timeIntervention;
         this.simu = sim;
     }
