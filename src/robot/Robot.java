@@ -176,6 +176,8 @@ public abstract class Robot extends SelfDriving {
         return this.sim.getDateSimulation() >= this.timeFree;
     }
 
+    /** !!! Ajouter déverser eau à la fin !!!
+     */
     public void followPath(Path path, Carte carte) throws UnknownDirectionException {
         for (Direction direction : path.getPath()) {
             try {

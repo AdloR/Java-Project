@@ -20,6 +20,7 @@ public class AdvancedFireFighterChief extends FireFighterChief {
 
     @Override
     public void affectRobot() throws UnknownDirectionException, UnreachableCaseException, NotNeighboringCasesException {
+        Set<Incendie> hashSet = new HashSet<Incendie>();
         for (int j = 0; j < incendiesSize; j++) {
             Incendie incendie = incendies.get(j);
             if (incendie.getNbL() > 0) {
@@ -47,10 +48,9 @@ public class AdvancedFireFighterChief extends FireFighterChief {
                 }
             }
             if (incendie.getNbL() == 0) {
-                incendies.remove(j);
-                j--;
+                hashSet.add(incendie);
             }
-            if (j == incendiesSize - 1 && !incendies.isEmpty()) {
+            if (j == incendiesSize - 1 && hashSet.size() < incendiesSize) {
                 j = 0;
             }
 
