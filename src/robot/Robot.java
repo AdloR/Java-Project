@@ -7,12 +7,14 @@ import pathfinding.SelfDriving;
 import simu.Simulateur;
 import simu.evenements.InterventionEven;
 import simu.evenements.RemplissageEven;
+import simu.evenements.mouvements.MoveDirEven;
 import terrain.Case;
 import terrain.Direction;
 import terrain.Carte;
 
 public abstract class Robot extends SelfDriving {
     protected Case position;
+    /* !! En m/s !! */
     protected int speed;
     protected int reservoirMax;
     protected int reservoir;
@@ -55,8 +57,25 @@ public abstract class Robot extends SelfDriving {
         return reservoir;
     }
 
-    public void move(Direction dir) {
+    // TODO : javadoc
+    public void move(Simulateur sim, Direction dir) {
+        long timeMove = (this.position.getCarte().getTailleCases() / this.getSpeed());
+        long timeEnd = Long.max(this.timeFree, sim.getDateSimulation()) + timeMove;
+        sim.ajouteEvenement(new MoveDirEven(timeEnd, this, sim, dir));
+        this.timeFree = timeEnd;
+        this.simu = sim;
+    }
 
+    // TODO : javadoc
+    public void move(Simulateur sim, Direction dir, long date) throws IllegalStateException {
+        if (this.timeFree > date) {
+            throw new IllegalStateException(date + " : The robot can't start moving, it is already occupied !");
+        }
+        long timeMove = (this.position.getCarte().getTailleCases() / this.getSpeed());
+        long timeEnd = date + timeMove;
+        sim.ajouteEvenement(new MoveDirEven(timeEnd, this, sim, dir));
+        this.timeFree = timeEnd;
+        this.simu = sim;
     }
 
     public abstract boolean isAccessible(Case position);
@@ -86,7 +105,7 @@ public abstract class Robot extends SelfDriving {
      */
     public void intervenir(Simulateur sim, long date) throws IllegalStateException {
         if (this.timeFree > date) {
-            throw new IllegalStateException("The robot is already occupied !");
+            throw new IllegalStateException(date + " : The robot can't interven, it is already occupied !");
         }
         sim.ajouteEvenement(new InterventionEven(date + this.timeIntervention, this, sim));
         this.timeFree = date + this.timeIntervention;
@@ -128,7 +147,7 @@ public abstract class Robot extends SelfDriving {
      */
     public void remplir(Simulateur sim, long date) {
         if (this.timeFree > date) {
-            throw new IllegalStateException("The robot is already occupied !");
+            throw new IllegalStateException(date + " : The robot can't refill, it is already occupied !");
         }
 
         if (!this.findWater())

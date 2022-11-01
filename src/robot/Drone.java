@@ -6,7 +6,7 @@ import terrain.NatureTerrain;
 public class Drone extends Robot {
     public Drone(Case position) {
         this.position = position;
-        this.speed = 100;
+        this.speed = 100 * 1000 / 3600;
         this.reservoirMax = 10000;
         this.reservoir = reservoirMax;
         this.timeRefill = 30 * 60;
