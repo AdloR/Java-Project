@@ -12,8 +12,7 @@ public class DebInterventionEven extends RobotEven {
 
     @Override
     public void execute() throws ForbiddenMoveException {
-        robot.intervenir(getSim());
+        robot.intervenir(getSim(), this.getDate());
     }
-    
-    
+
 }
