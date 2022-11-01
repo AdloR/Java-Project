@@ -35,11 +35,11 @@ public class AdvancedFireFighterChief extends FireFighterChief {
                             minTime = path.getDuration();
                             fastestRobot = curRobot;
                             minPath = path;
-                            continue;
                         }
                         if (path.getDuration() < minTime) {
                             fastestRobot = curRobot;
                             minPath = path;
+                            minTime = path.getDuration();
                         }
                     }
                 }
