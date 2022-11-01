@@ -1,10 +1,10 @@
 package simu.evenements.mouvements;
 
 import simu.Simulateur;
-import simu.evenements.robot_evenements.RobotEven;
+import simu.evenements.robot_evenements.ManRobotEven;
 import terrain.Direction;
 
-public class DebRobotBougeDirEven extends RobotEven {
+public class DebRobotBougeDirEven extends ManRobotEven {
     Direction dir;
 
     public DebRobotBougeDirEven(long date, Simulateur sim, int robotIndex, Direction dir) {
