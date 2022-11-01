@@ -4,12 +4,12 @@ import robot.Robot;
 import simu.Simulateur;
 import simu.evenements.Evenement;
 
-public abstract class RobotEven extends Evenement{
+public abstract class ManRobotEven extends Evenement {
     private Simulateur sim;
     private int robotIndex;
     protected Robot robot;
 
-    public RobotEven(long date, Simulateur sim, int robotIndex) {
+    public ManRobotEven(long date, Simulateur sim, int robotIndex) {
         super(date);
         this.sim = sim;
         this.robotIndex = robotIndex;
@@ -23,5 +23,5 @@ public abstract class RobotEven extends Evenement{
     protected Simulateur getSim() {
         return sim;
     }
-    
+
 }

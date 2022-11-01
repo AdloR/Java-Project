@@ -1,6 +1,5 @@
 package simu.evenements;
 
-import gui.Simulable;
 import robot.Robot;
 import simu.Incendie;
 import simu.Simulateur;
