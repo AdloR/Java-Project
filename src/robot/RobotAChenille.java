@@ -11,7 +11,7 @@ public class RobotAChenille extends Robot {
 
     public RobotAChenille(Case position) {
         this.position = position;
-        this.speed = 60;
+        this.speed = 60 * 1000 / 3600;
         this.reservoirMax = 5000;
         this.reservoir = reservoirMax;
         this.timeRefill = 10 * 60;

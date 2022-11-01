@@ -5,7 +5,7 @@ import simu.Simulateur;
 import simu.evenements.DebInterventionEven;
 import simu.evenements.DebRemplissageEven;
 import simu.evenements.Evenement;
-import simu.evenements.mouvements.RobotBougeDirEven;
+import simu.evenements.mouvements.DebRobotBougeDirEven;
 import terrain.Direction;
 
 class Scenario0 {
@@ -20,10 +20,10 @@ class Scenario0 {
 
         Simulateur sim = new Simulateur(donnees);
 
-        Evenement e1 = new RobotBougeDirEven(1, sim, 0, Direction.NORD);
-        Evenement e2 = new RobotBougeDirEven(2, sim, 0, Direction.NORD);
-        Evenement e3 = new RobotBougeDirEven(3, sim, 0, Direction.NORD);
-        Evenement e4 = new RobotBougeDirEven(4, sim, 0, Direction.NORD);
+        Evenement e1 = new DebRobotBougeDirEven(1, sim, 0, Direction.NORD);
+        Evenement e2 = new DebRobotBougeDirEven(451, sim, 0, Direction.NORD);
+        Evenement e3 = new DebRobotBougeDirEven(901, sim, 0, Direction.NORD);
+        Evenement e4 = new DebRobotBougeDirEven(1351, sim, 0, Direction.NORD);
 
         sim.ajouteEvenement(e1);
         sim.ajouteEvenement(e2);
@@ -45,14 +45,14 @@ class Scenario1 {
 
         Simulateur sim = new Simulateur(donnees);
 
-        sim.ajouteEvenement(new RobotBougeDirEven(1, sim, 1, Direction.NORD));
-        sim.ajouteEvenement(new DebInterventionEven(2, sim, 1)); // Jusque 8
-        sim.ajouteEvenement(new RobotBougeDirEven(8, sim, 1, Direction.OUEST));
-        sim.ajouteEvenement(new RobotBougeDirEven(10, sim, 1, Direction.OUEST));
-        sim.ajouteEvenement(new DebRemplissageEven(11, sim, 1));
-        sim.ajouteEvenement(new RobotBougeDirEven(612, sim, 1, Direction.EST));
-        sim.ajouteEvenement(new RobotBougeDirEven(614, sim, 1, Direction.EST));
-        sim.ajouteEvenement(new DebInterventionEven(615, sim, 1));
+        sim.ajouteEvenement(new DebRobotBougeDirEven(1, sim, 1, Direction.NORD));
+        sim.ajouteEvenement(new DebInterventionEven(453, sim, 1)); // Jusque 8
+        sim.ajouteEvenement(new DebRobotBougeDirEven(459, sim, 1, Direction.OUEST));
+        sim.ajouteEvenement(new DebRobotBougeDirEven(911, sim, 1, Direction.OUEST));
+        sim.ajouteEvenement(new DebRemplissageEven(1362, sim, 1));
+        sim.ajouteEvenement(new DebRobotBougeDirEven(1963, sim, 1, Direction.EST));
+        sim.ajouteEvenement(new DebRobotBougeDirEven(1965, sim, 1, Direction.EST));
+        sim.ajouteEvenement(new DebInterventionEven(1966, sim, 1));
 
         sim.draw();
     }

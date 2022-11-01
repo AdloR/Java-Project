@@ -2,9 +2,9 @@ package simu.evenements;
 
 import exceptions.ForbiddenMoveException;
 import simu.Simulateur;
-import simu.evenements.robot_evenements.RobotEven;
+import simu.evenements.robot_evenements.ManRobotEven;
 
-public class DebInterventionEven extends RobotEven {
+public class DebInterventionEven extends ManRobotEven {
 
     public DebInterventionEven(long date, Simulateur sim, int robotIndex) {
         super(date, sim, robotIndex);
@@ -12,8 +12,7 @@ public class DebInterventionEven extends RobotEven {
 
     @Override
     public void execute() throws ForbiddenMoveException {
-        robot.intervenir(getSim());
+        robot.intervenir(getSim(), this.getDate());
     }
-    
-    
+
 }

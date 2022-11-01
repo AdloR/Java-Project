@@ -9,7 +9,7 @@ import static terrain.NatureTerrain.EAU;
 public class RobotAPattes extends Robot {
     public RobotAPattes(Case position) {
         this.position = position;
-        this.speed = 30;
+        this.speed = 30 * 1000 / 3600;
         this.volumeIntervention = 10;
         this.timeIntervention = 1;
     }

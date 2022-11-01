@@ -1,6 +1,5 @@
 package simu.evenements;
 
-import gui.Simulable;
 import robot.Robot;
 import simu.Incendie;
 import simu.Simulateur;
@@ -23,11 +22,13 @@ public class InterventionEven extends Evenement {
         incendie.setNbL(incendie.getNbL() - used_water);
 
         /* Redirect toward next task */
-        // if (robot.getReservoir() <= 0)
-        // robot.remplir(simu);
-        // TODO: redirection
-        // if (robot.getPosition().getIncendie().getNbL() > 0) {
-        //     robot.intervenir(simu);
+        if (robot.getReservoir() <= 0) {
+        } else if (robot.getPosition().getIncendie().getNbL() > 0) {
+            try {
+                robot.intervenir(simu, simu.getDateSimulation() + 1);
+            } catch (IllegalStateException e) {
+
+            }
         }
     }
 }
