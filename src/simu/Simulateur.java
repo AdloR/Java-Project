@@ -22,8 +22,9 @@ import robot.Robot;
 import robot.RobotAChenille;
 import robot.RobotAPattes;
 import robot.RobotARoues;
+import simu.evenements.AutoEven;
 import simu.evenements.Evenement;
-import simu.evenements.robot_evenements.RobotEven;
+import simu.evenements.robot_evenements.ManRobotEven;
 import terrain.Carte;
 import terrain.Case;
 import terrain.Direction;
@@ -83,7 +84,8 @@ public class Simulateur implements Simulable {
             } catch (ForbiddenMoveException ex) {
                 ex.printStackTrace();
             }
-            history.add(e);
+            if (!(e instanceof AutoEven))
+                history.add(e);
         }
         draw();
     }
@@ -98,8 +100,8 @@ public class Simulateur implements Simulable {
         }
         evenements.addAll(history);
         for (Evenement e : evenements) {
-            if (e instanceof RobotEven) {
-                ((RobotEven) e).actualiserRobots();
+            if (e instanceof ManRobotEven) {
+                ((ManRobotEven) e).actualiserRobots();
             }
         }
 
