@@ -12,7 +12,6 @@ import java.util.PriorityQueue;
 
 import javax.imageio.ImageIO;
 
-import exceptions.ForbiddenMoveException;
 import gui.GUISimulator;
 import gui.ImageElement;
 import gui.Simulable;
@@ -22,9 +21,8 @@ import robot.Robot;
 import robot.RobotAChenille;
 import robot.RobotAPattes;
 import robot.RobotARoues;
-import simu.evenements.AutoEven;
 import simu.evenements.Evenement;
-import simu.evenements.robot_evenements.ManRobotEven;
+import simu.evenements.robot_evenements.RobotEven;
 import terrain.Carte;
 import terrain.Case;
 import terrain.Direction;
@@ -79,12 +77,8 @@ public class Simulateur implements Simulable {
         System.out.println(this.dateSimulation);
         while (evenements.peek() != null && evenements.peek().getDate() == dateSimulation) {
             Evenement e = evenements.poll();
-            try {
-                e.execute();
-            } catch (ForbiddenMoveException ex) {
-                ex.printStackTrace();
-            }
-            if (!(e instanceof AutoEven))
+            e.execute();
+            if (!e.isAuto())
                 history.add(e);
         }
         draw();
@@ -100,8 +94,8 @@ public class Simulateur implements Simulable {
         }
         evenements.addAll(history);
         for (Evenement e : evenements) {
-            if (e instanceof ManRobotEven) {
-                ((ManRobotEven) e).actualiserRobots();
+            if (e instanceof RobotEven) {
+                ((RobotEven) e).actualiserRobots();
             }
         }
 

@@ -1,6 +1,7 @@
-package simu.evenements;
+package simu.evenements.robot_evenements;
 
 import robot.Robot;
+import simu.evenements.Evenement;
 
 public class RemplissageEven extends Evenement {
     Robot robot;

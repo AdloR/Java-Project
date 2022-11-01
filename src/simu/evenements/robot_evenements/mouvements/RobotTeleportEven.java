@@ -1,4 +1,4 @@
-package simu.evenements.mouvements;
+package simu.evenements.robot_evenements.mouvements;
 
 import exceptions.ForbiddenMoveException;
 import robot.Robot;
@@ -23,8 +23,12 @@ public class RobotTeleportEven extends Evenement {
     }
 
     @Override
-    public void execute() throws ForbiddenMoveException {
-        robot.setPosition(dest);
+    public void execute() {
+        try {
+            robot.setPosition(dest);
+        } catch (ForbiddenMoveException e) {
+            e.printStackTrace();
+        }
     }
 
 }

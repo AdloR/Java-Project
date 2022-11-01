@@ -5,12 +5,12 @@ import exceptions.UnknownDirectionException;
 import pathfinding.Path;
 import pathfinding.SelfDriving;
 import simu.Simulateur;
-import simu.evenements.InterventionEven;
-import simu.evenements.RemplissageEven;
-import simu.evenements.mouvements.MoveDirEven;
+import simu.evenements.robot_evenements.InterventionEven;
+import simu.evenements.robot_evenements.RemplissageEven;
+import simu.evenements.robot_evenements.mouvements.RobotBougeEven;
+import terrain.Carte;
 import terrain.Case;
 import terrain.Direction;
-import terrain.Carte;
 
 public abstract class Robot extends SelfDriving {
     protected Case position;
@@ -23,7 +23,7 @@ public abstract class Robot extends SelfDriving {
     protected int timeIntervention;
 
     private long timeFree = 0;
-    private Simulateur simu;
+    private Simulateur sim;
     // private Action currentAction = Action.ATTENTE;
 
     public Case getPosition() {
@@ -58,12 +58,15 @@ public abstract class Robot extends SelfDriving {
     }
 
     // TODO : javadoc
-    public void move(Simulateur sim, Direction dir) {
+    public void startMove(Simulateur sim, Direction dir) {
+        if (sim.getDateSimulation() < timeFree)
+            throw new IllegalStateException("The robot is already occupied !");
         long timeMove = (this.position.getCarte().getTailleCases() / this.getSpeed());
         long timeEnd = Long.max(this.timeFree, sim.getDateSimulation()) + timeMove;
-        sim.ajouteEvenement(new MoveDirEven(timeEnd, this, sim, dir));
+        System.out.println("FIN A " + timeEnd);
+        sim.ajouteEvenement(new RobotBougeEven(timeEnd, sim, this, dir));
         this.timeFree = timeEnd;
-        this.simu = sim;
+        this.sim = sim;
     }
 
     // TODO : javadoc
@@ -73,9 +76,9 @@ public abstract class Robot extends SelfDriving {
         }
         long timeMove = (this.position.getCarte().getTailleCases() / this.getSpeed());
         long timeEnd = date + timeMove;
-        sim.ajouteEvenement(new MoveDirEven(timeEnd, this, sim, dir));
+        sim.ajouteEvenement(new RobotBougeEven(timeEnd, sim, this, dir));
         this.timeFree = timeEnd;
-        this.simu = sim;
+        this.sim = sim;
     }
 
     public abstract boolean isAccessible(Case position);
@@ -88,11 +91,11 @@ public abstract class Robot extends SelfDriving {
      * 
      *                               TODO : Javadoc
      */
-    public void intervenir(Simulateur sim) throws IllegalStateException {
+    public void startIntervention(Simulateur sim) {
         long timeEnd = Long.max(this.timeFree, sim.getDateSimulation()) + this.timeIntervention;
-        sim.ajouteEvenement(new InterventionEven(timeEnd, this, sim));
+        sim.ajouteEvenement(new InterventionEven(timeEnd, sim, this));
         this.timeFree = timeEnd;
-        this.simu = sim;
+        this.sim = sim;
     }
 
     /**
@@ -107,9 +110,9 @@ public abstract class Robot extends SelfDriving {
         if (this.timeFree > date) {
             throw new IllegalStateException(date + " : The robot can't interven, it is already occupied !");
         }
-        sim.ajouteEvenement(new InterventionEven(date + this.timeIntervention, this, sim));
+        sim.ajouteEvenement(new InterventionEven(date + this.timeIntervention, sim, this));
         this.timeFree = date + this.timeIntervention;
-        this.simu = sim;
+        this.sim = sim;
     }
 
     /**
@@ -135,7 +138,7 @@ public abstract class Robot extends SelfDriving {
         long timeEnd = Long.max(this.timeFree, sim.getDateSimulation()) + this.timeRefill;
         sim.ajouteEvenement(new RemplissageEven(timeEnd, this));
         this.timeFree = timeEnd;
-        this.simu = sim;
+        this.sim = sim;
     }
 
     /**
@@ -156,7 +159,7 @@ public abstract class Robot extends SelfDriving {
         long timeEnd = date + this.timeRefill;
         sim.ajouteEvenement(new RemplissageEven(timeEnd, this));
         this.timeFree = timeEnd;
-        this.simu = sim;
+        this.sim = sim;
     }
 
     public void remplirReservoir() {
@@ -170,7 +173,7 @@ public abstract class Robot extends SelfDriving {
      * @return True if the robot is not occupied.
      */
     public boolean isWaiting() {
-        return this.simu.getDateSimulation() >= this.timeFree;
+        return this.sim.getDateSimulation() >= this.timeFree;
     }
 
     public void followPath(Path path, Carte carte) throws UnknownDirectionException {
