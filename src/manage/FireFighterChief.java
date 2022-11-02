@@ -1,7 +1,6 @@
 package manage;
 
 import exceptions.NotNeighboringCasesException;
-import exceptions.UnknownDirectionException;
 import exceptions.UnreachableCaseException;
 import robot.Robot;
 import simu.Incendie;
@@ -22,6 +21,6 @@ public abstract class FireFighterChief {
         this.robotsSize = robots.size();
     }
 
-    public abstract void affectRobot() throws UnknownDirectionException, UnreachableCaseException, NotNeighboringCasesException;
+    public abstract void affectRobot() throws UnreachableCaseException, NotNeighboringCasesException;
 
 }

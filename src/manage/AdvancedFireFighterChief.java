@@ -1,14 +1,15 @@
 package manage;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 import exceptions.NotNeighboringCasesException;
-import exceptions.UnknownDirectionException;
 import exceptions.UnreachableCaseException;
 import pathfinding.Path;
 import robot.Robot;
 import simu.Incendie;
 import terrain.Carte;
-
-import java.util.*;
 
 public class AdvancedFireFighterChief extends FireFighterChief {
     private final int incendiesSize;
@@ -19,7 +20,7 @@ public class AdvancedFireFighterChief extends FireFighterChief {
     }
 
     @Override
-    public void affectRobot() throws UnknownDirectionException, UnreachableCaseException, NotNeighboringCasesException {
+    public void affectRobot() throws UnreachableCaseException, NotNeighboringCasesException {
         Set<Incendie> hashSet = new HashSet<Incendie>();
         for (int j = 0; j < incendiesSize; j++) {
             Incendie incendie = incendies.get(j);

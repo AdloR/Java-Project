@@ -1,7 +1,6 @@
 package robot;
 
 import exceptions.ForbiddenMoveException;
-import exceptions.UnknownDirectionException;
 import pathfinding.Path;
 import pathfinding.SelfDriving;
 import simu.Simulateur;
@@ -176,28 +175,12 @@ public abstract class Robot extends SelfDriving {
         return this.sim.getDateSimulation() >= this.timeFree;
     }
 
-    /** !!! Ajouter déverser eau à la fin !!!
+    /**
+     * !!! Ajouter déverser eau à la fin !!!
      */
     public long followPath(Simulateur sim, Path path, Carte carte) {
         for (Direction direction : path.getPath()) {
-            try {
-                switch (direction) {
-                    case NORD:
-                        this.setPosition(carte.getVoisin(this.getPosition(), Direction.NORD));
-                        break;
-                    case SUD:
-                        this.setPosition(carte.getVoisin(this.getPosition(), Direction.SUD));
-                        break;
-                    case EST:
-                        this.setPosition(carte.getVoisin(this.getPosition(), Direction.EST));
-                        break;
-                    case OUEST:
-                        this.setPosition(carte.getVoisin(this.getPosition(), Direction.OUEST));
-                        break;
-                    default:
-                }
-            } catch (ForbiddenMoveException e) {
-            }
+            this.startMove(sim, direction);
         }
         return timeFree;
     }

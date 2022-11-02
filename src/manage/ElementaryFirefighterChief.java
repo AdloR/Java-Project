@@ -1,7 +1,6 @@
 package manage;
 
 import exceptions.NotNeighboringCasesException;
-import exceptions.UnknownDirectionException;
 import exceptions.UnreachableCaseException;
 import pathfinding.Path;
 import robot.Robot;
@@ -15,7 +14,7 @@ public class ElementaryFirefighterChief extends FireFighterChief {
         super(robots, incendies, carte);
     }
 
-    public void affectRobot() throws UnknownDirectionException, UnreachableCaseException, NotNeighboringCasesException {
+    public void affectRobot() throws UnreachableCaseException, NotNeighboringCasesException {
         for (Incendie incendie : incendies) {
             while (incendie.getNbL() > 0) {
                 for (int i = 0; i < robotsSize; i++) {
