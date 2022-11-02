@@ -21,7 +21,7 @@ public class AdvancedFireFighterChief extends FireFighterChief {
     }
 
     @Override
-    public void affectRobot(Simulateur sim) throws UnreachableCaseException, NotNeighboringCasesException {
+    public void affectRobot(Simulateur sim){
         Set<Incendie> hashSet = new HashSet<Incendie>();
         for (Incendie incendie : incendies) {
             if (incendie.getNbL() > 0) {
