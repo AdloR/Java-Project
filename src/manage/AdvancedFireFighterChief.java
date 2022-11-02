@@ -23,8 +23,7 @@ public class AdvancedFireFighterChief extends FireFighterChief {
     @Override
     public void affectRobot() throws UnreachableCaseException, NotNeighboringCasesException {
         Set<Incendie> hashSet = new HashSet<Incendie>();
-        for (int j = 0; j < incendiesSize; j++) {
-            Incendie incendie = incendies.get(j);
+        for (Incendie incendie : incendies) {
             if (incendie.getNbL() > 0) {
                 Robot fastestRobot = null;
                 Path minPath = null;
@@ -41,14 +40,9 @@ public class AdvancedFireFighterChief extends FireFighterChief {
                     }
                 }
                 if (fastestRobot != null) {
-                    fastestRobot.followPath(minPath, carte);
+                    long date = fastestRobot.followPath(sim, minPath, carte);
+                    fastestRobot.intervenir(sim, date);
                 }
-            }
-            if (incendie.getNbL() == 0) {
-                hashSet.add(incendie);
-            }
-            if (j == incendiesSize - 1 && hashSet.size() < incendiesSize) {
-                j = 0;
             }
 
         }
