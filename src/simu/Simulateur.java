@@ -74,7 +74,8 @@ public class Simulateur implements Simulable {
     @Override
     public void next() {
         incrementeDate();
-        System.out.println(this.dateSimulation);
+        if (dateSimulation % 100 == 0)
+            System.out.println(this.dateSimulation);
         while (evenements.peek() != null && evenements.peek().getDate() == dateSimulation) {
             Evenement e = evenements.poll();
             e.execute();
