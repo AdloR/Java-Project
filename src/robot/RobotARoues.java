@@ -30,18 +30,18 @@ public class RobotARoues extends Robot {
 
     @Override
     public void setPosition(Case position) throws ForbiddenMoveException {
-        if (position.getType() == EAU || position.getType() == FORET || position.getType() == ROCHE) {
-            throw new ForbiddenMoveException("Trying to reach inappropriate case type");
-        }
-        this.position = position;
-    }
-
-    @Override
-    public boolean isAccessible(Case position) {
         try {
             super.setPosition(position);
         } catch (ForbiddenMoveException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public boolean isAccessible(Case position) {
+        if (position.getType() == HABITAT || position.getType() == TERRAIN_LIBRE) {
+            return true;
+        }
+        return false;
     }
 }
