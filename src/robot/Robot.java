@@ -182,6 +182,7 @@ public abstract class Robot extends SelfDriving {
         for (Direction direction : path.getPath()) {
             this.startMove(sim, direction);
         }
+        this.sim = sim;
         return timeFree;
     }
 }
