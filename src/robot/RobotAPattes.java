@@ -43,9 +43,10 @@ public class RobotAPattes extends Robot {
 
     @Override
     public void setPosition(Case position) throws ForbiddenMoveException {
-        if (position.getType() == EAU) {
-            throw new ForbiddenMoveException("Trying to reach inappropriate case type");
+        try {
+            super.setPosition(position);
+        } catch (ForbiddenMoveException e) {
+            e.printStackTrace();
         }
-        super.setPosition(position);
     }
 }
