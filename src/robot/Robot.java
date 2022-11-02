@@ -178,7 +178,7 @@ public abstract class Robot extends SelfDriving {
 
     /** !!! Ajouter déverser eau à la fin !!!
      */
-    public int followPath(Simulateur sim, Path path, Carte carte) {
+    public long followPath(Simulateur sim, Path path, Carte carte) {
         for (Direction direction : path.getPath()) {
             try {
                 switch (direction) {
