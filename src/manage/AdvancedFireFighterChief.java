@@ -6,6 +6,7 @@ import exceptions.UnreachableCaseException;
 import pathfinding.Path;
 import robot.Robot;
 import simu.Incendie;
+import simu.Simulateur;
 import terrain.Carte;
 
 import java.util.*;
@@ -19,7 +20,7 @@ public class AdvancedFireFighterChief extends FireFighterChief {
     }
 
     @Override
-    public void affectRobot() throws UnknownDirectionException, UnreachableCaseException, NotNeighboringCasesException {
+    public void affectRobot(Simulateur sim) throws UnknownDirectionException, UnreachableCaseException, NotNeighboringCasesException {
         Set<Incendie> hashSet = new HashSet<Incendie>();
         for (int j = 0; j < incendiesSize; j++) {
             Incendie incendie = incendies.get(j);
@@ -31,15 +32,10 @@ public class AdvancedFireFighterChief extends FireFighterChief {
                     Robot curRobot = robots.get(i);
                     if (curRobot.isWaiting() && curRobot.isAccessible(incendie.getFireCase())) {
                         Path path = curRobot.aStar(carte, curRobot.getPosition(), incendie.getFireCase());
-                        if (fastestRobot == null) {
+                        if (fastestRobot == null || path.getDuration() < minTime) {
                             minTime = path.getDuration();
                             fastestRobot = curRobot;
                             minPath = path;
-                        }
-                        if (path.getDuration() < minTime) {
-                            fastestRobot = curRobot;
-                            minPath = path;
-                            minTime = path.getDuration();
                         }
                     }
                 }
