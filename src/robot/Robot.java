@@ -178,7 +178,7 @@ public abstract class Robot extends SelfDriving {
 
     /** !!! Ajouter déverser eau à la fin !!!
      */
-    public void followPath(Path path, Carte carte) throws UnknownDirectionException {
+    public int followPath(Simulateur sim, Path path, Carte carte) {
         for (Direction direction : path.getPath()) {
             try {
                 switch (direction) {
@@ -195,10 +195,10 @@ public abstract class Robot extends SelfDriving {
                         this.setPosition(carte.getVoisin(this.getPosition(), Direction.OUEST));
                         break;
                     default:
-                        throw new UnknownDirectionException("Unknown direction");
                 }
             } catch (ForbiddenMoveException e) {
             }
         }
+        return timeFree;
     }
 }
