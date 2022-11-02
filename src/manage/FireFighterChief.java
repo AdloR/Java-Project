@@ -4,6 +4,7 @@ import exceptions.NotNeighboringCasesException;
 import exceptions.UnreachableCaseException;
 import robot.Robot;
 import simu.Incendie;
+import simu.Simulateur;
 import terrain.Carte;
 
 import java.util.ArrayList;

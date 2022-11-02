@@ -5,6 +5,7 @@ import exceptions.UnreachableCaseException;
 import pathfinding.Path;
 import robot.Robot;
 import simu.Incendie;
+import simu.Simulateur;
 import terrain.Carte;
 
 import java.util.ArrayList;
@@ -20,7 +21,8 @@ public class ElementaryFirefighterChief extends FireFighterChief {
                 for (int i = 0; i < robotsSize; i++) {
                     if (robots.get(i).isWaiting() && robots.get(i).isAccessible(incendie.getFireCase())) {
                         Path path = robots.get(i).aStar(carte, robots.get(i).getPosition(), incendie.getFireCase());
-                        robots.get(i).followPath(path, carte);
+                        long date = robots.get(i).followPath(sim, path, carte);
+                        robots.get(i).intervenir(sim, date);
                         break;
                     }
                     if (i == robotsSize - 1) {

@@ -9,6 +9,7 @@ import exceptions.UnreachableCaseException;
 import pathfinding.Path;
 import robot.Robot;
 import simu.Incendie;
+import simu.Simulateur;
 import terrain.Carte;
 
 public class AdvancedFireFighterChief extends FireFighterChief {
@@ -32,15 +33,10 @@ public class AdvancedFireFighterChief extends FireFighterChief {
                     Robot curRobot = robots.get(i);
                     if (curRobot.isWaiting() && curRobot.isAccessible(incendie.getFireCase())) {
                         Path path = curRobot.aStar(carte, curRobot.getPosition(), incendie.getFireCase());
-                        if (fastestRobot == null) {
+                        if (fastestRobot == null || path.getDuration() < minTime) {
                             minTime = path.getDuration();
                             fastestRobot = curRobot;
                             minPath = path;
-                        }
-                        if (path.getDuration() < minTime) {
-                            fastestRobot = curRobot;
-                            minPath = path;
-                            minTime = path.getDuration();
                         }
                     }
                 }
