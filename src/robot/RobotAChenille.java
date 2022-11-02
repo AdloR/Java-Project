@@ -41,12 +41,11 @@ public class RobotAChenille extends Robot {
     }
 
     @Override
-    public void setPosition(Case position) {
-        try {
-            super.setPosition(position);
-        } catch (ForbiddenMoveException e) {
-            e.printStackTrace();
+    public void setPosition(Case position) throws ForbiddenMoveException {
+        if (position.getType() == NatureTerrain.EAU || position.getType() == ROCHE) {
+            throw new ForbiddenMoveException("Trying to reach inappropriate case type");
         }
+        super.setPosition(position);
     }
 
     @Override
