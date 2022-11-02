@@ -22,6 +22,6 @@ public abstract class FireFighterChief {
         this.robotsSize = robots.size();
     }
 
-    public abstract void affectRobot() throws UnreachableCaseException, NotNeighboringCasesException;
+    public abstract void affectRobot(Simulateur sim) throws UnreachableCaseException, NotNeighboringCasesException;
 
 }

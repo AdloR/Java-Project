@@ -15,7 +15,7 @@ public class ElementaryFirefighterChief extends FireFighterChief {
         super(robots, incendies, carte);
     }
 
-    public void affectRobot() throws UnreachableCaseException, NotNeighboringCasesException {
+    public void affectRobot(Simulateur sim) throws UnreachableCaseException, NotNeighboringCasesException {
         for (Incendie incendie : incendies) {
             while (incendie.getNbL() > 0) {
                 for (int i = 0; i < robotsSize; i++) {
