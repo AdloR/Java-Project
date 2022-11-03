@@ -1,7 +1,7 @@
 package manage;
 
-import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import exceptions.NotNeighboringCasesException;
@@ -15,14 +15,13 @@ import terrain.Carte;
 public class AdvancedFireFighterChief extends FireFighterChief {
     private final int incendiesSize;
 
-    public AdvancedFireFighterChief(ArrayList<Robot> robots, ArrayList<Incendie> incendies, Carte carte) {
+    public AdvancedFireFighterChief(List<Robot> robots, List<Incendie> incendies, Carte carte) {
         super(robots, incendies, carte);
         this.incendiesSize = incendies.size();
     }
 
     @Override
     public void affectRobot(Simulateur sim) throws UnreachableCaseException, NotNeighboringCasesException {
-        Set<Incendie> hashSet = new HashSet<Incendie>();
         for (Incendie incendie : incendies) {
             if (incendie.getNbL() > 0) {
                 Robot fastestRobot = null;

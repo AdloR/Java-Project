@@ -1,5 +1,7 @@
 package manage;
 
+import java.util.List;
+
 import exceptions.NotNeighboringCasesException;
 import exceptions.UnreachableCaseException;
 import pathfinding.Path;
@@ -8,10 +10,8 @@ import simu.Incendie;
 import simu.Simulateur;
 import terrain.Carte;
 
-import java.util.ArrayList;
-
 public class ElementaryFirefighterChief extends FireFighterChief {
-    public ElementaryFirefighterChief(ArrayList<Robot> robots, ArrayList<Incendie> incendies, Carte carte) {
+    public ElementaryFirefighterChief(List<Robot> robots, List<Incendie> incendies, Carte carte) {
         super(robots, incendies, carte);
     }
 
