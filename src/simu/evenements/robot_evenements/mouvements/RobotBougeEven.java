@@ -16,11 +16,13 @@ public class RobotBougeEven extends RobotEven {
     public RobotBougeEven(long date, Simulateur sim, int robotIndex, Direction dir) {
         super(date, sim, robotIndex);
         this.dir = dir;
+        this.priority = true;
     }
 
     public RobotBougeEven(long date, Simulateur sim, Robot robot, Direction dir) {
         super(date, sim, robot);
         this.dir = dir;
+        this.priority = true;
     }
 
     @Override

@@ -20,6 +20,7 @@ public class RobotTeleportEven extends Evenement {
         this.robotIndex = robotIndex;
         this.sim = sim;
         this.robot = sim.getDonnees().getRobots().get(robotIndex);
+        this.priority = true;
     }
 
     @Override

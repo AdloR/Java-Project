@@ -22,6 +22,7 @@ public abstract class Robot extends SelfDriving {
     protected int timeIntervention;
 
     private long timeFree = 0;
+    private String trace = "";
     // private Action currentAction = Action.ATTENTE;
 
     public Case getPosition() {
@@ -65,6 +66,7 @@ public abstract class Robot extends SelfDriving {
         System.out.println("FIN A " + timeEnd);
         sim.ajouteEvenement(new RobotBougeEven(timeEnd, sim, this, dir));
         this.timeFree = timeEnd;
+        trace += "Move until " + timeFree + "; ";
     }
 
     /**
@@ -83,6 +85,7 @@ public abstract class Robot extends SelfDriving {
         System.out.println("FIN A " + timeEnd);
         sim.ajouteEvenement(new RobotBougeEven(timeEnd, sim, this, dir));
         this.timeFree = timeEnd;
+        trace += "Move until " + timeFree + "; ";
     }
 
     public abstract boolean isAccessible(Case position);
@@ -98,6 +101,7 @@ public abstract class Robot extends SelfDriving {
         long timeEnd = Long.max(this.timeFree, sim.getDateSimulation()) + this.timeIntervention;
         sim.ajouteEvenement(new InterventionEven(timeEnd, sim, this));
         this.timeFree = timeEnd;
+        trace += "Intervene (from startIntervention) until " + timeFree + "; ";
     }
 
     /**
@@ -114,6 +118,7 @@ public abstract class Robot extends SelfDriving {
         }
         sim.ajouteEvenement(new InterventionEven(date + this.timeIntervention, sim, this));
         this.timeFree = date + this.timeIntervention;
+        trace += "Intervene (from intervenir) until " + timeFree + "; ";
     }
 
     /**
@@ -138,6 +143,7 @@ public abstract class Robot extends SelfDriving {
         long timeEnd = Long.max(this.timeFree, sim.getDateSimulation()) + this.timeRefill;
         sim.ajouteEvenement(new RemplissageEven(timeEnd, this));
         this.timeFree = timeEnd;
+        trace += "Refill until " + timeFree + "; ";
     }
 
     /**
@@ -160,6 +166,7 @@ public abstract class Robot extends SelfDriving {
         long timeEnd = date + this.timeRefill;
         sim.ajouteEvenement(new RemplissageEven(timeEnd, this));
         this.timeFree = timeEnd;
+        trace += "Refill until " + timeFree + "; ";
     }
 
     public void remplirReservoir() {

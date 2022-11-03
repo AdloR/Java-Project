@@ -9,6 +9,7 @@ public class RemplissageEven extends Evenement {
     public RemplissageEven(long date, Robot robot) {
         super(date);
         this.robot = robot;
+        this.priority = true;
     }
 
     @Override

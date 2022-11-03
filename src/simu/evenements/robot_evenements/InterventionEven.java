@@ -8,6 +8,7 @@ public class InterventionEven extends RobotEven {
 
     public InterventionEven(long date, Simulateur sim, Robot robot) {
         super(date, sim, robot);
+        this.priority = true;
     }
 
     @Override
@@ -17,7 +18,13 @@ public class InterventionEven extends RobotEven {
         incendie.setNbL(incendie.getNbL() - used_water);
 
         if (incendie.getNbL() > 0 && robot.getReservoir() > 0) {
-            getSim().ajouteEvenement(new DebInterventionEven(getSim().getDateSimulation() + 1, getSim(), robot));
+            try {
+                robot.intervenir(getSim(), this.getDate());
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+                System.out.println(robot + ", classe : " + robot.getClass().getTypeName() + "@ ("
+                        + robot.getPosition().getColonne() + ", " + robot.getPosition().getLigne() + ")");
+            }
         }
 
         /* Redirect toward next task */
