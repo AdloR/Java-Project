@@ -2,7 +2,6 @@ package manage;
 
 import java.util.List;
 
-import exceptions.NotNeighboringCasesException;
 import exceptions.UnreachableCaseException;
 import pathfinding.Path;
 import robot.Robot;
@@ -17,18 +16,18 @@ public class ElementaryFirefighterChief extends FireFighterChief {
 
     public void affectRobot(Simulateur sim) {
         for (Incendie incendie : incendies) {
-            while (incendie.getNbL() > 0) {
-                for (int i = 0; i < robotsSize; i++) {
-                    if (robots.get(i).isWaiting() && robots.get(i).isAccessible(incendie.getFireCase())) {
+            if (incendie.getNbL() > 0) {
+                for (Robot robot : robots) {
+                    if (robot.isWaiting(sim) && robot.isAccessible(incendie.getFireCase())) {
                         try {
-                            Path path = robots.get(i).aStar(carte, robots.get(i).getPosition(), incendie.getFireCase());
-                            long date = robots.get(i).followPath(sim, path, carte);
-                            robots.get(i).intervenir(sim, date);
+                            Path path = robot.aStar(carte, robot.getPosition(), incendie.getFireCase());
+                            robot.followPath(sim, path, carte);
+                            robot.startIntervention(sim);
+                        } catch (UnreachableCaseException e) {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
-                    break;
                 }
             }
         }

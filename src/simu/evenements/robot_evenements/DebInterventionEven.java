@@ -9,7 +9,6 @@ public class DebInterventionEven extends RobotEven {
         super(date, sim, robotIndex);
     }
 
-
     /**
      * Creates an event that asks to start an intervention.
      * 
@@ -25,7 +24,13 @@ public class DebInterventionEven extends RobotEven {
 
     @Override
     public void execute() {
-        robot.intervenir(getSim(), this.getDate());
+        try {
+            robot.intervenir(getSim(), this.getDate());
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+            System.out.println(robot + ", classe : " + robot.getClass().getTypeName() + "@ ("
+                    + robot.getPosition().getColonne() + ", " + robot.getPosition().getLigne() + ")");
+        }
     }
 
 }

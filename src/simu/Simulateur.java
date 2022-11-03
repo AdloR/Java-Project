@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 
@@ -149,8 +150,10 @@ public class Simulateur implements Simulable {
         BufferedImage background = new BufferedImage(width, height, BufferedImage.OPAQUE);
         Graphics g = background.getGraphics();
 
-        g.setColor(Color.decode("#1a4fc1"));
+        g.setColor(Color.RED);
         g.fillRect(0, 0, width, height);
+
+        Random r = new Random();
 
         for (Case c : carte.getCases()) {
             int x = c.getColonne() * LARGEUR_TILES;
@@ -158,142 +161,19 @@ public class Simulateur implements Simulable {
 
             switch (c.getType()) {
                 case EAU:
-                    // Doing borders by checking north / south and then west/east for corners
-                    // If there is no border north, then check if there is a border west for upper
-                    // left part of image
-                    if (carte.voisinExiste(c, Direction.NORD)
-                            && carte.getVoisin(c, Direction.NORD).getType() != NatureTerrain.EAU) { // There is a border
-                        // north
-                        if (carte.voisinExiste(c, Direction.OUEST)
-                                && carte.getVoisin(c, Direction.OUEST).getType() != NatureTerrain.EAU) // And a border
-                        // west -> corner
-                        {
-                            g.drawImage(tiles.get("eau-no"), x, y, LARGEUR_TILES / 2, LARGEUR_TILES / 2, null);
-                        } else // But no border west -> no corner
-                        {
-                            g.drawImage(tiles.get("eau-nord"), x, y, LARGEUR_TILES / 2, LARGEUR_TILES / 2, null);
-                        }
-
-                        if (carte.voisinExiste(c, Direction.EST)
-                                && carte.getVoisin(c, Direction.EST).getType() != NatureTerrain.EAU) {
-                            g.drawImage(tiles.get("eau-ne"), x + LARGEUR_TILES / 2, y, LARGEUR_TILES / 2,
-                                    LARGEUR_TILES / 2, null);
-                        } else {
-                            g.drawImage(tiles.get("eau-nord"), x + LARGEUR_TILES / 2, y, LARGEUR_TILES / 2,
-                                    LARGEUR_TILES / 2, null);
-                        }
-                    } else {
-                        if (carte.voisinExiste(c, Direction.OUEST)
-                                && carte.getVoisin(c, Direction.OUEST).getType() != NatureTerrain.EAU) {
-                            g.drawImage(tiles.get("eau-ouest"), x, y, LARGEUR_TILES / 2, LARGEUR_TILES / 2, null);
-                        }
-
-                        if (carte.voisinExiste(c, Direction.EST)
-                                && carte.getVoisin(c, Direction.EST).getType() != NatureTerrain.EAU) {
-                            g.drawImage(tiles.get("eau-est"), x + LARGEUR_TILES / 2, y, LARGEUR_TILES / 2,
-                                    LARGEUR_TILES / 2, null);
-                        }
-                    }
-
-                    // Same, but only for lower part of image
-                    if (carte.voisinExiste(c, Direction.SUD)
-                            && carte.getVoisin(c, Direction.SUD).getType() != NatureTerrain.EAU) {
-                        if (carte.voisinExiste(c, Direction.OUEST)
-                                && carte.getVoisin(c, Direction.OUEST).getType() != NatureTerrain.EAU) {
-                            g.drawImage(tiles.get("eau-so"), x, y + LARGEUR_TILES / 2,
-                                    LARGEUR_TILES / 2,
-                                    LARGEUR_TILES / 2, null);
-                        } else {
-                            g.drawImage(tiles.get("eau-sud"), x, y + LARGEUR_TILES / 2,
-                                    LARGEUR_TILES / 2,
-                                    LARGEUR_TILES / 2, null);
-                        }
-
-                        if (carte.voisinExiste(c, Direction.EST)
-                                && carte.getVoisin(c, Direction.EST).getType() != NatureTerrain.EAU) {
-                            g.drawImage(tiles.get("eau-se"), x + LARGEUR_TILES / 2, y + LARGEUR_TILES / 2,
-                                    LARGEUR_TILES / 2,
-                                    LARGEUR_TILES / 2, null);
-                        } else {
-                            g.drawImage(tiles.get("eau-sud"), x + LARGEUR_TILES / 2, y + LARGEUR_TILES / 2,
-                                    LARGEUR_TILES / 2,
-                                    LARGEUR_TILES / 2, null);
-                        }
-                    } else {
-                        if (carte.voisinExiste(c, Direction.OUEST)
-                                && carte.getVoisin(c, Direction.OUEST).getType() != NatureTerrain.EAU) {
-                            g.drawImage(tiles.get("eau-ouest"), x, y + LARGEUR_TILES / 2,
-                                    LARGEUR_TILES / 2,
-                                    LARGEUR_TILES / 2, null);
-                        }
-
-                        if (carte.voisinExiste(c, Direction.EST)
-                                && carte.getVoisin(c, Direction.EST).getType() != NatureTerrain.EAU) {
-                            g.drawImage(tiles.get("eau-est"), x + LARGEUR_TILES / 2, y + LARGEUR_TILES / 2,
-                                    LARGEUR_TILES / 2,
-                                    LARGEUR_TILES / 2, null);
-                        }
-                    }
-
-                    // Check if we have to complete upper left then upper right
-                    // We do so when our direct neighbors are water but not the diagonal one
-                    if (carte.voisinExiste(c, Direction.OUEST)) {
-                        Case o = carte.getVoisin(c, Direction.OUEST);
-                        if (o.getType() == NatureTerrain.EAU) {
-                            if (carte.voisinExiste(c, Direction.NORD)
-                                    && carte.getVoisin(c, Direction.NORD).getType() == NatureTerrain.EAU) {
-                                Case no = carte.getVoisin(o, Direction.NORD);
-                                if (no.getType() != NatureTerrain.EAU) {
-                                    g.drawImage(tiles.get("eau-not-no"), x, y,
-                                            LARGEUR_TILES / 2,
-                                            LARGEUR_TILES / 2, null);
-                                }
-                            }
-                            if (carte.voisinExiste(c, Direction.SUD)
-                                    && carte.getVoisin(c, Direction.SUD).getType() == NatureTerrain.EAU) {
-                                Case so = carte.getVoisin(o, Direction.SUD);
-                                if (so.getType() != NatureTerrain.EAU) {
-                                    g.drawImage(tiles.get("eau-not-so"), x, y + LARGEUR_TILES / 2,
-                                            LARGEUR_TILES / 2,
-                                            LARGEUR_TILES / 2, null);
-                                }
-                            }
-                        }
-                    }
-
-                    if (carte.voisinExiste(c, Direction.EST)) {
-                        Case e = carte.getVoisin(c, Direction.EST);
-                        if (e.getType() == NatureTerrain.EAU) {
-                            if (carte.voisinExiste(c, Direction.NORD)
-                                    && carte.getVoisin(c, Direction.NORD).getType() == NatureTerrain.EAU) {
-                                Case ne = carte.getVoisin(e, Direction.NORD);
-                                if (ne.getType() != NatureTerrain.EAU) {
-                                    g.drawImage(tiles.get("eau-not-ne"), x + LARGEUR_TILES / 2, y,
-                                            LARGEUR_TILES / 2,
-                                            LARGEUR_TILES / 2, null);
-                                }
-                            }
-                            if (carte.voisinExiste(c, Direction.SUD)
-                                    && carte.getVoisin(c, Direction.SUD).getType() == NatureTerrain.EAU) {
-                                Case se = carte.getVoisin(e, Direction.SUD);
-                                if (se.getType() != NatureTerrain.EAU) {
-                                    g.drawImage(tiles.get("eau-not-se"), x + LARGEUR_TILES / 2, y + LARGEUR_TILES / 2,
-                                            LARGEUR_TILES / 2,
-                                            LARGEUR_TILES / 2, null);
-                                }
-                            }
-                        }
-                    }
-
+                    drawContinued(carte, c, tiles, "eau", NatureTerrain.EAU, g);
                     break;
                 case FORET:
-                    g.drawImage(tiles.get("foret"), x, y, LARGEUR_TILES, LARGEUR_TILES, null);
+                    drawContinued(carte, c, tiles, "foret", NatureTerrain.FORET, g);
                     break;
                 case ROCHE:
                     g.drawImage(tiles.get("roche"), x, y, LARGEUR_TILES, LARGEUR_TILES, null);
                     break;
                 case TERRAIN_LIBRE:
-                    g.drawImage(tiles.get("libre"), x, y, LARGEUR_TILES, LARGEUR_TILES, null);
+                    if (r.nextDouble() < 0.35)
+                        g.drawImage(tiles.get("libre2"), x, y, LARGEUR_TILES, LARGEUR_TILES, null);
+                    else
+                        g.drawImage(tiles.get("libre1"), x, y, LARGEUR_TILES, LARGEUR_TILES, null);
                     break;
                 case HABITAT:
                     g.drawImage(tiles.get("habitat"), x, y, LARGEUR_TILES, LARGEUR_TILES, null);
@@ -315,25 +195,180 @@ public class Simulateur implements Simulable {
         }
     }
 
+    private void drawContinued(Carte carte, Case c, HashMap<String, BufferedImage> tiles, String prefix,
+            NatureTerrain toCheck, Graphics g) {
+        int x = c.getColonne() * LARGEUR_TILES;
+        int y = c.getLigne() * LARGEUR_TILES;
+
+        // drawing interior everywhere, other images will draw on top
+        g.drawImage(tiles.get(prefix), x, y, LARGEUR_TILES / 2, LARGEUR_TILES / 2, null);
+        g.drawImage(tiles.get(prefix), x + LARGEUR_TILES / 2, y, LARGEUR_TILES / 2, LARGEUR_TILES / 2, null);
+        g.drawImage(tiles.get(prefix), x, y + LARGEUR_TILES / 2, LARGEUR_TILES / 2, LARGEUR_TILES / 2, null);
+        g.drawImage(tiles.get(prefix), x + LARGEUR_TILES / 2, y + LARGEUR_TILES / 2, LARGEUR_TILES / 2,
+                LARGEUR_TILES / 2, null);
+
+        // Doing borders by checking north / south and then west/east for corners
+        // If there is no border north, then check if there is a border west for upper
+        // left part of image
+        if (carte.voisinExiste(c, Direction.NORD)
+                && carte.getVoisin(c, Direction.NORD).getType() != toCheck) { // There is a border
+            // north
+            if (carte.voisinExiste(c, Direction.OUEST)
+                    && carte.getVoisin(c, Direction.OUEST).getType() != toCheck) // And a border
+            // west -> corner
+            {
+                g.drawImage(tiles.get(prefix + "-no"), x, y, LARGEUR_TILES / 2, LARGEUR_TILES / 2, null);
+            } else // But no border west -> no corner
+            {
+                g.drawImage(tiles.get(prefix + "-nord"), x, y, LARGEUR_TILES / 2, LARGEUR_TILES / 2, null);
+            }
+
+            if (carte.voisinExiste(c, Direction.EST)
+                    && carte.getVoisin(c, Direction.EST).getType() != toCheck) {
+                g.drawImage(tiles.get(prefix + "-ne"), x + LARGEUR_TILES / 2, y, LARGEUR_TILES / 2,
+                        LARGEUR_TILES / 2, null);
+            } else {
+                g.drawImage(tiles.get(prefix + "-nord"), x + LARGEUR_TILES / 2, y, LARGEUR_TILES / 2,
+                        LARGEUR_TILES / 2, null);
+            }
+        } else {
+            if (carte.voisinExiste(c, Direction.OUEST)
+                    && carte.getVoisin(c, Direction.OUEST).getType() != toCheck) {
+                g.drawImage(tiles.get(prefix + "-ouest"), x, y, LARGEUR_TILES / 2, LARGEUR_TILES / 2, null);
+            }
+
+            if (carte.voisinExiste(c, Direction.EST)
+                    && carte.getVoisin(c, Direction.EST).getType() != toCheck) {
+                g.drawImage(tiles.get(prefix + "-est"), x + LARGEUR_TILES / 2, y, LARGEUR_TILES / 2,
+                        LARGEUR_TILES / 2, null);
+            }
+        }
+
+        // Same, but only for lower part of image
+        if (carte.voisinExiste(c, Direction.SUD)
+                && carte.getVoisin(c, Direction.SUD).getType() != toCheck) {
+            if (carte.voisinExiste(c, Direction.OUEST)
+                    && carte.getVoisin(c, Direction.OUEST).getType() != toCheck) {
+                g.drawImage(tiles.get(prefix + "-so"), x, y + LARGEUR_TILES / 2,
+                        LARGEUR_TILES / 2,
+                        LARGEUR_TILES / 2, null);
+            } else {
+                g.drawImage(tiles.get(prefix + "-sud"), x, y + LARGEUR_TILES / 2,
+                        LARGEUR_TILES / 2,
+                        LARGEUR_TILES / 2, null);
+            }
+
+            if (carte.voisinExiste(c, Direction.EST)
+                    && carte.getVoisin(c, Direction.EST).getType() != toCheck) {
+                g.drawImage(tiles.get(prefix + "-se"), x + LARGEUR_TILES / 2, y + LARGEUR_TILES / 2,
+                        LARGEUR_TILES / 2,
+                        LARGEUR_TILES / 2, null);
+            } else {
+                g.drawImage(tiles.get(prefix + "-sud"), x + LARGEUR_TILES / 2, y + LARGEUR_TILES / 2,
+                        LARGEUR_TILES / 2,
+                        LARGEUR_TILES / 2, null);
+            }
+        } else {
+            if (carte.voisinExiste(c, Direction.OUEST)
+                    && carte.getVoisin(c, Direction.OUEST).getType() != toCheck) {
+                g.drawImage(tiles.get(prefix + "-ouest"), x, y + LARGEUR_TILES / 2,
+                        LARGEUR_TILES / 2,
+                        LARGEUR_TILES / 2, null);
+            }
+
+            if (carte.voisinExiste(c, Direction.EST)
+                    && carte.getVoisin(c, Direction.EST).getType() != toCheck) {
+                g.drawImage(tiles.get(prefix + "-est"), x + LARGEUR_TILES / 2, y + LARGEUR_TILES / 2,
+                        LARGEUR_TILES / 2,
+                        LARGEUR_TILES / 2, null);
+            }
+        }
+
+        // Check if we have to complete upper left then upper right
+        // We do so when our direct neighbors are water but not the diagonal one
+        if (carte.voisinExiste(c, Direction.OUEST)) {
+            Case o = carte.getVoisin(c, Direction.OUEST);
+            if (o.getType() == toCheck) {
+                if (carte.voisinExiste(c, Direction.NORD)
+                        && carte.getVoisin(c, Direction.NORD).getType() == toCheck) {
+                    Case no = carte.getVoisin(o, Direction.NORD);
+                    if (no.getType() != toCheck) {
+                        g.drawImage(tiles.get(prefix + "-not-no"), x, y,
+                                LARGEUR_TILES / 2,
+                                LARGEUR_TILES / 2, null);
+                    }
+                }
+                if (carte.voisinExiste(c, Direction.SUD)
+                        && carte.getVoisin(c, Direction.SUD).getType() == toCheck) {
+                    Case so = carte.getVoisin(o, Direction.SUD);
+                    if (so.getType() != toCheck) {
+                        g.drawImage(tiles.get(prefix + "-not-so"), x, y + LARGEUR_TILES / 2,
+                                LARGEUR_TILES / 2,
+                                LARGEUR_TILES / 2, null);
+                    }
+                }
+            }
+        }
+
+        if (carte.voisinExiste(c, Direction.EST)) {
+            Case e = carte.getVoisin(c, Direction.EST);
+            if (e.getType() == toCheck) {
+                if (carte.voisinExiste(c, Direction.NORD)
+                        && carte.getVoisin(c, Direction.NORD).getType() == toCheck) {
+                    Case ne = carte.getVoisin(e, Direction.NORD);
+                    if (ne.getType() != toCheck) {
+                        g.drawImage(tiles.get(prefix + "-not-ne"), x + LARGEUR_TILES / 2, y,
+                                LARGEUR_TILES / 2,
+                                LARGEUR_TILES / 2, null);
+                    }
+                }
+                if (carte.voisinExiste(c, Direction.SUD)
+                        && carte.getVoisin(c, Direction.SUD).getType() == toCheck) {
+                    Case se = carte.getVoisin(e, Direction.SUD);
+                    if (se.getType() != toCheck) {
+                        g.drawImage(tiles.get(prefix + "-not-se"), x + LARGEUR_TILES / 2, y + LARGEUR_TILES / 2,
+                                LARGEUR_TILES / 2,
+                                LARGEUR_TILES / 2, null);
+                    }
+                }
+            }
+        }
+    }
+
     private HashMap<String, BufferedImage> loadImages() {
         HashMap<String, BufferedImage> res = new HashMap<>();
         try {
-            res.put("eau-est", ImageIO.read(new File("assets/eau-est.png")));
-            res.put("eau-ne", ImageIO.read(new File("assets/eau-ne.png")));
-            res.put("eau-no", ImageIO.read(new File("assets/eau-no.png")));
-            res.put("eau-nord", ImageIO.read(new File("assets/eau-nord.png")));
-            res.put("eau-not-ne", ImageIO.read(new File("assets/eau-not-ne.png")));
-            res.put("eau-not-no", ImageIO.read(new File("assets/eau-not-no.png")));
-            res.put("eau-not-se", ImageIO.read(new File("assets/eau-not-se.png")));
-            res.put("eau-not-so", ImageIO.read(new File("assets/eau-not-so.png")));
-            res.put("eau-ouest", ImageIO.read(new File("assets/eau-ouest.png")));
-            res.put("eau-se", ImageIO.read(new File("assets/eau-se.png")));
-            res.put("eau-so", ImageIO.read(new File("assets/eau-so.png")));
-            res.put("eau-sud", ImageIO.read(new File("assets/eau-sud.png")));
-            res.put("eau", ImageIO.read(new File("assets/eau.png")));
-            res.put("foret", ImageIO.read(new File("assets/foret.png")));
+            res.put("eau-est", ImageIO.read(new File("assets/eau/est.png")));
+            res.put("eau-ne", ImageIO.read(new File("assets/eau/ne.png")));
+            res.put("eau-no", ImageIO.read(new File("assets/eau/no.png")));
+            res.put("eau-nord", ImageIO.read(new File("assets/eau/nord.png")));
+            res.put("eau-not-ne", ImageIO.read(new File("assets/eau/not-ne.png")));
+            res.put("eau-not-no", ImageIO.read(new File("assets/eau/not-no.png")));
+            res.put("eau-not-se", ImageIO.read(new File("assets/eau/not-se.png")));
+            res.put("eau-not-so", ImageIO.read(new File("assets/eau/not-so.png")));
+            res.put("eau-ouest", ImageIO.read(new File("assets/eau/ouest.png")));
+            res.put("eau-se", ImageIO.read(new File("assets/eau/se.png")));
+            res.put("eau-so", ImageIO.read(new File("assets/eau/so.png")));
+            res.put("eau-sud", ImageIO.read(new File("assets/eau/sud.png")));
+            res.put("eau", ImageIO.read(new File("assets/eau/eau.png")));
+
+            res.put("foret-est", ImageIO.read(new File("assets/foret/est.png")));
+            res.put("foret-ne", ImageIO.read(new File("assets/foret/ne.png")));
+            res.put("foret-no", ImageIO.read(new File("assets/foret/no.png")));
+            res.put("foret-nord", ImageIO.read(new File("assets/foret/nord.png")));
+            res.put("foret-not-ne", ImageIO.read(new File("assets/foret/not-ne.png")));
+            res.put("foret-not-no", ImageIO.read(new File("assets/foret/not-no.png")));
+            res.put("foret-not-se", ImageIO.read(new File("assets/foret/not-se.png")));
+            res.put("foret-not-so", ImageIO.read(new File("assets/foret/not-so.png")));
+            res.put("foret-ouest", ImageIO.read(new File("assets/foret/ouest.png")));
+            res.put("foret-se", ImageIO.read(new File("assets/foret/se.png")));
+            res.put("foret-so", ImageIO.read(new File("assets/foret/so.png")));
+            res.put("foret-sud", ImageIO.read(new File("assets/foret/sud.png")));
+            res.put("foret", ImageIO.read(new File("assets/foret/foret.png")));
+
             res.put("roche", ImageIO.read(new File("assets/roche.png")));
-            res.put("libre", ImageIO.read(new File("assets/libre.png")));
+            res.put("libre1", ImageIO.read(new File("assets/libre1.png")));
+            res.put("libre2", ImageIO.read(new File("assets/libre2.png")));
             res.put("habitat", ImageIO.read(new File("assets/habitat.png")));
             res.put("erreur", ImageIO.read(new File("assets/erreur.png")));
         } catch (IOException e) {

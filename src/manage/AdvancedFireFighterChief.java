@@ -23,7 +23,7 @@ public class AdvancedFireFighterChief extends FireFighterChief {
                 int minTime = 0;
                 for (int i = 0; i < robotsSize; i++) {
                     Robot curRobot = robots.get(i);
-                    if (curRobot.isWaiting() && curRobot.isAccessible(incendie.getFireCase())) {
+                    if (curRobot.isWaiting(sim) && curRobot.isAccessible(incendie.getFireCase())) {
                         try {
                             Path path = curRobot.aStar(carte, curRobot.getPosition(), incendie.getFireCase());
 

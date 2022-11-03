@@ -1,8 +1,7 @@
 package pathfinding;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.PriorityQueue;
 
 import exceptions.NotNeighboringCasesException;
@@ -18,7 +17,7 @@ public abstract class SelfDriving {
     /**
      * Node used by the A* algorithm to find the closest path.
      */
-    class Node {
+    class Node implements Comparable<Node> {
         private Case position;
         private int cost;
         private int heuristic;
@@ -58,20 +57,18 @@ public abstract class SelfDriving {
         public int getHeuristic() {
             return heuristic;
         }
-    }
 
-    /**
-     * Used by priorityQueue.
-     */
-    class NodeComparator implements Comparator<Node> {
         @Override
-        public int compare(Node arg0, Node arg1) {
-            if (arg0.getHeuristic() < arg1.getHeuristic()) {
-                return 1;
-            } else if (arg0.getHeuristic() == arg1.getHeuristic()) {
-                return 0;
-            }
-            return -1;
+        public int compareTo(Node o) {
+            return Integer.compare(heuristic, o.getHeuristic());
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (o instanceof Node)
+                return this.position == ((Node) o).getPosition();
+            else
+                return false;
         }
     }
 
@@ -84,6 +81,8 @@ public abstract class SelfDriving {
      * @return Speed of this on place.
      */
     public abstract int getSpeedOn(Case place);
+
+    public abstract int getTimeOn(Case pos);
 
     public abstract boolean isAccessible(Case place);
 
@@ -109,21 +108,19 @@ public abstract class SelfDriving {
     public Path aStar(Carte carte, Case origin, Case destination)
             throws UnreachableCaseException, NotNeighboringCasesException {
         graph = new HashMap<Case, Node>();
-        ArrayList<Node> closedList = new ArrayList<Node>();
-        PriorityQueue<Node> openList = new PriorityQueue<Node>(new NodeComparator());
+        HashSet<Node> closedList = new HashSet<>();
+        PriorityQueue<Node> openList = new PriorityQueue<Node>();
         openList.add(getNode(origin));
-        while (!closedList.isEmpty()) {
-            Node u = openList.remove();
+        while (!openList.isEmpty()) {
+            Node u = openList.poll();
             if (u.getPosition().equals(destination)) {
                 Path path = generatePath(carte, u);
                 return path;
             }
-            for (Case position : carte.getVoisins(origin)) {
+            for (Case position : carte.getVoisins(u.getPosition())) {
                 if (isAccessible(position)) {
                     Node v = getNode(position);
-                    if ((!closedList.contains(v)) ||
-                            (openList.contains(v) &&
-                                    v.getCost() < u.getCost())) {
+                    if (!(closedList.contains(v) || (openList.contains(v) && v.getCost() < u.getCost()))) {
                         v.setCost(u.getCost() + 1);
                         v.setHeuristic(
                                 v.cost +

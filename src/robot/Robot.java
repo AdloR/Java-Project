@@ -22,7 +22,6 @@ public abstract class Robot extends SelfDriving {
     protected int timeIntervention;
 
     private long timeFree = 0;
-    private Simulateur sim;
     // private Action currentAction = Action.ATTENTE;
 
     public Case getPosition() {
@@ -37,13 +36,18 @@ public abstract class Robot extends SelfDriving {
         return getSpeedOn(this.position);
     }
 
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
     @Override
     public int getSpeedOn(Case place) {
         return speed;
     }
 
-    public void setSpeed(int speed) {
-        this.speed = speed;
+    @Override
+    public int getTimeOn(Case pos) {
+        return pos.getCarte().getTailleCases() / getSpeedOn(pos);
     }
 
     public int deverserEau() {
@@ -56,16 +60,19 @@ public abstract class Robot extends SelfDriving {
         return reservoir;
     }
 
-    // TODO : javadoc
     public void startMove(Simulateur sim, Direction dir) {
-        if (sim.getDateSimulation() < timeFree)
-            throw new IllegalStateException("The robot is already occupied !");
-        long timeMove = (this.position.getCarte().getTailleCases() / this.getSpeed());
-        long timeEnd = Long.max(this.timeFree, sim.getDateSimulation()) + timeMove;
+        long timeEnd = Long.max(this.timeFree, sim.getDateSimulation()) + getTimeOn(getPosition());
         System.out.println("FIN A " + timeEnd);
         sim.ajouteEvenement(new RobotBougeEven(timeEnd, sim, this, dir));
         this.timeFree = timeEnd;
-        this.sim = sim;
+    }
+
+    // TODO : javadoc
+    public void startMove(Simulateur sim, Direction dir, Case plannedCase) {
+        long timeEnd = Long.max(this.timeFree, sim.getDateSimulation()) + getSpeedOn(plannedCase);
+        System.out.println("FIN A " + timeEnd);
+        sim.ajouteEvenement(new RobotBougeEven(timeEnd, sim, this, dir));
+        this.timeFree = timeEnd;
     }
 
     // TODO : javadoc
@@ -77,7 +84,6 @@ public abstract class Robot extends SelfDriving {
         long timeEnd = date + timeMove;
         sim.ajouteEvenement(new RobotBougeEven(timeEnd, sim, this, dir));
         this.timeFree = timeEnd;
-        this.sim = sim;
     }
 
     public abstract boolean isAccessible(Case position);
@@ -94,7 +100,6 @@ public abstract class Robot extends SelfDriving {
         long timeEnd = Long.max(this.timeFree, sim.getDateSimulation()) + this.timeIntervention;
         sim.ajouteEvenement(new InterventionEven(timeEnd, sim, this));
         this.timeFree = timeEnd;
-        this.sim = sim;
     }
 
     /**
@@ -107,11 +112,10 @@ public abstract class Robot extends SelfDriving {
      */
     public void intervenir(Simulateur sim, long date) throws IllegalStateException {
         if (this.timeFree > date) {
-            throw new IllegalStateException(date + " : The robot can't interven, it is already occupied !");
+            throw new IllegalStateException(date + " : The robot can't intervene, it is already occupied !");
         }
         sim.ajouteEvenement(new InterventionEven(date + this.timeIntervention, sim, this));
         this.timeFree = date + this.timeIntervention;
-        this.sim = sim;
     }
 
     /**
@@ -137,7 +141,6 @@ public abstract class Robot extends SelfDriving {
         long timeEnd = Long.max(this.timeFree, sim.getDateSimulation()) + this.timeRefill;
         sim.ajouteEvenement(new RemplissageEven(timeEnd, this));
         this.timeFree = timeEnd;
-        this.sim = sim;
     }
 
     /**
@@ -158,7 +161,6 @@ public abstract class Robot extends SelfDriving {
         long timeEnd = date + this.timeRefill;
         sim.ajouteEvenement(new RemplissageEven(timeEnd, this));
         this.timeFree = timeEnd;
-        this.sim = sim;
     }
 
     public void remplirReservoir() {
@@ -171,18 +173,19 @@ public abstract class Robot extends SelfDriving {
      *
      * @return True if the robot is not occupied.
      */
-    public boolean isWaiting() {
-        return this.sim.getDateSimulation() >= this.timeFree;
+    public boolean isWaiting(Simulateur sim) {
+        return sim.getDateSimulation() >= this.timeFree;
     }
 
     /**
      * !!! Ajouter déverser eau à la fin !!!
      */
     public long followPath(Simulateur sim, Path path, Carte carte) {
+        Case plannedCase = path.getStart();
         for (Direction direction : path.getPath()) {
-            this.startMove(sim, direction);
+            this.startMove(sim, direction, plannedCase);
+            plannedCase = carte.getVoisin(plannedCase, direction);
         }
-        this.sim = sim;
         return timeFree;
     }
 }

@@ -3,6 +3,7 @@ import manage.ElementaryFirefighterChief;
 import manage.FireFighterChief;
 import simu.DonneesSimulation;
 import simu.Simulateur;
+import simu.evenements.LancementStrategie;
 
 class StartegieElementaire {
 
@@ -18,6 +19,9 @@ class StartegieElementaire {
         Simulateur sim = new Simulateur(donnees);
 
         FireFighterChief elem = new ElementaryFirefighterChief(donnees.getRobots(), donnees.getIncendies(), donnees.getCarte());
+        sim.ajouteEvenement(new LancementStrategie(1, sim, elem, false));
+
+        sim.draw();
     }
 
 }

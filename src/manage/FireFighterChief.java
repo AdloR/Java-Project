@@ -2,8 +2,6 @@ package manage;
 
 import java.util.List;
 
-import exceptions.NotNeighboringCasesException;
-import exceptions.UnreachableCaseException;
 import robot.Robot;
 import simu.Incendie;
 import simu.Simulateur;
@@ -22,6 +20,6 @@ public abstract class FireFighterChief {
         this.robotsSize = robots.size();
     }
 
-    public abstract void affectRobot(Simulateur sim) throws UnreachableCaseException, NotNeighboringCasesException;
+    public abstract void affectRobot(Simulateur sim);
 
 }

@@ -59,6 +59,7 @@ public class Carte {
 
     /**
      * Gets all the cases as an Iterable, useful for drawing for example.
+     * 
      * @return Iterable over the whole Array.
      */
 
@@ -128,7 +129,7 @@ public class Carte {
      */
     public Direction getdir(Case src, Case dest) throws NotNeighboringCasesException {
         for (Direction dir : Direction.values()) {
-            if (getVoisin(src, dir).equals(dest)) {
+            if (voisinExiste(src, dir) && getVoisin(src, dir).equals(dest)) {
                 return dir;
             }
         }

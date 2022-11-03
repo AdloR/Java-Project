@@ -41,6 +41,10 @@ public class Path {
         return path;
     }
 
+    public Case getStart() {
+        return start;
+    }
+
     /**
      * Add a step at the beginning of the path.
      * 
