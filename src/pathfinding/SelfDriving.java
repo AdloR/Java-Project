@@ -12,7 +12,7 @@ import terrain.Case;
 
 /**
  * A class implementing the ability of finding the closest way to a given Case.
- * TODO : replace heuristic by dist.
+ * TODO : replace dist by dist.
  */
 public abstract class SelfDriving {
 
@@ -22,13 +22,13 @@ public abstract class SelfDriving {
     class Node implements Comparable<Node> {
         private Case position;
         private int cost;
-        private int heuristic;
+        private int dist;
         private Node previous;
 
         public Node(Case position) {
             this.position = position;
             this.cost = 0;
-            this.heuristic = 0;
+            this.dist = 0;
             this.previous = null;
         }
 
@@ -40,7 +40,7 @@ public abstract class SelfDriving {
          */
         public Node(Case position, int dist) {
             this.position = position;
-            this.heuristic = dist;
+            this.dist = dist;
             this.previous = null;
         }
 
@@ -56,8 +56,8 @@ public abstract class SelfDriving {
             this.cost = cost;
         }
 
-        public void setHeuristic(int heuristic) {
-            this.heuristic = heuristic;
+        public void setDist(int dist) {
+            this.dist = dist;
         }
 
         public Case getPosition() {
@@ -68,19 +68,21 @@ public abstract class SelfDriving {
             return cost;
         }
 
-        public int getHeuristic() {
-            return heuristic;
+        public int getDist() {
+            return dist;
         }
 
         @Override
         public int compareTo(Node o) {
-            return Integer.compare(heuristic, o.getHeuristic());
+            return Integer.compare(dist, o.getDist());
         }
 
         @Override
         public boolean equals(Object o) {
-            if (o instanceof Node) return this.position == ((Node) o).getPosition();
-            else return false;
+            if (o instanceof Node)
+                return this.position == ((Node) o).getPosition();
+            else
+                return false;
         }
     }
 
@@ -96,6 +98,7 @@ public abstract class SelfDriving {
 
     /**
      * Return True if there is accessible water on given place
+     * 
      * @param place
      *
      * @return the boolean.
@@ -115,7 +118,6 @@ public abstract class SelfDriving {
         return node;
     }
 
-
     /**
      * Implementation of A* algorithm for pathfinding.
      *
@@ -126,7 +128,8 @@ public abstract class SelfDriving {
      * @throws UnreachableCaseException
      * @throws NotNeighboringCasesException
      */
-    public Path aStar(Carte carte, Case origin, Case destination) throws UnreachableCaseException, NotNeighboringCasesException {
+    public Path aStar(Carte carte, Case origin, Case destination)
+            throws UnreachableCaseException, NotNeighboringCasesException {
         graph = new HashMap<Case, Node>();
         HashSet<Node> closedList = new HashSet<>();
         PriorityQueue<Node> openList = new PriorityQueue<Node>();
@@ -142,7 +145,8 @@ public abstract class SelfDriving {
                     Node v = getNode(position);
                     if (!(closedList.contains(v) || (openList.contains(v) && v.getCost() < u.getCost()))) {
                         v.setCost(u.getCost() + carte.getTailleCases() / (this.getSpeedOn(u.getPosition())));
-                        v.setHeuristic(v.cost + (int) (Math.pow(position.getLigne() - destination.getLigne(), 2) + Math.pow(position.getColonne() - destination.getColonne(), 2)));
+                        v.setDist(v.cost + (int) (Math.pow(position.getLigne() - destination.getLigne(), 2)
+                                + Math.pow(position.getColonne() - destination.getColonne(), 2)));
                         openList.add(v);
                         v.setPrevious(u);
                     }
@@ -171,7 +175,6 @@ public abstract class SelfDriving {
         return path;
     }
 
-
     public Path Dijsktra(Carte carte, Case origin, ArrayList<Case> refillCases) {
         /* Initialization of the graph */
         Node bestWaterNode = null;
@@ -186,23 +189,23 @@ public abstract class SelfDriving {
                 }
             }
         }
-        graph.get(origin).setHeuristic(0);
+        graph.get(origin).setDist(0);
 
         /* Sets personnalized cost of all nodes and finds bestWaterNode */
         while (!vertexPriorityQueue.isEmpty()) {
-            Node u = vertexPriorityQueue.poll(); /* Maybe it's not the min but max...*/
+            Node u = vertexPriorityQueue.poll(); /* Maybe it's not the min but max... */
             for (Case position : carte.getVoisins(u.getPosition())) {
                 if (isAccessible(position)) {
                     Node v = getNode(position);
-                    int alt = u.getHeuristic() + carte.getTailleCases() / this.getSpeedOn(u.getPosition());
-                    if (alt < v.getHeuristic()) {
-                        v.setHeuristic(alt);
+                    int alt = u.getDist() + carte.getTailleCases() / this.getSpeedOn(u.getPosition());
+                    if (alt < v.getDist()) {
+                        v.setDist(alt);
                         v.setPrevious(u);
                     }
                 }
             }
             if (this.findWater(u.getPosition())) {
-                if (bestWaterNode == null || bestWaterNode.getHeuristic() > u.getHeuristic()) {
+                if (bestWaterNode == null || bestWaterNode.getDist() > u.getDist()) {
                     bestWaterNode = u;
                 }
             }
@@ -210,28 +213,28 @@ public abstract class SelfDriving {
         return generatePath(carte, bestWaterNode);
     }
     /**
-     1  function Dijkstra(Graph, source):
-     2      dist[source] ← 0                           // Initialization
-     3
-     4      create vertex priority queue Q
-     5
-     6      for each vertex v in Graph.Vertices:
-     7          if v ≠ source
-     8              dist[v] ← INFINITY                 // Unknown distance from source to v
-     9              prev[v] ← UNDEFINED                // Predecessor of v
-     10
-     11         Q.add_with_priority(v, dist[v])
-     12
-     13
-     14     while Q is not empty:                      // The main loop
-     15         u ← Q.extract_min()                    // Remove and return best vertex
-     16         for each neighbor v of u:              // Go through all v neighbors of u
-     17             alt ← dist[u] + Graph.Edges(u, v)
-     18             if alt < dist[v]:
-     19                 dist[v] ← alt
-     20                 prev[v] ← u
-     21                 Q.decrease_priority(v, alt)
-     22
-     23     return prev
+     * 1 function Dijkstra(Graph, source):
+     * 2 dist[source] ← 0 // Initialization
+     * 3
+     * 4 create vertex priority queue Q
+     * 5
+     * 6 for each vertex v in Graph.Vertices:
+     * 7 if v ≠ source
+     * 8 dist[v] ← INFINITY // Unknown distance from source to v
+     * 9 prev[v] ← UNDEFINED // Predecessor of v
+     * 10
+     * 11 Q.add_with_priority(v, dist[v])
+     * 12
+     * 13
+     * 14 while Q is not empty: // The main loop
+     * 15 u ← Q.extract_min() // Remove and return best vertex
+     * 16 for each neighbor v of u: // Go through all v neighbors of u
+     * 17 alt ← dist[u] + Graph.Edges(u, v)
+     * 18 if alt < dist[v]:
+     * 19 dist[v] ← alt
+     * 20 prev[v] ← u
+     * 21 Q.decrease_priority(v, alt)
+     * 22
+     * 23 return prev
      */
 }
