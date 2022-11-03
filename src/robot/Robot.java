@@ -67,7 +67,17 @@ public abstract class Robot extends SelfDriving {
         this.timeFree = timeEnd;
     }
 
-    // TODO : javadoc
+    /**
+     * Plan to begin move toward given direction from given planned case as soon as
+     * possible.
+     * This function will plan how long the move will take and create an event at
+     * the end to make the move concrete.
+     * 
+     * @param sim         The simulation in which the move happens.
+     * @param dir         The direction toward which the robot will move.
+     * @param plannedCase The Case where the robot will be at the beginning of the
+     *                    move.
+     */
     public void startMove(Simulateur sim, Direction dir, Case plannedCase) {
         long timeEnd = Long.max(this.timeFree + 1, sim.getDateSimulation()) + getTimeOn(plannedCase);
         System.out.println("FIN A " + timeEnd);
@@ -75,26 +85,14 @@ public abstract class Robot extends SelfDriving {
         this.timeFree = timeEnd;
     }
 
-    // TODO : javadoc
-    public void move(Simulateur sim, Direction dir, long date) throws IllegalStateException {
-        if (this.timeFree > date) {
-            throw new IllegalStateException(date + " : The robot can't start moving, it is already occupied !");
-        }
-        long timeMove = (this.position.getCarte().getTailleCases() / this.getSpeed());
-        long timeEnd = date + timeMove;
-        sim.ajouteEvenement(new RobotBougeEven(timeEnd, sim, this, dir));
-        this.timeFree = timeEnd;
-    }
-
     public abstract boolean isAccessible(Case position);
 
     /**
-     * Intervene on fire. If the reservoir is not full enough, it will be emptied on
-     * the fire;
+     * Plan to begin an intervention as soon as possible.
+     * This function will plan how long the intervention will take and create an
+     * event at the end to make it concrete.
      * 
-     * @throws IllegalStateException
-     * 
-     *                               TODO : Javadoc
+     * @param sim The simulation in which the intervention will happen.
      */
     public void startIntervention(Simulateur sim) {
         long timeEnd = Long.max(this.timeFree, sim.getDateSimulation()) + this.timeIntervention;
@@ -103,12 +101,12 @@ public abstract class Robot extends SelfDriving {
     }
 
     /**
-     * * Intervene on fire. If the reservoir is not full enough, it will be emptied
-     * on
-     * the fire;
+     * Intervene on fire at given date. If the reservoir is not full enough, it will
+     * be emptied on the fire;
      * 
+     * @param sim  The simulation in which the intervention will happen.
      * @param date Precise the time at which the intervention should start.
-     * @throws IllegalStateException
+     * @throws IllegalStateException if the robot is not free at the given date.
      */
     public void intervenir(Simulateur sim, long date) throws IllegalStateException {
         if (this.timeFree > date) {
@@ -119,19 +117,18 @@ public abstract class Robot extends SelfDriving {
     }
 
     /**
-     * Return True if there is water accessible.
+     * Return True if there is accessible water.
      *
      * @return the boolean.
      */
     protected abstract boolean findWater();
 
     /**
-     * Refills the reservoir. If it was already filled, will still try to full it,
-     * and therefore take unnecessary time.
+     * Plan to refill robot's reservoir as soon as possible.
+     * This function will plan how long it will take to refill and create an event
+     * at the end to make it concrete.
      * 
-     * @throws IllegalStateException in case there is no available water.
-     * 
-     *                               TODO : Javadoc
+     * @param sim The simulation in which the event will happen.
      */
     public void remplir(Simulateur sim) {
 
@@ -144,11 +141,13 @@ public abstract class Robot extends SelfDriving {
     }
 
     /**
-     * Refills the reservoir. If it was already filled, will still try to full it,
-     * and therefore take unnecessary time.
+     * Plan to refills the reservoir at given date. If it was already filled, will
+     * still try to full it, and therefore take unnecessary time.
      * 
+     * @param sim  The simulation in which the event will happen.
      * @param date Precise the time at which the intervention should start.
-     * @throws IllegalStateException in case there is no available water.
+     * @throws IllegalStateException In case the robot is already occupied at given
+     *                               date or if there is no available water.
      */
     public void remplir(Simulateur sim, long date) {
         if (this.timeFree > date) {
