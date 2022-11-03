@@ -31,7 +31,7 @@ public abstract class FireFighterChief {
     /**
      *
      * @param sim the Simulateur.
-     * The functiun that will implement the strategy chosen.
+     * The function that will implement the strategy chosen.
      */
     public abstract void affectRobot(Simulateur sim);
 
