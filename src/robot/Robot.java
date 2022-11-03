@@ -121,12 +121,6 @@ public abstract class Robot extends SelfDriving {
         trace += "Intervene (from intervenir) until " + timeFree + "; ";
     }
 
-    /**
-     * Return True if there is accessible water.
-     *
-     * @return the boolean.
-     */
-    protected abstract boolean findWater();
 
     /**
      * Plan to refill robot's reservoir as soon as possible.
@@ -137,7 +131,7 @@ public abstract class Robot extends SelfDriving {
      */
     public void remplir(Simulateur sim) {
 
-        if (!this.findWater())
+        if (!this.findWater(this.position))
             throw new IllegalStateException("There is no water accessible for the robot !");
 
         long timeEnd = Long.max(this.timeFree, sim.getDateSimulation()) + this.timeRefill;
@@ -160,7 +154,7 @@ public abstract class Robot extends SelfDriving {
             throw new IllegalStateException(date + " : The robot can't refill, it is already occupied !");
         }
 
-        if (!this.findWater())
+        if (!this.findWater(this.position))
             throw new IllegalStateException("There is no water accessible for the robot !");
 
         long timeEnd = date + this.timeRefill;

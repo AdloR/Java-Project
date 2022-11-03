@@ -15,7 +15,7 @@ public class RobotAPattes extends Robot {
     }
 
     @Override
-    protected boolean findWater() {
+    protected boolean findWater(Case position) {
         return true;
     }
 

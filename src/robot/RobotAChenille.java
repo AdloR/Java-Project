@@ -20,8 +20,8 @@ public class RobotAChenille extends Robot {
     }
 
     @Override
-    protected boolean findWater() {
-        for (Case place : this.position.getCarte().getVoisins(position)) {
+    protected boolean findWater(Case position) {
+        for (Case place : position.getCarte().getVoisins(position)) {
             if (place.getType() == NatureTerrain.EAU) {
                 return true;
             }

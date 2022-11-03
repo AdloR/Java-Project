@@ -36,7 +36,7 @@ public abstract class SelfDriving {
          * New constructor for the dijkstra algorithm
          *
          * @param position
-         * @param cost
+         * @param dist
          */
         public Node(Case position, int dist) {
             this.position = position;
@@ -94,6 +94,12 @@ public abstract class SelfDriving {
      */
     public abstract int getSpeedOn(Case place);
 
+    /**
+     * Return True if there is accessible water on given place
+     * @param place
+     *
+     * @return the boolean.
+     */
     protected abstract boolean findWater(Case place);
 
     public abstract int getTimeOn(Case pos);

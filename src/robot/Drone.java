@@ -15,8 +15,8 @@ public class Drone extends Robot {
     }
 
     @Override
-    protected boolean findWater() {
-        return this.position.getType() == NatureTerrain.EAU;
+    protected boolean findWater(Case position) {
+        return position.getType() == NatureTerrain.EAU;
     }
 
     @Override
