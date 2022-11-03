@@ -15,22 +15,23 @@ public class ElementaryFirefighterChief extends FireFighterChief {
         super(robots, incendies, carte);
     }
 
-    public void affectRobot(Simulateur sim) throws UnreachableCaseException, NotNeighboringCasesException {
+    public void affectRobot(Simulateur sim) {
         for (Incendie incendie : incendies) {
             while (incendie.getNbL() > 0) {
                 for (int i = 0; i < robotsSize; i++) {
                     if (robots.get(i).isWaiting() && robots.get(i).isAccessible(incendie.getFireCase())) {
-                        Path path = robots.get(i).aStar(carte, robots.get(i).getPosition(), incendie.getFireCase());
-                        long date = robots.get(i).followPath(sim, path, carte);
-                        robots.get(i).intervenir(sim, date);
-                        break;
+                        try {
+                            Path path = robots.get(i).aStar(carte, robots.get(i).getPosition(), incendie.getFireCase());
+                            long date = robots.get(i).followPath(sim, path, carte);
+                            robots.get(i).intervenir(sim, date);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
-                    if (i == robotsSize - 1) {
-                        i = 0;
-                    }
+                    break;
                 }
             }
-
         }
+
     }
 }
