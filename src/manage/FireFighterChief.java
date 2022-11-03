@@ -7,6 +7,14 @@ import simu.Incendie;
 import simu.Simulateur;
 import terrain.Carte;
 
+/**
+ * @param robots list of robots of the map.
+ * @param incendies list of incendie of the map.
+ * @param robotsSize size of robots.
+ * @param carte the map.
+ *
+ * The mother class of all the different strategies that will be implemented.
+ */
 public abstract class FireFighterChief {
     protected List<Robot> robots;
     protected List<Incendie> incendies;
@@ -20,6 +28,11 @@ public abstract class FireFighterChief {
         this.robotsSize = robots.size();
     }
 
+    /**
+     *
+     * @param sim the Simulateur.
+     * The function that will implement the strategy chosen.
+     */
     public abstract void affectRobot(Simulateur sim);
 
 }

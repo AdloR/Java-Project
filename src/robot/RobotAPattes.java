@@ -35,10 +35,7 @@ public class RobotAPattes extends Robot {
 
     @Override
     public boolean isAccessible(Case position) {
-        if (position.getType() == EAU) {
-            return false;
-        }
-        return true;
+        return !(position.getType() == EAU);
     }
 
     @Override
