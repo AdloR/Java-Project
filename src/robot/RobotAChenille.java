@@ -36,7 +36,7 @@ public class RobotAChenille extends Robot {
 
     @Override
     public void setSpeed(int speed) {
-        assert (speed <= 80);
+        assert (speed <= 80 * 1000 / 3600);
         super.setSpeed(speed);
     }
 

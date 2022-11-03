@@ -37,7 +37,7 @@ public abstract class Robot extends SelfDriving {
     }
 
     public void setSpeed(int speed) {
-        this.speed = speed;
+        this.speed = speed * 1000 / 3600;
     }
 
     @Override

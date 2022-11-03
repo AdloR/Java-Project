@@ -22,7 +22,7 @@ public class Drone extends Robot {
     @Override
     public void setSpeed(int speed) {
         assert (speed <= 150);
-        super.setSpeed(speed);
+        super.setSpeed(speed * 1000 / 3600);
     }
 
     @Override
