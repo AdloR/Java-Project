@@ -5,7 +5,20 @@ import simu.Incendie;
 import simu.Simulateur;
 
 public class InterventionEven extends RobotEven {
-
+    /**
+     * Creates an event that asks to start an intervention.
+     * 
+     * It is an automatic event, meaning it is kept in history for restart.
+     * It can only be automatic, someone wanting to program a scenario might want to
+     * use DebInterventionEvent.
+     * 
+     * @param date       the date to execute the event
+     * @param sim        the current Simulateur instance
+     * @param robotIndex the index of the robot in DonneesSimulation::getRobots()
+     *                   that will interevene.
+     * 
+     * @see DebInterventionEven
+     */
     public InterventionEven(long date, Simulateur sim, Robot robot) {
         super(date, sim, robot);
     }
