@@ -38,9 +38,6 @@ public class RobotARoues extends Robot {
 
     @Override
     public boolean isAccessible(Case position) {
-        if (position.getType() == HABITAT || position.getType() == TERRAIN_LIBRE) {
-            return true;
-        }
-        return false;
+        return position.getType() == HABITAT || position.getType() == TERRAIN_LIBRE;
     }
 }

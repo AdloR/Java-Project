@@ -26,7 +26,7 @@ public class AdvancedFireFighterChief extends FireFighterChief {
      * 3. The chief picks the fastest robot to extinct the "incendie".
      *            The robot chosen programs the events necessaries to make his way to the "incendie".
      *            Then he checks if the "incendie" was not extinct before pouring water.
-     *            When the reservoir of a robot is emptuy, it goes refill it from his own.
+     *            When the reservoir of a robot is empty, it goes refill it from his own.
      * 4. The chief can ask this for each "incendie". If some remain unassigned,
      *            the fire chief waits for a certain amount of time and
      *            waits for a certain period of time and proposes the remaining "incendie" again.
