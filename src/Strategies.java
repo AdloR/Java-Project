@@ -5,7 +5,7 @@ import simu.DonneesSimulation;
 import simu.Simulateur;
 import simu.evenements.LancementStrategie;
 
-class StartegieElementaire {
+class StrategieElementaire {
 
     public static void main(String[] args) {
         DonneesSimulation donnees;
@@ -18,7 +18,8 @@ class StartegieElementaire {
 
         Simulateur sim = new Simulateur(donnees);
 
-        FireFighterChief elem = new ElementaryFirefighterChief(donnees.getRobots(), donnees.getIncendies(), donnees.getCarte());
+        FireFighterChief elem = new ElementaryFirefighterChief(donnees.getRobots(), donnees.getIncendies(),
+                donnees.getCarte());
         sim.ajouteEvenement(new LancementStrategie(1, sim, elem, false));
 
         sim.draw();

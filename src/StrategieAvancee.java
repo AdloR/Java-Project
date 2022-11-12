@@ -5,7 +5,7 @@ import simu.DonneesSimulation;
 import simu.Simulateur;
 import simu.evenements.LancementStrategie;
 
-public class StartegieAvancee {
+public class StrategieAvancee {
 
     public static void main(String[] args) {
         DonneesSimulation donnees;
@@ -18,7 +18,8 @@ public class StartegieAvancee {
 
         Simulateur sim = new Simulateur(donnees);
 
-        FireFighterChief elem = new AdvancedFireFighterChief(donnees.getRobots(), donnees.getIncendies(), donnees.getCarte());
+        FireFighterChief elem = new AdvancedFireFighterChief(donnees.getRobots(), donnees.getIncendies(),
+                donnees.getCarte());
         sim.ajouteEvenement(new LancementStrategie(1, sim, elem, false));
 
         sim.draw();
