@@ -5,11 +5,22 @@ import java.util.Arrays;
 
 import exceptions.NotNeighboringCasesException;
 
+/**
+ * Represent a map which is essentially a matrix of tiles (Case).
+ */
 public class Carte {
     private int lignes, colonnes;
     private int tailleCases = 1;
     private Case[] cases;
 
+    /**
+     * Carte constructor. The setCase function should be called on each tile to
+     * populate the matrix.
+     * 
+     * @param nbLignes    Vertical size of the map.
+     * @param nbColonnes  Horizontal size of the map.
+     * @param tailleCases Size of a tile's edge in m.
+     */
     public Carte(int nbLignes, int nbColonnes, int tailleCases) {
         lignes = nbLignes;
         colonnes = nbColonnes;
@@ -36,7 +47,7 @@ public class Carte {
     }
 
     /**
-     * Gets cases' size.
+     * Gets cases size.
      * 
      * @return cases' size
      */
@@ -45,11 +56,11 @@ public class Carte {
     }
 
     /**
-     * Finds a case on the terrain.
+     * Finds a tile (Case) on the terrain.
      * 
-     * @param lig the line of the wanted case
-     * @param col the column of the wanted case
-     * @return the wanted case
+     * @param lig the line of the wanted tile.
+     * @param col the column of the wanted tile.
+     * @return the wanted tile.
      */
     public Case getCase(int lig, int col) {
         if (lig < 0 || lig >= lignes || col < 0 || col >= colonnes)
@@ -58,7 +69,7 @@ public class Carte {
     }
 
     /**
-     * Gets all the cases as an Iterable, useful for drawing for example.
+     * Gets all the tiles (Case) as an Iterable.
      * 
      * @return Iterable over the whole Array.
      */
@@ -68,20 +79,22 @@ public class Carte {
     }
 
     /**
-     * Add Given case on the terrain.
+     * Add Given tile (Case) on the terrain. This function should be called for the
+     * hole terrain when instantiating the map (Carte).
      * 
-     * @param case
+     * @param case The tile (Case) to add. It's location is registered in the Case
+     *             class.
      */
     public void setCase(Case c) {
         this.cases[c.getLigne() * colonnes + c.getColonne()] = c;
     }
 
     /**
-     * Checks if the given neighbor of the src case exists.
+     * Checks if the given neighbor of the src tile (Case) exists.
      * 
-     * @param src origin case
-     * @param dir direction to check the neighbor
-     * @return true if there is a neighbor, false otherwise
+     * @param src origin tile (Case).
+     * @param dir direction to check the neighbor.
+     * @return true if there is a neighbor, false otherwise.
      */
     public boolean voisinExiste(Case src, Direction dir) {
         switch (dir) {
@@ -99,11 +112,11 @@ public class Carte {
     }
 
     /**
-     * Gets a neighbor from a given case.
+     * Gets a neighbor from a given tile (Case).
      * 
-     * @param src origin case
-     * @param dir direction to the neighbor
-     * @return the neighbor
+     * @param src origin tile (Case).
+     * @param dir direction to the neighbor.
+     * @return the neighbor tile (Case).
      */
     public Case getVoisin(Case src, Direction dir) {
         switch (dir) {
@@ -123,9 +136,9 @@ public class Carte {
     /**
      * Return direction from src to dest.
      * 
-     * @param src  origin case
-     * @param dest destination case, must be a neighbour of src
-     * @return the direction
+     * @param src  origin tile (Case).
+     * @param dest destination tile (Case), must be a neighbour of src
+     * @return the direction.
      */
     public Direction getdir(Case src, Case dest) throws NotNeighboringCasesException {
         for (Direction dir : Direction.values()) {
@@ -139,8 +152,8 @@ public class Carte {
     /**
      * Return ArrayList with all available neigbors.
      * 
-     * @param src Origin case
-     * @return
+     * @param src Origin tile (Case).
+     * @return src neighbors.
      */
     public ArrayList<Case> getVoisins(Case src) {
         ArrayList<Case> voisins = new ArrayList<Case>();

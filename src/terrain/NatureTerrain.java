@@ -1,5 +1,8 @@
 package terrain;
 
+/**
+ * Enumerate the different terrain types.
+ */
 public enum NatureTerrain {
     EAU,
     FORET,

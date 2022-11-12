@@ -29,6 +29,9 @@ import terrain.Case;
 import terrain.Direction;
 import terrain.NatureTerrain;
 
+/**
+ * TODO : explain what a Simulateur is. (help @Adlor)
+ */
 public class Simulateur implements Simulable {
 
     public static final int LARGEUR_TILES = 64;
@@ -41,10 +44,11 @@ public class Simulateur implements Simulable {
     private PriorityQueue<Evenement> evenements = new PriorityQueue<>();
     private List<Evenement> history = new LinkedList<>();
 
-    public long getDateSimulation() {
-        return dateSimulation;
-    }
-
+    /**
+     * Simulateur constructor.
+     * 
+     * @param donnees Simulations data.
+     */
     public Simulateur(DonneesSimulation donnees) {
         this.donnees = donnees;
         Carte carte = donnees.getCarte();
@@ -56,6 +60,20 @@ public class Simulateur implements Simulable {
         draw();
     }
 
+    /**
+     * Date simulation getter. Represent the time of the simulation in seconds.
+     * 
+     * @return Current time in the simulation.
+     */
+    public long getDateSimulation() {
+        return dateSimulation;
+    }
+
+    /**
+     * Plan given event.
+     * 
+     * @param e Event to happen.
+     */
     public void ajouteEvenement(Evenement e) {
         evenements.add(e);
     }
@@ -64,6 +82,9 @@ public class Simulateur implements Simulable {
         dateSimulation++;
     }
 
+    /**
+     * @return True if the simulation has ended. False otherwise.
+     */
     public boolean simulationTerminee() {
         return evenements.isEmpty();
     }
@@ -72,6 +93,9 @@ public class Simulateur implements Simulable {
         return donnees;
     }
 
+    /**
+     * Function called to simulate one step.
+     */
     @Override
     public void next() {
         incrementeDate();
@@ -86,6 +110,9 @@ public class Simulateur implements Simulable {
         draw();
     }
 
+    /**
+     * Function called to restart the simulation.
+     */
     @Override
     public void restart() {
         try {
@@ -106,6 +133,10 @@ public class Simulateur implements Simulable {
         draw();
     }
 
+    /**
+     * Draw the robot and wildfire on the simulation.
+     * TODO: @Adlor check ce que j'ai dit.
+     */
     public void draw() {
         gui.reset();
         gui.addGraphicalElement(new ImageElement(0, 0, tmpBackgroundPath, width, height, gui)); // Background already
@@ -143,6 +174,10 @@ public class Simulateur implements Simulable {
         }
     }
 
+    /**
+     * Draw the map on the simulation.
+     * TODO: @Adlor check ce que j'ai dit.
+     */
     private void drawBackground() {
         Carte carte = donnees.getCarte();
         HashMap<String, BufferedImage> tiles = loadImages();
@@ -195,6 +230,17 @@ public class Simulateur implements Simulable {
         }
     }
 
+    /**
+     * Draw a tile with coherent asset according to neighboring tiles.
+     * 
+     * @param carte   Map of the simulation.
+     * @param c       Tile (Case) to draw.
+     * @param tiles   Hashmap of buffered images to draw.
+     * @param prefix  TODO: C'est pas redondant avec toCheck ou c ?
+     * @param toCheck Type of terrain of the neighboring tile that may impact this
+     *                drawing.
+     * @param g       TODO: ????
+     */
     private void drawContinued(Carte carte, Case c, HashMap<String, BufferedImage> tiles, String prefix,
             NatureTerrain toCheck, Graphics g) {
         int x = c.getColonne() * LARGEUR_TILES;
