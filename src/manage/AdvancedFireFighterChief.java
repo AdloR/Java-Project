@@ -38,15 +38,14 @@ public class AdvancedFireFighterChief extends FireFighterChief {
                 Robot fastestRobot = null;
                 Path minPath = null;
                 int minTime = 0;
-                for (int i = 0; i < robotsSize; i++) {
-                    Robot curRobot = robots.get(i);
-                    if (curRobot.isWaiting(sim) && curRobot.isAccessible(incendie.getFireCase())) {
+                for (Robot robot : robots) {
+                    if (robot.isWaiting(sim) && robot.isAccessible(incendie.getFireCase())) {
                         try {
-                            Path path = curRobot.aStar(carte, curRobot.getPosition(), incendie.getFireCase());
+                            Path path = robot.aStar(carte, robot.getPosition(), incendie.getFireCase());
 
                             if (fastestRobot == null || path.getDuration() < minTime) {
                                 minTime = path.getDuration();
-                                fastestRobot = curRobot;
+                                fastestRobot = robot;
                                 minPath = path;
                             }
                         } catch (Exception e) {
