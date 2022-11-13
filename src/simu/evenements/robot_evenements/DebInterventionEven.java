@@ -4,8 +4,7 @@ import robot.Robot;
 import simu.Simulateur;
 
 /**
- * An Evenement to call InterventionEvent at the right time.
- * This is merely a way to create time.
+ * An event (Evenement) to order a robot to stat an intervention at iven time.
  * 
  * @see InterventionEven
  */
@@ -16,9 +15,9 @@ public class DebInterventionEven extends RobotEven {
      * 
      * It is a manual event, meaning it is kept in history for restart.
      * 
-     * @param date       the date to execute the event
-     * @param sim        the current Simulateur instance
-     * @param robotIndex the index of the robot in DonneesSimulation::getRobots()
+     * @param date       The date to execute the event.
+     * @param sim        The current simulator (Simulateur) instance.
+     * @param robotIndex The index of the robot in DonneesSimulation::getRobots()
      *                   that will interevene.
      */
     public DebInterventionEven(long date, Simulateur sim, int robotIndex) {
@@ -30,9 +29,9 @@ public class DebInterventionEven extends RobotEven {
      * 
      * It is an automatic event, meaning it is not kept in history for restart.
      * 
-     * @param date  date of execution
-     * @param sim   current Simulateur
-     * @param robot robot to which the event applies
+     * @param date  Date of execution.
+     * @param sim   Current simulator (Simulateur).
+     * @param robot Robot to which the event applies.
      */
     public DebInterventionEven(long date, Simulateur sim, Robot robot) {
         super(date, sim, robot);

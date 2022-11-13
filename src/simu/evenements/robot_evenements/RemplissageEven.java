@@ -3,6 +3,10 @@ package simu.evenements.robot_evenements;
 import robot.Robot;
 import simu.evenements.Evenement;
 
+/**
+ * Makes a robot refill it's reservoir. This Event happen at the end of the
+ * refill time.
+ */
 public class RemplissageEven extends Evenement {
     Robot robot;
 

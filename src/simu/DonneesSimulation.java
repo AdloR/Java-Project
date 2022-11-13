@@ -19,11 +19,12 @@ public class DonneesSimulation {
     private String fichierDonnees;
 
     /**
-     * Constructor
-     * @param incendie the localisation of fire cases.
-     * @param carte the map of the interface.
-     * @param robotIndex the robots in charge of extincting the fire.
-     * @param fichierDonnees name of map file, used to restart the simulation.
+     * DonneesSimulation constructor
+     * 
+     * @param incendie       The localisation of fire cases.
+     * @param carte          The map of the interface.
+     * @param robotIndex     The robots in charge of extincting the fire.
+     * @param fichierDonnees Name of map file, used to restart the simulation.
      */
     public DonneesSimulation(Carte carte, List<Incendie> incendies, List<Robot> robots, String fichierDonnees) {
         this.incendies = incendies;

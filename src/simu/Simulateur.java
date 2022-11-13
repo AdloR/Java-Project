@@ -30,7 +30,7 @@ import terrain.Direction;
 import terrain.NatureTerrain;
 
 /**
- * TODO : explain what a Simulateur is. (help @Adlor)
+ * TODO : explain what a Simulateur is. (@Adlor je veux bien de l'aide pour ça)
  */
 public class Simulateur implements Simulable {
 
@@ -135,7 +135,7 @@ public class Simulateur implements Simulable {
 
     /**
      * Draw the robot and wildfire on the simulation.
-     * TODO: @Adlor check ce que j'ai dit.
+     * TODO: @Adlor est-ce que tu peux checker ce que j'ai dit stp ?
      */
     public void draw() {
         gui.reset();
@@ -176,7 +176,7 @@ public class Simulateur implements Simulable {
 
     /**
      * Draw the map on the simulation.
-     * TODO: @Adlor check ce que j'ai dit.
+     * TODO: @Adlor est-ce que tu peux checker ce que j'ai dit stp ?
      */
     private void drawBackground() {
         Carte carte = donnees.getCarte();
@@ -232,6 +232,7 @@ public class Simulateur implements Simulable {
 
     /**
      * Draw a tile with coherent asset according to neighboring tiles.
+     * TODO: @Adlor est-ce que tu peux checker et compléter cette javadoc stp ?
      * 
      * @param carte   Map of the simulation.
      * @param c       Tile (Case) to draw.
@@ -239,7 +240,7 @@ public class Simulateur implements Simulable {
      * @param prefix  TODO: C'est pas redondant avec toCheck ou c ?
      * @param toCheck Type of terrain of the neighboring tile that may impact this
      *                drawing.
-     * @param g       TODO: ????
+     * @param g       TODO: Aucune idée de ce que c'est. @Adlor tu as une idée ?
      */
     private void drawContinued(Carte carte, Case c, HashMap<String, BufferedImage> tiles, String prefix,
             NatureTerrain toCheck, Graphics g) {
@@ -381,6 +382,12 @@ public class Simulateur implements Simulable {
         }
     }
 
+    /**
+     * Load images from file for drawing.
+     * TODO: @ADLOR tu peux check cette javadoc aussi stp ?
+     * 
+     * @return HashMap of buffered images to draw;
+     */
     private HashMap<String, BufferedImage> loadImages() {
         HashMap<String, BufferedImage> res = new HashMap<>();
         try {

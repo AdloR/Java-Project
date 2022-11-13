@@ -4,17 +4,21 @@ import robot.Robot;
 import simu.Incendie;
 import simu.Simulateur;
 
+/**
+ * Makes a robot intervene once on the wildfire (Incendie) on it's tile (Case).
+ * This event happen at the end of the intervention time.
+ */
 public class InterventionEven extends RobotEven {
     /**
      * Creates an event that asks to start an intervention.
      * 
-     * It is an automatic event, meaning it is kept in history for restart.
+     * It is an automatic event, meaning it is not kept in history for restart.
      * It can only be automatic, someone wanting to program a scenario might want to
      * use DebInterventionEvent.
      * 
-     * @param date       the date to execute the event
-     * @param sim        the current Simulateur instance
-     * @param robotIndex the index of the robot in DonneesSimulation::getRobots()
+     * @param date       The date to execute the event.
+     * @param sim        The current simulator (Simulateur) instance.
+     * @param robotIndex The index of the robot in DonneesSimulation::getRobots()
      *                   that will interevene.
      * 
      * @see DebInterventionEven
@@ -40,7 +44,6 @@ public class InterventionEven extends RobotEven {
                         + robot.getPosition().getColonne() + ", " + robot.getPosition().getLigne() + ")");
             }
         }
-
         if (robot.getReservoir() <= 0) {
         }
     }

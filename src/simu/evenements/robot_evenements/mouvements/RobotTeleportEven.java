@@ -7,6 +7,9 @@ import simu.evenements.Evenement;
 import terrain.Case;
 import terrain.Direction;
 
+/**
+ * Makes a robot teleport toward given destination.
+ */
 public class RobotTeleportEven extends Evenement {
     int robotIndex;
     Simulateur sim;
@@ -14,6 +17,14 @@ public class RobotTeleportEven extends Evenement {
     Robot robot;
     Case dest;
 
+    /**
+     * RobotTeleportEven constructor.
+     * 
+     * @param date       Date of planned teleportation.
+     * @param sim        Running simulation.
+     * @param robotIndex Robot id.
+     * @param dest       tile (Case) where to telepot the robot.
+     */
     public RobotTeleportEven(long date, Simulateur sim, int robotIndex, Case dest) {
         super(date);
         this.dest = dest;

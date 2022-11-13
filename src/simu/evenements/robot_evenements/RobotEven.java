@@ -4,6 +4,9 @@ import robot.Robot;
 import simu.Simulateur;
 import simu.evenements.Evenement;
 
+/**
+ * Event for robot action.
+ */
 public abstract class RobotEven extends Evenement {
     private Simulateur sim;
     private int robotIndex;

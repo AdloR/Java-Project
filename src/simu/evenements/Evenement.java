@@ -41,6 +41,11 @@ public abstract class Evenement implements Comparable<Evenement> {
         this.priority = false;
     }
 
+    /**
+     * Priority getter
+     * 
+     * @return The priority attribute.
+     */
     public boolean isPriority() {
         return priority;
     }
@@ -70,13 +75,17 @@ public abstract class Evenement implements Comparable<Evenement> {
     abstract public void execute();
 
     /*
-     * (non-Javadoc)
+     * {@inheritDoc}
      * 
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
     @Override
     public int compareTo(Evenement e) {
         int dateCmp = Long.compare(date, e.getDate());
+
+        /*
+         * Among event with same date those with priority == true have greater priority.
+         */
         if (dateCmp == 0) {
             if (this.priority == e.isPriority())
                 return 0;

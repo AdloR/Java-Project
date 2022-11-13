@@ -3,6 +3,9 @@ package simu.evenements.robot_evenements;
 import robot.Robot;
 import simu.Simulateur;
 
+/**
+ * Order a robot to start refill at given date.
+ */
 public class DebRemplissageEven extends RobotEven {
     /**
      * Creates an event that asks to start a refill.
