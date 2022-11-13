@@ -15,6 +15,11 @@ public class RobotAPattes extends Robot {
     }
 
     @Override
+    public int getReservoir() {
+        return 1; // Arbitrary non zero positive value.
+    }
+
+    @Override
     protected boolean findWater(Case position) {
         return true;
     }

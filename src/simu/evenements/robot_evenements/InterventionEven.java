@@ -30,6 +30,7 @@ public class InterventionEven extends RobotEven {
         int used_water = robot.deverserEau();
         incendie.setNbL(incendie.getNbL() - used_water);
 
+        /* Redirect toward next task */
         if (incendie.getNbL() > 0 && robot.getReservoir() > 0) {
             try {
                 robot.intervenir(getSim(), this.getDate());
@@ -40,14 +41,7 @@ public class InterventionEven extends RobotEven {
             }
         }
 
-        /* Redirect toward next task */
-        // if (robot.getReservoir() <= 0) {
-        // } else if (robot.getPosition().getIncendie().getNbL() > 0) {
-        // try {
-        // robot.intervenir(simu, simu.getDateSimulation() + 1);
-        // } catch (IllegalStateException e) {
-
-        // }
-        // }
+        if (robot.getReservoir() <= 0) {
+        }
     }
 }
