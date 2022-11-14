@@ -1,23 +1,23 @@
 package pathfinding;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.PriorityQueue;
 
 import exceptions.NotNeighboringCasesException;
 import exceptions.UnreachableCaseException;
+import robot.Robot;
 import terrain.Carte;
 import terrain.Case;
 
 /**
- * A class implementing the ability of finding the closest way to a given Case.
+ * A class implementing the ability of finding the closest way to a given {@code Case}.
  * TODO : replace dist by dist.
  */
 public abstract class SelfDriving {
 
     /**
-     * Node used by the A* algorithm to find the closest path.
+     * Node used by the Dijkstra algorithm to find the closest path.
      */
     class Node implements Comparable<Node> {
         private Case position;
@@ -74,7 +74,7 @@ public abstract class SelfDriving {
 
         @Override
         public int compareTo(Node o) {
-            return Integer.compare(dist, o.getDist());
+            return -Integer.compare(dist, o.getDist());
         }
 
         @Override
@@ -89,7 +89,7 @@ public abstract class SelfDriving {
     private HashMap<Case, Node> graph;
 
     /**
-     * Return the speed of the robot (or anything SelfDriving) on a given Case.
+     * Return the speed of the {@code Robot} (or anything {@code SelfDriving}) on a given {@code Case}.
      *
      * @param place The Case where we want to get the speed.
      * @return Speed of this on place.
@@ -97,11 +97,13 @@ public abstract class SelfDriving {
     public abstract int getSpeedOn(Case place);
 
     /**
-     * Return True if there is accessible water on given place
+     * Return True if there is accessible water on given place. This is not defined
+     * in SelfDriving as different {@code Robot}s have different conditions for accessing
+     * water.
      * 
      * @param place
      *
-     * @return the boolean.
+     * @return {@code true} if water is accessible.
      */
     protected abstract boolean findWater(Case place);
 
@@ -116,45 +118,6 @@ public abstract class SelfDriving {
         Node node = new Node(position);
         graph.put(position, node);
         return node;
-    }
-
-    /**
-     * Implementation of A* algorithm for pathfinding.
-     *
-     * @param carte       Carte of the simulation.
-     * @param origin      Case from where we go.
-     * @param destination Case where we want to go.
-     * @return Path to follow from origin to destination.
-     * @throws UnreachableCaseException
-     * @throws NotNeighboringCasesException
-     */
-    public Path aStar(Carte carte, Case origin, Case destination)
-            throws UnreachableCaseException, NotNeighboringCasesException {
-        graph = new HashMap<Case, Node>();
-        HashSet<Node> closedList = new HashSet<>();
-        PriorityQueue<Node> openList = new PriorityQueue<Node>();
-        openList.add(getNode(origin));
-        while (!openList.isEmpty()) {
-            Node u = openList.poll();
-            if (u.getPosition().equals(destination)) {
-                Path path = generatePath(carte, u);
-                return path;
-            }
-            for (Case position : carte.getVoisins(u.getPosition())) {
-                if (isAccessible(position)) {
-                    Node v = getNode(position);
-                    if (!(closedList.contains(v) || (openList.contains(v) && v.getCost() < u.getCost()))) {
-                        v.setCost(u.getCost() + carte.getTailleCases() / (this.getSpeedOn(u.getPosition())));
-                        v.setDist(v.cost + (int) (Math.pow(position.getLigne() - destination.getLigne(), 2)
-                                + Math.pow(position.getColonne() - destination.getColonne(), 2)));
-                        openList.add(v);
-                        v.setPrevious(u);
-                    }
-                }
-            }
-            closedList.add(u);
-        }
-        throw new UnreachableCaseException("Target unreachable");
     }
 
     /**
@@ -175,9 +138,9 @@ public abstract class SelfDriving {
         return path;
     }
 
-    public Path Dijsktra(Carte carte, Case origin, ArrayList<Case> refillCases) {
+    public Path Dijkstra(Carte carte, Case origin, CaseCompareCond cond) throws UnreachableCaseException {
         /* Initialization of the graph */
-        Node bestWaterNode = null;
+        Node bestEndNode = null;
         PriorityQueue<Node> vertexPriorityQueue = new PriorityQueue<Node>();
         graph = new HashMap<Case, Node>();
         for (Case place : carte.getCases()) {
@@ -191,7 +154,7 @@ public abstract class SelfDriving {
         }
         graph.get(origin).setDist(0);
 
-        /* Sets personnalized cost of all nodes and finds bestWaterNode */
+        /* Sets personnalized cost of all nodes and finds bestEndNode */
         while (!vertexPriorityQueue.isEmpty()) {
             Node u = vertexPriorityQueue.poll(); /* Maybe it's not the min but max... */
             for (Case position : carte.getVoisins(u.getPosition())) {
@@ -204,14 +167,15 @@ public abstract class SelfDriving {
                     }
                 }
             }
-            if (this.findWater(u.getPosition())) {
-                if (bestWaterNode == null || bestWaterNode.getDist() > u.getDist()) {
-                    bestWaterNode = u;
+            if (cond.isEnding(u.position)) {
+                if (bestEndNode == null || bestEndNode.getDist() > u.getDist()) {
+                    bestEndNode = u;
                 }
             }
         }
-        return generatePath(carte, bestWaterNode);
+        return generatePath(carte, bestEndNode);
     }
+
     /**
      * 1 function Dijkstra(Graph, source):
      * 2 dist[source] ← 0 // Initialization
@@ -237,4 +201,19 @@ public abstract class SelfDriving {
      * 22
      * 23 return prev
      */
+
+    /**
+     * A simple interface to enable Dijkstra to take any condition for a valid
+     * ending {@code Case} as a lambda expression.
+     */
+    public interface CaseCompareCond {
+        /**
+         * The method a lambda expression will use.
+         * Simply use {@code (Case c) -> boolean}.
+         * 
+         * @param c the Case which Dijkstra needs to know if it is valid as an ending
+         * @return if the Case is valid for ending
+         */
+        public boolean isEnding(Case c);
+    }
 }

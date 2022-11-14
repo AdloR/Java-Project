@@ -13,7 +13,9 @@ import terrain.Direction;
 
 public abstract class Robot extends SelfDriving {
     protected Case position;
-    /* !! En m/s !! */
+    /**
+     * Speed, in m/s !
+     */
     protected int speed;
     protected int reservoirMax;
     protected int reservoir;

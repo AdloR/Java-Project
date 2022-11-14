@@ -58,7 +58,7 @@ public class Simulateur implements Simulable {
         }
         gui = new GUISimulator(width, height, Color.BLACK, this);
 
-        gui.setSize(width+27, height+90);
+        gui.setSize(width + 27, height + 90);
 
         drawBackground();
         draw();
@@ -74,7 +74,7 @@ public class Simulateur implements Simulable {
     }
 
     /**
-     * Plan given event.
+     * Plan given {@code Evenement}.
      * 
      * @param e Event to happen.
      */
@@ -87,7 +87,7 @@ public class Simulateur implements Simulable {
     }
 
     /**
-     * @return True if the simulation has ended. False otherwise.
+     * @return {@code true} if the simulation has ended. {@code false} otherwise.
      */
     public boolean simulationTerminee() {
         return evenements.isEmpty();
@@ -138,13 +138,12 @@ public class Simulateur implements Simulable {
     }
 
     /**
-     * Draw the robot and wildfire on the simulation.
-     * TODO: @Adlor est-ce que tu peux checker ce que j'ai dit stp ?
+     * Draw the background, the robot and the wildfires on the simulation.
      */
     public void draw() {
         gui.reset();
-        gui.addGraphicalElement(new ImageElement(0, 0, tmpBackgroundPath, width, height, gui)); // Background already
-                                                                                                // created
+        // The background is drawn and put in a file before, so we only use this file.
+        gui.addGraphicalElement(new ImageElement(0, 0, tmpBackgroundPath, width, height, gui));
 
         for (Incendie i : donnees.getIncendies()) {
             if (i.getNbL() <= 0) {
@@ -179,8 +178,15 @@ public class Simulateur implements Simulable {
     }
 
     /**
-     * Draw the map on the simulation.
-     * TODO: @Adlor est-ce que tu peux checker ce que j'ai dit stp ?
+     * Draw the background (just the map in this case) of the simulation in a
+     * temporary file, which is then used by the normal draw. This is not critical
+     * to the project's structure, and was just an easy way to avoid redrawing
+     * static tiles at every draw call. It would have been possible (and preferable)
+     * to keep this file in memory, and redraw it directly without using a file, but
+     * that would have required the use of Java's GUI functions, which were not in
+     * the scope of this project.
+     * 
+     * @see #draw
      */
     private void drawBackground() {
         Carte carte = donnees.getCarte();
@@ -235,16 +241,22 @@ public class Simulateur implements Simulable {
     }
 
     /**
-     * Draw a tile with coherent asset according to neighboring tiles.
-     * TODO: @Adlor est-ce que tu peux checker et compléter cette javadoc stp ?
+     * Draw a tile with coherent asset according to neighboring tiles. This is used
+     * for the forest and water tiles. There are comments to explain the function,
+     * but it is not critical for the project's structure, so don't try to hard to
+     * understand it. It draw the images on g, which is just a way to draw various
+     * images on the same image for later use.
      * 
      * @param carte   Map of the simulation.
      * @param c       Tile (Case) to draw.
      * @param tiles   Hashmap of buffered images to draw.
-     * @param prefix  TODO: C'est pas redondant avec toCheck ou c ?
+     * @param prefix  Beginning of the filenames, might not be equal to c's type.
      * @param toCheck Type of terrain of the neighboring tile that may impact this
      *                drawing.
-     * @param g       TODO: Aucune idée de ce que c'est. @Adlor tu as une idée ?
+     * @param g       Graphics to draw the picture in (just know it is necessary to
+     *                draw all tiles on the same image)
+     * 
+     * @see #drawBackground
      */
     private void drawContinued(Carte carte, Case c, HashMap<String, BufferedImage> tiles, String prefix,
             NatureTerrain toCheck, Graphics g) {
@@ -387,8 +399,8 @@ public class Simulateur implements Simulable {
     }
 
     /**
-     * Load images from file for drawing.
-     * TODO: @ADLOR tu peux check cette javadoc aussi stp ?
+     * Load images from file for drawing, and puts them in a convenient structure
+     * for accessing them. This way, we are sure we don't have to reread a file
      * 
      * @return HashMap of buffered images to draw;
      */

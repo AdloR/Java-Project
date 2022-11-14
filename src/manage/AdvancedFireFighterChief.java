@@ -40,7 +40,7 @@ public class AdvancedFireFighterChief extends FireFighterChief {
                 for (Robot robot : robots) {
                     if (robot.isWaiting(sim) && robot.isAccessible(incendie.getFireCase())) {
                         try {
-                            Path path = robot.aStar(carte, robot.getPosition(), incendie.getFireCase());
+                            Path path = robot.Dijkstra(carte, robot.getPosition(), (c) -> c.equals(incendie.getFireCase()));
                             if (fastestRobot == null || path.getDuration() < minTime) {
                                 minTime = path.getDuration();
                                 fastestRobot = robot;
