@@ -34,7 +34,7 @@ import terrain.NatureTerrain;
  */
 public class Simulateur implements Simulable {
 
-    public static final int LARGEUR_TILES = 64;
+    public static int largeur_tuiles = 64;
     private GUISimulator gui;
     private int width, height;
     private String tmpBackgroundPath;
@@ -52,9 +52,13 @@ public class Simulateur implements Simulable {
     public Simulateur(DonneesSimulation donnees) {
         this.donnees = donnees;
         Carte carte = donnees.getCarte();
-        width = carte.getNbColonnes() * Simulateur.LARGEUR_TILES;
-        height = carte.getNbLignes() * Simulateur.LARGEUR_TILES;
+        while ((width = carte.getNbColonnes() * Simulateur.largeur_tuiles) > 1920
+                || (height = carte.getNbLignes() * Simulateur.largeur_tuiles) > 1080) {
+            largeur_tuiles /= 2;
+        }
         gui = new GUISimulator(width, height, Color.BLACK, this);
+
+        gui.setSize(width+27, height+90);
 
         drawBackground();
         draw();
@@ -146,30 +150,30 @@ public class Simulateur implements Simulable {
             if (i.getNbL() <= 0) {
                 continue;
             }
-            int x = i.getFireCase().getColonne() * LARGEUR_TILES;
-            int y = i.getFireCase().getLigne() * LARGEUR_TILES;
+            int x = i.getFireCase().getColonne() * largeur_tuiles;
+            int y = i.getFireCase().getLigne() * largeur_tuiles;
             gui.addGraphicalElement(
-                    new ImageElement(x, y, "assets/feu.png", LARGEUR_TILES, LARGEUR_TILES, gui));
+                    new ImageElement(x, y, "assets/feu.png", largeur_tuiles, largeur_tuiles, gui));
         }
 
         for (Robot r : donnees.getRobots()) {
-            int x = r.getPosition().getColonne() * LARGEUR_TILES;
-            int y = r.getPosition().getLigne() * LARGEUR_TILES;
+            int x = r.getPosition().getColonne() * largeur_tuiles;
+            int y = r.getPosition().getLigne() * largeur_tuiles;
             if (r instanceof Drone) {
                 gui.addGraphicalElement(
-                        new ImageElement(x, y, "assets/drone.png", LARGEUR_TILES, LARGEUR_TILES, gui));
+                        new ImageElement(x, y, "assets/drone.png", largeur_tuiles, largeur_tuiles, gui));
             } else if (r instanceof RobotARoues) {
                 gui.addGraphicalElement(
-                        new ImageElement(x, y, "assets/roues.png", LARGEUR_TILES, LARGEUR_TILES, gui));
+                        new ImageElement(x, y, "assets/roues.png", largeur_tuiles, largeur_tuiles, gui));
             } else if (r instanceof RobotAChenille) {
                 gui.addGraphicalElement(
-                        new ImageElement(x, y, "assets/chenille.png", LARGEUR_TILES, LARGEUR_TILES, gui));
+                        new ImageElement(x, y, "assets/chenille.png", largeur_tuiles, largeur_tuiles, gui));
             } else if (r instanceof RobotAPattes) {
                 gui.addGraphicalElement(
-                        new ImageElement(x, y, "assets/pattes.png", LARGEUR_TILES, LARGEUR_TILES, gui));
+                        new ImageElement(x, y, "assets/pattes.png", largeur_tuiles, largeur_tuiles, gui));
             } else {
                 gui.addGraphicalElement(
-                        new ImageElement(x, y, "assets/erreur.png", LARGEUR_TILES, LARGEUR_TILES, gui));
+                        new ImageElement(x, y, "assets/erreur.png", largeur_tuiles, largeur_tuiles, gui));
             }
         }
     }
@@ -191,8 +195,8 @@ public class Simulateur implements Simulable {
         Random r = new Random();
 
         for (Case c : carte.getCases()) {
-            int x = c.getColonne() * LARGEUR_TILES;
-            int y = c.getLigne() * LARGEUR_TILES;
+            int x = c.getColonne() * largeur_tuiles;
+            int y = c.getLigne() * largeur_tuiles;
 
             switch (c.getType()) {
                 case EAU:
@@ -202,19 +206,19 @@ public class Simulateur implements Simulable {
                     drawContinued(carte, c, tiles, "foret", NatureTerrain.FORET, g);
                     break;
                 case ROCHE:
-                    g.drawImage(tiles.get("roche"), x, y, LARGEUR_TILES, LARGEUR_TILES, null);
+                    g.drawImage(tiles.get("roche"), x, y, largeur_tuiles, largeur_tuiles, null);
                     break;
                 case TERRAIN_LIBRE:
                     if (r.nextDouble() < 0.35)
-                        g.drawImage(tiles.get("libre2"), x, y, LARGEUR_TILES, LARGEUR_TILES, null);
+                        g.drawImage(tiles.get("libre2"), x, y, largeur_tuiles, largeur_tuiles, null);
                     else
-                        g.drawImage(tiles.get("libre1"), x, y, LARGEUR_TILES, LARGEUR_TILES, null);
+                        g.drawImage(tiles.get("libre1"), x, y, largeur_tuiles, largeur_tuiles, null);
                     break;
                 case HABITAT:
-                    g.drawImage(tiles.get("habitat"), x, y, LARGEUR_TILES, LARGEUR_TILES, null);
+                    g.drawImage(tiles.get("habitat"), x, y, largeur_tuiles, largeur_tuiles, null);
                     break;
                 default:
-                    g.drawImage(tiles.get("erreur"), x, y, LARGEUR_TILES, LARGEUR_TILES, null);
+                    g.drawImage(tiles.get("erreur"), x, y, largeur_tuiles, largeur_tuiles, null);
             }
         }
 
@@ -244,15 +248,15 @@ public class Simulateur implements Simulable {
      */
     private void drawContinued(Carte carte, Case c, HashMap<String, BufferedImage> tiles, String prefix,
             NatureTerrain toCheck, Graphics g) {
-        int x = c.getColonne() * LARGEUR_TILES;
-        int y = c.getLigne() * LARGEUR_TILES;
+        int x = c.getColonne() * largeur_tuiles;
+        int y = c.getLigne() * largeur_tuiles;
 
         // drawing interior everywhere, other images will draw on top
-        g.drawImage(tiles.get(prefix), x, y, LARGEUR_TILES / 2, LARGEUR_TILES / 2, null);
-        g.drawImage(tiles.get(prefix), x + LARGEUR_TILES / 2, y, LARGEUR_TILES / 2, LARGEUR_TILES / 2, null);
-        g.drawImage(tiles.get(prefix), x, y + LARGEUR_TILES / 2, LARGEUR_TILES / 2, LARGEUR_TILES / 2, null);
-        g.drawImage(tiles.get(prefix), x + LARGEUR_TILES / 2, y + LARGEUR_TILES / 2, LARGEUR_TILES / 2,
-                LARGEUR_TILES / 2, null);
+        g.drawImage(tiles.get(prefix), x, y, largeur_tuiles / 2, largeur_tuiles / 2, null);
+        g.drawImage(tiles.get(prefix), x + largeur_tuiles / 2, y, largeur_tuiles / 2, largeur_tuiles / 2, null);
+        g.drawImage(tiles.get(prefix), x, y + largeur_tuiles / 2, largeur_tuiles / 2, largeur_tuiles / 2, null);
+        g.drawImage(tiles.get(prefix), x + largeur_tuiles / 2, y + largeur_tuiles / 2, largeur_tuiles / 2,
+                largeur_tuiles / 2, null);
 
         // Doing borders by checking north / south and then west/east for corners
         // If there is no border north, then check if there is a border west for upper
@@ -264,30 +268,30 @@ public class Simulateur implements Simulable {
                     && carte.getVoisin(c, Direction.OUEST).getType() != toCheck) // And a border
             // west -> corner
             {
-                g.drawImage(tiles.get(prefix + "-no"), x, y, LARGEUR_TILES / 2, LARGEUR_TILES / 2, null);
+                g.drawImage(tiles.get(prefix + "-no"), x, y, largeur_tuiles / 2, largeur_tuiles / 2, null);
             } else // But no border west -> no corner
             {
-                g.drawImage(tiles.get(prefix + "-nord"), x, y, LARGEUR_TILES / 2, LARGEUR_TILES / 2, null);
+                g.drawImage(tiles.get(prefix + "-nord"), x, y, largeur_tuiles / 2, largeur_tuiles / 2, null);
             }
 
             if (carte.voisinExiste(c, Direction.EST)
                     && carte.getVoisin(c, Direction.EST).getType() != toCheck) {
-                g.drawImage(tiles.get(prefix + "-ne"), x + LARGEUR_TILES / 2, y, LARGEUR_TILES / 2,
-                        LARGEUR_TILES / 2, null);
+                g.drawImage(tiles.get(prefix + "-ne"), x + largeur_tuiles / 2, y, largeur_tuiles / 2,
+                        largeur_tuiles / 2, null);
             } else {
-                g.drawImage(tiles.get(prefix + "-nord"), x + LARGEUR_TILES / 2, y, LARGEUR_TILES / 2,
-                        LARGEUR_TILES / 2, null);
+                g.drawImage(tiles.get(prefix + "-nord"), x + largeur_tuiles / 2, y, largeur_tuiles / 2,
+                        largeur_tuiles / 2, null);
             }
         } else {
             if (carte.voisinExiste(c, Direction.OUEST)
                     && carte.getVoisin(c, Direction.OUEST).getType() != toCheck) {
-                g.drawImage(tiles.get(prefix + "-ouest"), x, y, LARGEUR_TILES / 2, LARGEUR_TILES / 2, null);
+                g.drawImage(tiles.get(prefix + "-ouest"), x, y, largeur_tuiles / 2, largeur_tuiles / 2, null);
             }
 
             if (carte.voisinExiste(c, Direction.EST)
                     && carte.getVoisin(c, Direction.EST).getType() != toCheck) {
-                g.drawImage(tiles.get(prefix + "-est"), x + LARGEUR_TILES / 2, y, LARGEUR_TILES / 2,
-                        LARGEUR_TILES / 2, null);
+                g.drawImage(tiles.get(prefix + "-est"), x + largeur_tuiles / 2, y, largeur_tuiles / 2,
+                        largeur_tuiles / 2, null);
             }
         }
 
@@ -296,38 +300,38 @@ public class Simulateur implements Simulable {
                 && carte.getVoisin(c, Direction.SUD).getType() != toCheck) {
             if (carte.voisinExiste(c, Direction.OUEST)
                     && carte.getVoisin(c, Direction.OUEST).getType() != toCheck) {
-                g.drawImage(tiles.get(prefix + "-so"), x, y + LARGEUR_TILES / 2,
-                        LARGEUR_TILES / 2,
-                        LARGEUR_TILES / 2, null);
+                g.drawImage(tiles.get(prefix + "-so"), x, y + largeur_tuiles / 2,
+                        largeur_tuiles / 2,
+                        largeur_tuiles / 2, null);
             } else {
-                g.drawImage(tiles.get(prefix + "-sud"), x, y + LARGEUR_TILES / 2,
-                        LARGEUR_TILES / 2,
-                        LARGEUR_TILES / 2, null);
+                g.drawImage(tiles.get(prefix + "-sud"), x, y + largeur_tuiles / 2,
+                        largeur_tuiles / 2,
+                        largeur_tuiles / 2, null);
             }
 
             if (carte.voisinExiste(c, Direction.EST)
                     && carte.getVoisin(c, Direction.EST).getType() != toCheck) {
-                g.drawImage(tiles.get(prefix + "-se"), x + LARGEUR_TILES / 2, y + LARGEUR_TILES / 2,
-                        LARGEUR_TILES / 2,
-                        LARGEUR_TILES / 2, null);
+                g.drawImage(tiles.get(prefix + "-se"), x + largeur_tuiles / 2, y + largeur_tuiles / 2,
+                        largeur_tuiles / 2,
+                        largeur_tuiles / 2, null);
             } else {
-                g.drawImage(tiles.get(prefix + "-sud"), x + LARGEUR_TILES / 2, y + LARGEUR_TILES / 2,
-                        LARGEUR_TILES / 2,
-                        LARGEUR_TILES / 2, null);
+                g.drawImage(tiles.get(prefix + "-sud"), x + largeur_tuiles / 2, y + largeur_tuiles / 2,
+                        largeur_tuiles / 2,
+                        largeur_tuiles / 2, null);
             }
         } else {
             if (carte.voisinExiste(c, Direction.OUEST)
                     && carte.getVoisin(c, Direction.OUEST).getType() != toCheck) {
-                g.drawImage(tiles.get(prefix + "-ouest"), x, y + LARGEUR_TILES / 2,
-                        LARGEUR_TILES / 2,
-                        LARGEUR_TILES / 2, null);
+                g.drawImage(tiles.get(prefix + "-ouest"), x, y + largeur_tuiles / 2,
+                        largeur_tuiles / 2,
+                        largeur_tuiles / 2, null);
             }
 
             if (carte.voisinExiste(c, Direction.EST)
                     && carte.getVoisin(c, Direction.EST).getType() != toCheck) {
-                g.drawImage(tiles.get(prefix + "-est"), x + LARGEUR_TILES / 2, y + LARGEUR_TILES / 2,
-                        LARGEUR_TILES / 2,
-                        LARGEUR_TILES / 2, null);
+                g.drawImage(tiles.get(prefix + "-est"), x + largeur_tuiles / 2, y + largeur_tuiles / 2,
+                        largeur_tuiles / 2,
+                        largeur_tuiles / 2, null);
             }
         }
 
@@ -341,17 +345,17 @@ public class Simulateur implements Simulable {
                     Case no = carte.getVoisin(o, Direction.NORD);
                     if (no.getType() != toCheck) {
                         g.drawImage(tiles.get(prefix + "-not-no"), x, y,
-                                LARGEUR_TILES / 2,
-                                LARGEUR_TILES / 2, null);
+                                largeur_tuiles / 2,
+                                largeur_tuiles / 2, null);
                     }
                 }
                 if (carte.voisinExiste(c, Direction.SUD)
                         && carte.getVoisin(c, Direction.SUD).getType() == toCheck) {
                     Case so = carte.getVoisin(o, Direction.SUD);
                     if (so.getType() != toCheck) {
-                        g.drawImage(tiles.get(prefix + "-not-so"), x, y + LARGEUR_TILES / 2,
-                                LARGEUR_TILES / 2,
-                                LARGEUR_TILES / 2, null);
+                        g.drawImage(tiles.get(prefix + "-not-so"), x, y + largeur_tuiles / 2,
+                                largeur_tuiles / 2,
+                                largeur_tuiles / 2, null);
                     }
                 }
             }
@@ -364,18 +368,18 @@ public class Simulateur implements Simulable {
                         && carte.getVoisin(c, Direction.NORD).getType() == toCheck) {
                     Case ne = carte.getVoisin(e, Direction.NORD);
                     if (ne.getType() != toCheck) {
-                        g.drawImage(tiles.get(prefix + "-not-ne"), x + LARGEUR_TILES / 2, y,
-                                LARGEUR_TILES / 2,
-                                LARGEUR_TILES / 2, null);
+                        g.drawImage(tiles.get(prefix + "-not-ne"), x + largeur_tuiles / 2, y,
+                                largeur_tuiles / 2,
+                                largeur_tuiles / 2, null);
                     }
                 }
                 if (carte.voisinExiste(c, Direction.SUD)
                         && carte.getVoisin(c, Direction.SUD).getType() == toCheck) {
                     Case se = carte.getVoisin(e, Direction.SUD);
                     if (se.getType() != toCheck) {
-                        g.drawImage(tiles.get(prefix + "-not-se"), x + LARGEUR_TILES / 2, y + LARGEUR_TILES / 2,
-                                LARGEUR_TILES / 2,
-                                LARGEUR_TILES / 2, null);
+                        g.drawImage(tiles.get(prefix + "-not-se"), x + largeur_tuiles / 2, y + largeur_tuiles / 2,
+                                largeur_tuiles / 2,
+                                largeur_tuiles / 2, null);
                     }
                 }
             }
