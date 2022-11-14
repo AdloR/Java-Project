@@ -110,11 +110,15 @@ public abstract class Robot extends SelfDriving {
      * Intervene on fire at given date. If the reservoir is not full enough, it will
      * be emptied on the fire;
      * 
-     * @param sim  The simulation in which the intervention will happen.
-     * @param date Precise the time at which the intervention should start.
+     * @param sim   The simulation in which the intervention will happen.
+     * @param date  Precise the time at which the intervention should start.
+     * @param smart If {@code true}, the robot will refill automatically when its
+     *              reservoir is empty.
      * @throws IllegalStateException if the robot is not free at the given date.
+     * 
+     * @see InterventionEven
      */
-    public void intervenir(Simulateur sim, long date) throws IllegalStateException {
+    public void intervenir(Simulateur sim, long date, boolean smart) throws IllegalStateException {
         if (this.timeFree > date) {
             throw new IllegalStateException(date + " : The robot can't intervene, it is already occupied !");
         }
@@ -122,7 +126,6 @@ public abstract class Robot extends SelfDriving {
         this.timeFree = date + this.timeIntervention;
         trace += "Intervene (from intervenir) until " + timeFree + "; ";
     }
-
 
     /**
      * Plan to refill robot's reservoir as soon as possible.

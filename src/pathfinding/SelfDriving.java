@@ -1,12 +1,10 @@
 package pathfinding;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.PriorityQueue;
 
 import exceptions.NotNeighboringCasesException;
 import exceptions.UnreachableCaseException;
-import robot.Robot;
 import terrain.Carte;
 import terrain.Case;
 
@@ -108,7 +106,7 @@ public abstract class SelfDriving {
      *
      * @return {@code true} if water is accessible.
      */
-    protected abstract boolean findWater(Case place);
+    public abstract boolean findWater(Case place);
 
     public abstract int getTimeOn(Case pos);
 
