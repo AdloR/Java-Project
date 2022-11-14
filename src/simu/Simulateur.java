@@ -52,13 +52,14 @@ public class Simulateur implements Simulable {
     public Simulateur(DonneesSimulation donnees) {
         this.donnees = donnees;
         Carte carte = donnees.getCarte();
+        // Choosing the tiles and windows size.
         while ((width = carte.getNbColonnes() * Simulateur.largeur_tuiles) > 1920
                 || (height = carte.getNbLignes() * Simulateur.largeur_tuiles) > 1080) {
             largeur_tuiles /= 2;
         }
         gui = new GUISimulator(width, height, Color.BLACK, this);
 
-        gui.setSize(width + 27, height + 90);
+        gui.setSize(Integer.max(width + 27, 830), height + 90);
 
         drawBackground();
         draw();

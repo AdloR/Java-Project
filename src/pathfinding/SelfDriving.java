@@ -11,7 +11,8 @@ import terrain.Carte;
 import terrain.Case;
 
 /**
- * A class implementing the ability of finding the closest way to a given {@code Case}.
+ * A class implementing the ability of finding the closest way to a given
+ * {@code Case}.
  * TODO : replace dist by dist.
  */
 public abstract class SelfDriving {
@@ -74,7 +75,7 @@ public abstract class SelfDriving {
 
         @Override
         public int compareTo(Node o) {
-            return -Integer.compare(dist, o.getDist());
+            return Integer.compare(dist, o.getDist());
         }
 
         @Override
@@ -89,7 +90,8 @@ public abstract class SelfDriving {
     private HashMap<Case, Node> graph;
 
     /**
-     * Return the speed of the {@code Robot} (or anything {@code SelfDriving}) on a given {@code Case}.
+     * Return the speed of the {@code Robot} (or anything {@code SelfDriving}) on a
+     * given {@code Case}.
      *
      * @param place The Case where we want to get the speed.
      * @return Speed of this on place.
@@ -98,7 +100,8 @@ public abstract class SelfDriving {
 
     /**
      * Return True if there is accessible water on given place. This is not defined
-     * in SelfDriving as different {@code Robot}s have different conditions for accessing
+     * in SelfDriving as different {@code Robot}s have different conditions for
+     * accessing
      * water.
      * 
      * @param place
@@ -153,6 +156,7 @@ public abstract class SelfDriving {
             }
         }
         graph.get(origin).setDist(0);
+        vertexPriorityQueue.add(graph.get(origin));
 
         /* Sets personnalized cost of all nodes and finds bestEndNode */
         while (!vertexPriorityQueue.isEmpty()) {
@@ -161,9 +165,10 @@ public abstract class SelfDriving {
                 if (isAccessible(position)) {
                     Node v = getNode(position);
                     int alt = u.getDist() + carte.getTailleCases() / this.getSpeedOn(u.getPosition());
-                    if (alt < v.getDist()) {
+                    if (alt >= 0 && alt < v.getDist()) { // We are avoiding integer overflow with first condition.
                         v.setDist(alt);
                         v.setPrevious(u);
+                        vertexPriorityQueue.add(v);
                     }
                 }
             }
@@ -173,6 +178,8 @@ public abstract class SelfDriving {
                 }
             }
         }
+        if (bestEndNode == null)
+            throw new UnreachableCaseException("No path exists between " + origin + " and a valid ending case.");
         return generatePath(carte, bestEndNode);
     }
 
