@@ -10,7 +10,7 @@ class StrategieElementaire {
     public static void main(String[] args) {
         DonneesSimulation donnees;
         try {
-            donnees = LecteurDonnees.lire("cartes/carteSujet.map");
+            donnees = LecteurDonnees.lire("cartes/desertOfDeath-20x20.map");
         } catch (Exception e) {
             e.printStackTrace();
             return;
@@ -21,7 +21,6 @@ class StrategieElementaire {
         FireFighterChief elem = new ElementaryFirefighterChief(donnees.getRobots(), donnees.getIncendies(),
                 donnees.getCarte());
         sim.ajouteEvenement(new LancementStrategie(1, sim, elem, false));
-
         sim.draw();
     }
 }
