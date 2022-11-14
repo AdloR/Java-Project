@@ -19,7 +19,7 @@ public class RobotARoues extends Robot {
     }
 
     @Override
-    protected boolean findWater(Case position) {
+    public boolean findWater(Case position) {
         for (Case place : position.getCarte().getVoisins(position)) {
             if (place.getType() == NatureTerrain.EAU) {
                 return true;
