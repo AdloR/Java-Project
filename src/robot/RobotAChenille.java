@@ -50,6 +50,6 @@ public class RobotAChenille extends Robot {
 
     @Override
     public boolean isAccessible(Case position) {
-        return !(position.getType() == EAU) || !(position.getType() == ROCHE);
+        return !(position.getType() == EAU) && !(position.getType() == ROCHE);
     }
 }
