@@ -30,7 +30,7 @@ import terrain.Direction;
 import terrain.NatureTerrain;
 
 /**
- * TODO : explain what a Simulateur is. (@Adlor je veux bien de l'aide pour ça)
+ * Manages the simulation (events handling and display)
  */
 public class Simulateur implements Simulable {
 

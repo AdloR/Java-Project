@@ -71,7 +71,7 @@ public class InterventionEven extends RobotEven {
             try {
                 Path path = robot.Dijkstra(carte, robot.getPosition(),
                         (c) -> robot.findWater(c));
-                robot.followPath(getSim(), path, carte);
+                robot.followPath(getSim(), path);
                 robot.remplir(getSim());
             } catch (UnreachableCaseException e) {
                 System.err.println("Robot could not refill, as no water is accessible.");

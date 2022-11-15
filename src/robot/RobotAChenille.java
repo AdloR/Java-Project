@@ -9,15 +9,20 @@ import static terrain.NatureTerrain.ROCHE;
 
 /**
  * A Robot with tracks:
- *      default speed : 60 Km/h can be set to up to 80 Km/h in the .map file.
- *      speed drop by 50% in forest.
- *      cannot go on water or rocks.
- *      reservoir : 2000 L
- *      refill : 5 min next to a water tile.
- *      intervention : 100 L in 8s
+ * - default speed : 60 Km/h can be set to up to 80 Km/h in the .map file.
+ * - speed drop by 50% in forest.
+ * - cannot go on water or rocks.
+ * - reservoir : 2000 L
+ * - refill : 5 min next to a water tile.
+ * - intervention : 100 L in 8s
  */
 public class RobotAChenille extends Robot {
 
+    /**
+     * RobotAchenille constructor
+     *
+     * @param position The tile where the robot spawn.
+     */
     public RobotAChenille(Case position) {
         this.position = position;
         this.speed = 60 * 1000 / 3600;

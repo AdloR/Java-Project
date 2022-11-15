@@ -23,7 +23,7 @@ public class Path {
      * 
      * @param carte The Carte where the crossed Cases are.
      * @param robot The Robot that will follow the Path.
-     * @param end   End of the Path.
+     * @param start End of the Path.
      */
     public Path(Carte carte, SelfDriving robot, Case start) {
         this.carte = carte;
@@ -43,6 +43,10 @@ public class Path {
 
     public Case getStart() {
         return start;
+    }
+
+    public Carte getCarte() {
+        return carte;
     }
 
     /**

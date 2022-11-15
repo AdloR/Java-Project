@@ -53,7 +53,7 @@ public class AdvancedFireFighterChief extends FireFighterChief {
                 }
                 if (fastestRobot != null) {
                     try {
-                        fastestRobot.followPath(sim, minPath, carte);
+                        fastestRobot.followPath(sim, minPath);
                         fastestRobot.startIntervention(sim);
                     } catch (Exception e) {
                         e.printStackTrace();
