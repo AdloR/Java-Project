@@ -157,8 +157,8 @@ public abstract class SelfDriving {
      *
      *
      * This code is an interpretation of pseudocode on Wikipedia :
-     * 
-     * @link https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
+     *
+     * @link <a href="https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm">https://en.wikipedia.org/wiki/Dijkstra's_algorithm</a>
      *
      * @param origin The {@code Case} from which we want to go.
      * @param cond   A function returning either true of false. Returns true on
