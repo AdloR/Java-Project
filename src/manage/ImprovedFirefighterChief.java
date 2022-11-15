@@ -25,7 +25,7 @@ public class ImprovedFirefighterChief extends FireFighterChief {
 
     /**
      * <ul>
-     * <li> The firefighterChief advises to all robots an {@code incendie} to extinct.
+     * <li> The firefighterChief advises the nearest {@code incendie} to all robots to extinct.
      *
      * <li> The occupied robots refuse the proposition, the other ones compute the
      * shortest route to go the {@code incendie} and return the time that they'll need to do so.
@@ -60,7 +60,7 @@ public class ImprovedFirefighterChief extends FireFighterChief {
 
     public boolean CondIncendies(Case c) {
         for (Incendie incendie : incendies) {
-            if (c.equals(incendie.getFireCase())) {
+            if (c.equals(incendie.getFireCase()) && incendie.getNbL() > 0) {
                 return true;
             }
         }
