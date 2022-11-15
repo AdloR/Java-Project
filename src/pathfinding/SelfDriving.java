@@ -155,6 +155,11 @@ public abstract class SelfDriving {
      * Dijkstra algorithm for finding the shortest path toward a tile ({@code Case})
      * that satisfy given condition.
      *
+     *
+     * This code is an interpretation of pseudocode on Wikipedia :
+     * @link https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
+     *       TODO: validate this javadoc with the team
+     *
      * @param origin The {@code Case} from which we want to go.
      * @param cond   A function returning either true of false. Returns true on
      *               {@code Case}s considered as destination or target.
@@ -164,11 +169,6 @@ public abstract class SelfDriving {
      * @throws UnreachableCaseException If there is no accessible {@code Case}
      *                                  satisfying given condition.
      *
-     *                                  This code is an interpretation of pseudocode
-     *                                  on Wikipedia :
-     * @link https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
-     *
-     *       TODO: validate this javadoc with the team
      */
     public Path Dijkstra(Case origin, CaseCompareCond cond) throws UnreachableCaseException {
         Carte carte = origin.getCarte();
