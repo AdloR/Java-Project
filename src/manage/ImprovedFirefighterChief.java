@@ -7,7 +7,6 @@ import simu.Simulateur;
 import terrain.Carte;
 import terrain.Case;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import exceptions.UnreachableCaseException;
