@@ -19,9 +19,9 @@ public abstract class FireFighterChief {
     /**
      * FireFighterChief constructor
      *
-     * @param robots List of robots of the map.
+     * @param robots    List of robots of the map.
      * @param incendies List of {@code Incendie} of the map.
-     * @param carte The map ({@code Carte} type).
+     * @param carte     The map ({@code Carte} type).
      */
     public FireFighterChief(List<Robot> robots, List<Incendie> incendies, Carte carte) {
         this.robots = robots;

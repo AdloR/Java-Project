@@ -21,12 +21,15 @@ import terrain.NatureTerrain;
 
 /**
  * .map files reader.
- * Data of tiles ({@code Case}), robots and wildfires ({@code Incendie}) are read in given file. It prompts them and loads them in a {@code DonneesSimulation} for the simulator use.
+ * Data of tiles ({@code Case}), robots and wildfires ({@code Incendie}) are
+ * read in given file. It prompts them and loads them in a
+ * {@code DonneesSimulation} for the simulator use.
  */
 public class LecteurDonnees {
 
     /**
-     * Read and display data from given file. It then returns a {@code DonneesSimulation} object with the data.
+     * Read and display data from given file. It then returns a
+     * {@code DonneesSimulation} object with the data.
      *
      * @param fichierDonnees Name of the .map file to read.
      */
@@ -57,7 +60,8 @@ public class LecteurDonnees {
     /**
      * Lit et affiche les donnees de la carte.
      *
-     * @throws DataFormatException Given file is not a correct .map file (see subject).
+     * @throws DataFormatException Given file is not a correct .map file (see
+     *                             subject).
      */
     private Carte lireCarte() throws DataFormatException {
         ignorerCommentaires();
@@ -254,7 +258,8 @@ public class LecteurDonnees {
     /**
      * Verifie qu'il n'y a plus rien a lire sur cette ligne (int ou float).
      *
-     * @throws DataFormatException Given file is not a correct .map file (see subject).
+     * @throws DataFormatException Given file is not a correct .map file (see
+     *                             subject).
      */
     private void verifieLigneTerminee() throws DataFormatException {
         if (scanner.findInLine("(\\d+)") != null) {

@@ -9,11 +9,20 @@ import simu.Simulateur;
 import terrain.Carte;
 
 /**
- * The firefighterChief that will apply the Advanced strategy (second strategy of the topic) :
- *            1. The firefighterChief advises to all robots an {@code Incendie} to extinct.
- *            2. The occupied robots refuse the proposition, the other ones compute the shortest route to go the {@code Incendie} and return the time that they'll need to do so.
- *            3. The chief picks the fastest robot to extinct the {@code Incendie}. The robot chosen programs the events necessaries to make his way to the {@code Incendie}. Then he checks if the {@code Incendie} was not extinct before pouring water. When the reservoir of a robot is empty, it goes refill it from his own.
- *            4. The chief can ask this for each {@code Incendie}. If some remain unassigned, the fire chief waits for a certain amount of time and waits for a certain period of time and proposes the remaining {@code Incendie} again.
+ * The firefighterChief that will apply the Advanced strategy (second strategy
+ * of the topic) :
+ * 1. The firefighterChief advises to all robots an {@code Incendie} to extinct.
+ * 2. The occupied robots refuse the proposition, the other ones compute the
+ * shortest route to go the {@code Incendie} and return the time that they'll
+ * need to do so.
+ * 3. The chief picks the fastest robot to extinct the {@code Incendie}. The
+ * robot chosen programs the events necessaries to make his way to the
+ * {@code Incendie}. Then he checks if the {@code Incendie} was not extinct
+ * before pouring water. When the reservoir of a robot is empty, it goes refill
+ * it from his own.
+ * 4. The chief can ask this for each {@code Incendie}. If some remain
+ * unassigned, the fire chief waits for a certain amount of time and waits for a
+ * certain period of time and proposes the remaining {@code Incendie} again.
  */
 public class AdvancedFireFighterChief extends FireFighterChief {
     public AdvancedFireFighterChief(List<Robot> robots, List<Incendie> incendies, Carte carte) {
