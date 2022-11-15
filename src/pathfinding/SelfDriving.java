@@ -157,8 +157,8 @@ public abstract class SelfDriving {
      *
      *
      * This code is an interpretation of pseudocode on Wikipedia :
+     * 
      * @link https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
-     *       TODO: validate this javadoc with the team
      *
      * @param origin The {@code Case} from which we want to go.
      * @param cond   A function returning either true of false. Returns true on
@@ -213,34 +213,6 @@ public abstract class SelfDriving {
             throw new UnreachableCaseException("No path exists between " + origin + " and a valid ending case.");
         return generatePath(bestEndNode);
     }
-
-    /*
-     * 1 function Dijkstra(Graph, source):
-     * 2 dist[source] ← 0 // Initialization
-     * 3
-     * 4 create vertex priority queue Q
-     * 5
-     * 6 for each vertex v in Graph.Vertices:
-     * 7 if v ≠ source
-     * 8 dist[v] ← INFINITY // Unknown distance from source to v
-     * 9 prev[v] ← UNDEFINED // Predecessor of v
-     * 10
-     * 11 Q.add_with_priority(v, dist[v])
-     * 12
-     * 13
-     * 14 while Q is not empty: // The main loop
-     * 15 u ← Q.extract_min() // Remove and return best vertex
-     * 16 for each neighbor v of u: // Go through all v neighbors of u
-     * 17 alt ← dist[u] + Graph.Edges(u, v)
-     * 18 if alt < dist[v]:
-     * 19 dist[v] ← alt
-     * 20 prev[v] ← u
-     * 21 Q.decrease_priority(v, alt)
-     * 22
-     * 23 return prev
-     *
-     * TODO: delete this
-     */
 
     /**
      * A simple interface to enable Dijkstra to take any condition for a valid
