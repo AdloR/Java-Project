@@ -2,6 +2,7 @@ package manage;
 
 import java.util.List;
 
+import exceptions.UnreachableCaseException;
 import pathfinding.Path;
 import robot.Robot;
 import simu.Incendie;
@@ -59,6 +60,8 @@ public class AdvancedFireFighterChief extends FireFighterChief {
                                 fastestRobot = robot;
                                 minPath = path;
                             }
+                        } catch (UnreachableCaseException e) {
+                            assert true;
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
