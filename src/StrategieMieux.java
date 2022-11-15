@@ -1,5 +1,5 @@
 import io.LecteurDonnees;
-import manage.BetterFireFighterChief;
+import manage.ImprovedFirefighterChief;
 import manage.FireFighterChief;
 import simu.DonneesSimulation;
 import simu.Simulateur;
@@ -10,7 +10,7 @@ public class StrategieMieux {
     public static void main(String[] args) {
         DonneesSimulation donnees;
         try {
-            donnees = LecteurDonnees.lire("cartes/carteSujet.map");
+            donnees = LecteurDonnees.lire("cartes/mushroomOfHell-20x20.map");
         } catch (Exception e) {
             e.printStackTrace();
             return;
@@ -18,7 +18,7 @@ public class StrategieMieux {
 
         Simulateur sim = new Simulateur(donnees);
 
-        FireFighterChief elem = new BetterFireFighterChief(donnees.getRobots(), donnees.getIncendies(),
+        FireFighterChief elem = new ImprovedFirefighterChief(donnees.getRobots(), donnees.getIncendies(),
                 donnees.getCarte());
         sim.ajouteEvenement(new LancementStrategie(1, sim, elem, false));
 

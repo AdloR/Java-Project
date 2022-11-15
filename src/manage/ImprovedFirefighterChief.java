@@ -10,6 +10,8 @@ import terrain.Case;
 import java.util.ArrayList;
 import java.util.List;
 
+import exceptions.UnreachableCaseException;
+
 public class ImprovedFirefighterChief extends FireFighterChief {
 
     /**
@@ -25,19 +27,24 @@ public class ImprovedFirefighterChief extends FireFighterChief {
 
     /**
      * <ul>
-     * <li> The firefighterChief advises the nearest {@code incendie} to all robots to extinct.
+     * <li>The firefighterChief advises the nearest {@code incendie} to all robots
+     * to extinct.
      *
-     * <li> The occupied robots refuse the proposition, the other ones compute the
-     * shortest route to go the {@code incendie} and return the time that they'll need to do so.
+     * <li>The occupied robots refuse the proposition, the other ones compute the
+     * shortest route to go the {@code incendie} and return the time that they'll
+     * need to do so.
      *
-     * <li> The chief picks the fastest robot to extinct the {@code incendie}.
-     * The robot chosen programs the events necessaries to make his way to the {@code incendie}.
+     * <li>The chief picks the fastest robot to extinct the {@code incendie}.
+     * The robot chosen programs the events necessaries to make his way to the
+     * {@code incendie}.
      * Then he checks if the {@code incendie} was not extinct before pouring water.
      * When the reservoir of a robot is empty, it goes refill it from his own.
      *
-     * <li> The chief can ask this for each {@code incendie}. If some remain unassigned,
+     * <li>The chief can ask this for each {@code incendie}. If some remain
+     * unassigned,
      * the fire chief waits for a certain amount of time and
-     * waits for a certain period of time and proposes the remaining {@code incendie} again.
+     * waits for a certain period of time and proposes the remaining
+     * {@code incendie} again.
      *
      * </ul>
      *
@@ -51,6 +58,8 @@ public class ImprovedFirefighterChief extends FireFighterChief {
                     Path nearestIncendie = robot.Dijkstra(robot.getPosition(), this::CondIncendies);
                     robot.followPath(sim, nearestIncendie);
                     robot.startIntervention(sim);
+                } catch (UnreachableCaseException e) {
+                    assert true;
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
