@@ -5,7 +5,9 @@ import robot.Robot;
 import simu.Incendie;
 import simu.Simulateur;
 import terrain.Carte;
+import terrain.Case;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ImprovedFirefighterChief extends FireFighterChief {
@@ -42,7 +44,26 @@ public class ImprovedFirefighterChief extends FireFighterChief {
      * @param sim the Simulateur.
      */
     @Override
-    public void affectRobot(Simulateur sim){
+    public void affectRobot(Simulateur sim) {
+        for (Robot robot : robots) {
+            if (robot.isWaiting(sim)) {
+                try {
+                    Path nearestIncendie = robot.Dijkstra(robot.getPosition(), this::CondIncendies);
+                    robot.followPath(sim, nearestIncendie);
+                    robot.startIntervention(sim);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 
-    };
+    public boolean CondIncendies(Case c) {
+        for (Incendie incendie : incendies) {
+            if (c.equals(incendie.getFireCase())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
