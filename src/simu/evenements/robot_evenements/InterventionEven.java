@@ -5,7 +5,6 @@ import pathfinding.Path;
 import robot.Robot;
 import simu.Incendie;
 import simu.Simulateur;
-import terrain.Carte;
 
 /**
  * Makes a robot intervene once on the wildfire (Incendie) on it's tile (Case).
@@ -41,12 +40,14 @@ public class InterventionEven extends RobotEven {
      * @param date  The date to execute the event.
      * @param sim   The current simulator (Simulateur) instance.
      * @param robot The robot that will intervene.
-     * @param smart
+     * @param smart If true the robot will automatically find water and refill if
+     *              it's reservoir is empty after the intervention.
      * @see #InterventionEven(long, Simulateur, Robot)
      */
     public InterventionEven(long date, Simulateur sim, Robot robot, boolean smart) {
         super(date, sim, robot);
         this.priority = true;
+        this.smart = smart;
     }
 
     @Override
@@ -67,9 +68,8 @@ public class InterventionEven extends RobotEven {
         }
         // Refill automatically if needed, only if smart is true
         if (smart && robot.getReservoir() <= 0) {
-            Carte carte = getSim().getDonnees().getCarte();
             try {
-                Path path = robot.Dijkstra(carte, robot.getPosition(),
+                Path path = robot.Dijkstra(robot.getPosition(),
                         (c) -> robot.findWater(c));
                 robot.followPath(getSim(), path);
                 robot.remplir(getSim());

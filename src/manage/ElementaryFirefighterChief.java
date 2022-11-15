@@ -50,7 +50,7 @@ public class ElementaryFirefighterChief extends FireFighterChief {
                     if (robot.isWaiting(sim) && robot.isAccessible(incendie.getFireCase())) {
                         try {
                             /* search for shortest route with aStar algorithm. */
-                            Path path = robot.Dijkstra(carte, robot.getPosition(),
+                            Path path = robot.Dijkstra(robot.getPosition(),
                                     (c) -> c.equals(incendie.getFireCase()));
                             robot.followPath(sim, path);
                             robot.startIntervention(sim);

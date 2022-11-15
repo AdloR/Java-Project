@@ -9,7 +9,8 @@ import simu.Simulateur;
 import terrain.Carte;
 
 /**
- * The firefighterChief that will apply the Advanced strategy (second strategy of the topic)
+ * The firefighterChief that will apply the Advanced strategy (second strategy
+ * of the topic)
  */
 public class AdvancedFireFighterChief extends FireFighterChief {
 
@@ -19,16 +20,24 @@ public class AdvancedFireFighterChief extends FireFighterChief {
 
     /**
      * @param sim the Simulateur.
-     *            1. The firefighterChief advises to all robots an "incendie" to extinct.
-     *            2. The occupied robots refuse the proposition, the other ones compute the
-     *            shortest route to go the "incendie" and return the time that they'll need to do so.
+     *            1. The firefighterChief advises to all robots an "incendie" to
+     *            extinct.
+     *            2. The occupied robots refuse the proposition, the other ones
+     *            compute the
+     *            shortest route to go the "incendie" and return the time that
+     *            they'll need to do so.
      *            3. The chief picks the fastest robot to extinct the "incendie".
-     *            The robot chosen programs the events necessaries to make his way to the "incendie".
-     *            Then he checks if the "incendie" was not extinct before pouring water.
-     *            When the reservoir of a robot is empty, it goes refill it from his own.
-     *            4. The chief can ask this for each "incendie". If some remain unassigned,
+     *            The robot chosen programs the events necessaries to make his way
+     *            to the "incendie".
+     *            Then he checks if the "incendie" was not extinct before pouring
+     *            water.
+     *            When the reservoir of a robot is empty, it goes refill it from his
+     *            own.
+     *            4. The chief can ask this for each "incendie". If some remain
+     *            unassigned,
      *            the fire chief waits for a certain amount of time and
-     *            waits for a certain period of time and proposes the remaining "incendie" again.
+     *            waits for a certain period of time and proposes the remaining
+     *            "incendie" again.
      */
     @Override
     public void affectRobot(Simulateur sim) {
@@ -40,7 +49,7 @@ public class AdvancedFireFighterChief extends FireFighterChief {
                 for (Robot robot : robots) {
                     if (robot.isWaiting(sim) && robot.isAccessible(incendie.getFireCase())) {
                         try {
-                            Path path = robot.Dijkstra(carte, robot.getPosition(), (c) -> c.equals(incendie.getFireCase()));
+                            Path path = robot.Dijkstra(robot.getPosition(), (c) -> c.equals(incendie.getFireCase()));
                             if (fastestRobot == null || path.getDuration() < minTime) {
                                 minTime = path.getDuration();
                                 fastestRobot = robot;
