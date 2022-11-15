@@ -6,7 +6,19 @@ import terrain.NatureTerrain;
 
 import static terrain.NatureTerrain.EAU;
 
+/**
+ * A Robot with legs:
+ *      default speed : 30 Km/h drop to 10 Km/h on Rocks.
+ *      cannot go on water
+ *      infinite reservoir
+ *      intervention : 10 L in 1s
+ */
 public class RobotAPattes extends Robot {
+    /**
+     * RobotAPattes constructor
+     *
+     * @param position The tile where the robot spawn.
+     */
     public RobotAPattes(Case position) {
         this.position = position;
         this.speed = 30 * 1000 / 3600;

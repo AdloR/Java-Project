@@ -6,8 +6,21 @@ import terrain.NatureTerrain;
 
 import static terrain.NatureTerrain.*;
 
+/**
+ * A Robot with wheels:
+ *      default speed : 80 Km/h
+ *      can move only on free or built space
+ *      reservoir size : 5000 L
+ *      refill : 10 min next to a water tile.
+ *      intervention : 100 L in 5s
+ */
 public class RobotARoues extends Robot {
 
+    /**
+     * RobotARoues constructor
+     *
+     * @param position The tile where the robot spawn.
+     */
     public RobotARoues(Case position) {
         this.position = position;
         this.speed = 80 * 1000 / 3600;
