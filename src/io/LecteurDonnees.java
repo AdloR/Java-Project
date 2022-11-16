@@ -20,37 +20,20 @@ import terrain.Case;
 import terrain.NatureTerrain;
 
 /**
- * Lecteur de cartes au format spectifié dans le sujet.
- * Les données sur les cases, robots puis incendies sont lues dans le fichier,
- * puis simplement affichées.
- * A noter: pas de vérification sémantique sur les valeurs numériques lues.
- * <p>
- * IMPORTANT:
- * <p>
- * Cette classe ne fait que LIRE les infos et les afficher.
- * A vous de modifier ou d'ajouter des méthodes, inspirées de celles présentes
- * (ou non), qui CREENT les objets au moment adéquat pour construire une
- * instance de la classe DonneesSimulation à partir d'un fichier.
- * <p>
- * Vous pouvez par exemple ajouter une méthode qui crée et retourne un objet
- * contenant toutes les données lues:
- * public static DonneesSimulation creeDonnees(String fichierDonnees);
- * Et faire des méthode creeCase(), creeRobot(), ... qui lisent les données,
- * créent les objets adéquats et les ajoutent ds l'instance de
- * DonneesSimulation.
+ * .map files reader.
+ * Data of tiles ({@code Case}), robots and wildfires ({@code Incendie}) are
+ * read in given file. It prompts them and loads them in a
+ * {@code DonneesSimulation} for the simulator use.
  */
 public class LecteurDonnees {
 
     /**
-     * Lit et affiche le contenu d'un fichier de donnees (cases,
-     * robots et incendies).
-     * Ceci est méthode de classe; utilisation:
-     * LecteurDonnees.lire(fichierDonnees)
+     * Read and display data from given file. It then returns a
+     * {@code DonneesSimulation} object with the data.
      *
-     * @param fichierDonnees nom du fichier à lire
+     * @param fichierDonnees Name of the .map file to read.
      */
-    public static DonneesSimulation lire(String fichierDonnees)
-            throws FileNotFoundException, DataFormatException {
+    public static DonneesSimulation lire(String fichierDonnees) throws FileNotFoundException, DataFormatException {
         System.out.println("\n == Lecture du fichier" + fichierDonnees);
         LecteurDonnees lecteur = new LecteurDonnees(fichierDonnees);
         Carte carte = lecteur.lireCarte();
@@ -60,8 +43,6 @@ public class LecteurDonnees {
         System.out.println("\n == Lecture terminee");
         return new DonneesSimulation(carte, incendies, robots, fichierDonnees);
     }
-
-    // Tout le reste de la classe est prive!
 
     private static Scanner scanner;
 
@@ -79,7 +60,8 @@ public class LecteurDonnees {
     /**
      * Lit et affiche les donnees de la carte.
      *
-     * @throws ExceptionFormatDonnees
+     * @throws DataFormatException Given file is not a correct .map file (see
+     *                             subject).
      */
     private Carte lireCarte() throws DataFormatException {
         ignorerCommentaires();
@@ -112,7 +94,7 @@ public class LecteurDonnees {
     private Case lireCase(Carte carte, int lig, int col) throws DataFormatException {
         ignorerCommentaires();
         System.out.print("Case (" + lig + "," + col + "): ");
-        String chaineNature = new String();
+        String chaineNature;
         NatureTerrain nature;
 
         try {
@@ -140,7 +122,7 @@ public class LecteurDonnees {
      */
     private ArrayList<Incendie> lireIncendies(Carte carte) throws DataFormatException {
         ignorerCommentaires();
-        ArrayList<Incendie> incendies = new ArrayList<Incendie>();
+        ArrayList<Incendie> incendies = new ArrayList<>();
         try {
             int nbuildcendies = scanner.nextInt();
             System.out.println("Nb d'incendies = " + nbuildcendies);
@@ -158,7 +140,7 @@ public class LecteurDonnees {
     /**
      * Lit et affiche les donnees du i-eme incendie.
      *
-     * @param i
+     * @param i Index of read {@code Incendie}.
      */
     private void lireIncendie(int i, ArrayList<Incendie> incendies, Carte carte) throws DataFormatException {
         ignorerCommentaires();
@@ -188,7 +170,7 @@ public class LecteurDonnees {
      * Lit et affiche les donnees des robots.
      */
     private ArrayList<Robot> lireRobots(Carte carte) throws DataFormatException {
-        ArrayList<Robot> robots = new ArrayList<Robot>();
+        ArrayList<Robot> robots = new ArrayList<>();
         ignorerCommentaires();
         try {
             int nbRobots = scanner.nextInt();
@@ -207,7 +189,7 @@ public class LecteurDonnees {
     /**
      * Lit et affiche les donnees du i-eme robot.
      *
-     * @param i
+     * @param i Index of read {@code Incendie}.
      */
     private Robot lireRobot(Carte carte, int i) throws DataFormatException {
         ignorerCommentaires();
@@ -276,7 +258,8 @@ public class LecteurDonnees {
     /**
      * Verifie qu'il n'y a plus rien a lire sur cette ligne (int ou float).
      *
-     * @throws ExceptionFormatDonnees
+     * @throws DataFormatException Given file is not a correct .map file (see
+     *                             subject).
      */
     private void verifieLigneTerminee() throws DataFormatException {
         if (scanner.findInLine("(\\d+)") != null) {

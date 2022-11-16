@@ -18,6 +18,8 @@ public class RemplissageEven extends Evenement {
 
     @Override
     public void execute() {
+        if (!robot.findWater(robot.getPosition()))
+            throw new IllegalStateException("There is no water accessible for the robot !");
         robot.remplirReservoir();
     }
 

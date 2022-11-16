@@ -12,8 +12,8 @@ import terrain.Direction;
  * take to the robot to follow it.
  */
 public class Path {
-    private Carte carte;
-    private SelfDriving robot;
+    private final Carte carte;
+    private final SelfDriving robot;
     private int duration;
     private Case start;
     private LinkedList<Direction> path;
@@ -23,14 +23,14 @@ public class Path {
      * 
      * @param carte The Carte where the crossed Cases are.
      * @param robot The Robot that will follow the Path.
-     * @param end   End of the Path.
+     * @param start End of the Path.
      */
     public Path(Carte carte, SelfDriving robot, Case start) {
         this.carte = carte;
         this.robot = robot;
         this.duration = 0;
         this.start = start;
-        this.path = new LinkedList<Direction>();
+        this.path = new LinkedList<>();
     }
 
     public int getDuration() {
@@ -43,6 +43,10 @@ public class Path {
 
     public Case getStart() {
         return start;
+    }
+
+    public Carte getCarte() {
+        return carte;
     }
 
     /**
@@ -60,6 +64,7 @@ public class Path {
             this.start = place;
             return;
         } catch (NotNeighboringCasesException e) {
+            e.printStackTrace();
         }
         /* Case place is somewhere else. */
         throw new NotNeighboringCasesException("thrown from Path.addStep");

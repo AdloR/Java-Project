@@ -7,8 +7,6 @@ public class ForbiddenMoveException extends IllegalArgumentException {
      * unreachable for the robot concerned.
      *
      * @param message Message printed by caught exception.
-     *
-     * @exception ForbiddenMoveException
      */
     public ForbiddenMoveException(String message) {
         super(message);

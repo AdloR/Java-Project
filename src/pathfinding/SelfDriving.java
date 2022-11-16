@@ -9,24 +9,26 @@ import terrain.Carte;
 import terrain.Case;
 
 /**
- * A class implementing the ability of finding the closest way to a given
- * {@code Case}.
- * TODO : replace dist by dist.
+ * A class implementing the ability of finding the closest way to a given tile
+ * ({@code Case}).
  */
 public abstract class SelfDriving {
 
     /**
      * Node used by the Dijkstra algorithm to find the closest path.
      */
-    class Node implements Comparable<Node> {
-        private Case position;
-        private int cost;
+    private static class Node implements Comparable<Node> {
+        private final Case position;
         private int dist;
         private Node previous;
 
+        /**
+         * Node constructor
+         *
+         * @param position The tile ({@code Case}) represented.
+         */
         public Node(Case position) {
             this.position = position;
-            this.cost = 0;
             this.dist = 0;
             this.previous = null;
         }
@@ -34,8 +36,8 @@ public abstract class SelfDriving {
         /**
          * New constructor for the dijkstra algorithm
          *
-         * @param position
-         * @param dist
+         * @param position The tile ({@code Case}) represented.
+         * @param dist     The distance from the origin Node.
          */
         public Node(Case position, int dist) {
             this.position = position;
@@ -47,24 +49,12 @@ public abstract class SelfDriving {
             this.previous = previous;
         }
 
-        public Node getPrevious() {
-            return previous;
-        }
-
-        public void setCost(int cost) {
-            this.cost = cost;
-        }
-
         public void setDist(int dist) {
             this.dist = dist;
         }
 
         public Case getPosition() {
             return position;
-        }
-
-        public int getCost() {
-            return cost;
         }
 
         public int getDist() {
@@ -91,7 +81,7 @@ public abstract class SelfDriving {
      * Return the speed of the {@code Robot} (or anything {@code SelfDriving}) on a
      * given {@code Case}.
      *
-     * @param place The Case where we want to get the speed.
+     * @param place The tile ({@code Case}) where we want to get the speed.
      * @return Speed of this on place.
      */
     public abstract int getSpeedOn(Case place);
@@ -102,16 +92,38 @@ public abstract class SelfDriving {
      * accessing
      * water.
      * 
-     * @param place
+     * @param place The tile from which we would like to refill.
      *
      * @return {@code true} if water is accessible.
      */
     public abstract boolean findWater(Case place);
 
+    /**
+     * Return the time the {@code Robot} (or anything {@code SelfDriving}) will
+     * spend moving to escape
+     * given {@code Case}.
+     *
+     * @param pos The tile ({@code Case}) from which we want to "escape".
+     * @return The time needed to move from given tile.
+     */
     public abstract int getTimeOn(Case pos);
 
+    /**
+     * Return if the given tile ({@code Case}) is accessible for the
+     * {@code Selfdriving} instance.
+     *
+     * @param place The tile we would like to access.
+     * @return True if {@code place} is accessible.
+     */
     public abstract boolean isAccessible(Case place);
 
+    /**
+     * Return {@code Node} referring to given {@code Case}.
+     * If none already exist, create one.
+     *
+     * @param position A tile ({@code Case}) of the map.
+     * @return A node referring to given {@code position}.
+     */
     private Node getNode(Case position) {
         if (graph.containsKey(position)) {
             return graph.get(position);
@@ -122,14 +134,14 @@ public abstract class SelfDriving {
     }
 
     /**
-     * Generate path from Node.
+     * Generate path from Node, following {@code previous} attribute.
      *
-     * @param carte Carte of the simulation.
-     * @param node  End of the path.
-     * @return Path
-     * @throws NotNeighboringCasesException
+     * @param node End of the path.
+     * @return {@code Path} toward the tile referred by the {@code node} parameter.
+     * @throws NotNeighboringCasesException This should not happen.
      */
-    private Path generatePath(Carte carte, Node node) throws NotNeighboringCasesException {
+    private Path generatePath(Node node) throws NotNeighboringCasesException {
+        Carte carte = node.getPosition().getCarte();
         Path path = new Path(carte, this, node.getPosition());
         node = node.previous;
         while (node != null) {
@@ -139,11 +151,32 @@ public abstract class SelfDriving {
         return path;
     }
 
-    public Path Dijkstra(Carte carte, Case origin, CaseCompareCond cond) throws UnreachableCaseException {
+    /**
+     * Dijkstra algorithm for finding the shortest path toward a tile ({@code Case})
+     * that satisfy given condition.
+     *
+     *
+     * This code is an interpretation of pseudocode on Wikipedia :
+     *
+     * @link <a href="https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm">https://en.wikipedia.org/wiki/Dijkstra's_algorithm</a>
+     *
+     * @param origin The {@code Case} from which we want to go.
+     * @param cond   A function returning either true of false. Returns true on
+     *               {@code Case}s considered as destination or target.
+     * @return A {@code Path} from {@code origin} toward a {@code Case} satisfying
+     *         {@code cond}. The return path is the shortest in terms of travel
+     *         time.
+     * @throws UnreachableCaseException If there is no accessible {@code Case}
+     *                                  satisfying given condition.
+     *
+     */
+    public Path Dijkstra(Case origin, CaseCompareCond cond) throws UnreachableCaseException {
+        Carte carte = origin.getCarte();
+
         /* Initialization of the graph */
         Node bestEndNode = null;
-        PriorityQueue<Node> vertexPriorityQueue = new PriorityQueue<Node>();
-        graph = new HashMap<Case, Node>();
+        PriorityQueue<Node> vertexPriorityQueue = new PriorityQueue<>();
+        graph = new HashMap<>();
         for (Case place : carte.getCases()) {
             if (isAccessible(place)) {
                 Node n = new Node(place, Integer.MAX_VALUE);
@@ -178,34 +211,8 @@ public abstract class SelfDriving {
         }
         if (bestEndNode == null)
             throw new UnreachableCaseException("No path exists between " + origin + " and a valid ending case.");
-        return generatePath(carte, bestEndNode);
+        return generatePath(bestEndNode);
     }
-
-    /**
-     * 1 function Dijkstra(Graph, source):
-     * 2 dist[source] ← 0 // Initialization
-     * 3
-     * 4 create vertex priority queue Q
-     * 5
-     * 6 for each vertex v in Graph.Vertices:
-     * 7 if v ≠ source
-     * 8 dist[v] ← INFINITY // Unknown distance from source to v
-     * 9 prev[v] ← UNDEFINED // Predecessor of v
-     * 10
-     * 11 Q.add_with_priority(v, dist[v])
-     * 12
-     * 13
-     * 14 while Q is not empty: // The main loop
-     * 15 u ← Q.extract_min() // Remove and return best vertex
-     * 16 for each neighbor v of u: // Go through all v neighbors of u
-     * 17 alt ← dist[u] + Graph.Edges(u, v)
-     * 18 if alt < dist[v]:
-     * 19 dist[v] ← alt
-     * 20 prev[v] ← u
-     * 21 Q.decrease_priority(v, alt)
-     * 22
-     * 23 return prev
-     */
 
     /**
      * A simple interface to enable Dijkstra to take any condition for a valid
