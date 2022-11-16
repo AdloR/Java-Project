@@ -10,7 +10,7 @@ public class StrategieAvancee {
     public static void main(String[] args) {
         DonneesSimulation donnees;
         try {
-            donnees = LecteurDonnees.lire("cartes/carteSujet.map");
+            donnees = LecteurDonnees.lire("cartes/desertOfDeath-20x20.map");
         } catch (Exception e) {
             e.printStackTrace();
             return;

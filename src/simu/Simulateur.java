@@ -210,16 +210,13 @@ public class Simulateur implements Simulable {
                     drawContinued(carte, c, tiles, "eau", NatureTerrain.EAU, g);
                     break;
                 case FORET:
-                    drawContinued(carte, c, tiles, "foret", NatureTerrain.FORET, g);
+                    drawContinued(carte, c, tiles, "foret", NatureTerrain.FORET, g, 0.05);
                     break;
                 case ROCHE:
-                    g.drawImage(tiles.get("roche"), x, y, largeur_tuiles, largeur_tuiles, null);
+                    drawContinued(carte, c, tiles, "roche", NatureTerrain.ROCHE, g, 0.1);
                     break;
                 case TERRAIN_LIBRE:
-                    if (r.nextDouble() < 0.35)
-                        g.drawImage(tiles.get("libre2"), x, y, largeur_tuiles, largeur_tuiles, null);
-                    else
-                        g.drawImage(tiles.get("libre1"), x, y, largeur_tuiles, largeur_tuiles, null);
+                    g.drawImage(randomImage(tiles, "libre", 0.35), x, y, largeur_tuiles, largeur_tuiles, null);
                     break;
                 case HABITAT:
                     g.drawImage(tiles.get("habitat"), x, y, largeur_tuiles, largeur_tuiles, null);
@@ -247,6 +244,8 @@ public class Simulateur implements Simulable {
      * but it is not critical for the project's structure, so don't try to hard to
      * understand it. It draw the images on g, which is just a way to draw various
      * images on the same image for later use.
+     * It will choose random images for filled tiles according to chances, used in
+     * {@link #randomImage(HashMap, String, double...)}
      * 
      * @param carte   Map of the simulation.
      * @param c       Tile (Case) to draw.
@@ -258,19 +257,27 @@ public class Simulateur implements Simulable {
      *                draw all tiles on the same image)
      * 
      * @see #drawBackground
+     * @see #randomImage(HashMap, String, double...)
      */
     private void drawContinued(Carte carte, Case c, HashMap<String, BufferedImage> tiles, String prefix,
-            NatureTerrain toCheck, Graphics g) {
+            NatureTerrain toCheck, Graphics g, double... chances) {
         int x = c.getColonne() * largeur_tuiles;
         int y = c.getLigne() * largeur_tuiles;
 
         // drawing interior everywhere, other images will draw on top
-        g.drawImage(tiles.get(prefix), x, y, largeur_tuiles / 2, largeur_tuiles / 2, null);
-        g.drawImage(tiles.get(prefix), x + largeur_tuiles / 2, y, largeur_tuiles / 2, largeur_tuiles / 2, null);
-        g.drawImage(tiles.get(prefix), x, y + largeur_tuiles / 2, largeur_tuiles / 2, largeur_tuiles / 2, null);
-        g.drawImage(tiles.get(prefix), x + largeur_tuiles / 2, y + largeur_tuiles / 2, largeur_tuiles / 2,
-                largeur_tuiles / 2, null);
-
+        if (chances.length > 0) {
+            g.drawImage(randomImage(tiles, prefix, chances), x, y, largeur_tuiles / 2, largeur_tuiles / 2, null);
+            g.drawImage(randomImage(tiles, prefix, chances), x + largeur_tuiles / 2, y, largeur_tuiles / 2, largeur_tuiles / 2, null);
+            g.drawImage(randomImage(tiles, prefix, chances), x, y + largeur_tuiles / 2, largeur_tuiles / 2, largeur_tuiles / 2, null);
+            g.drawImage(randomImage(tiles, prefix, chances), x + largeur_tuiles / 2, y + largeur_tuiles / 2, largeur_tuiles / 2,
+                    largeur_tuiles / 2, null);
+        } else {
+            g.drawImage(tiles.get(prefix), x, y, largeur_tuiles / 2, largeur_tuiles / 2, null);
+            g.drawImage(tiles.get(prefix), x + largeur_tuiles / 2, y, largeur_tuiles / 2, largeur_tuiles / 2, null);
+            g.drawImage(tiles.get(prefix), x, y + largeur_tuiles / 2, largeur_tuiles / 2, largeur_tuiles / 2, null);
+            g.drawImage(tiles.get(prefix), x + largeur_tuiles / 2, y + largeur_tuiles / 2, largeur_tuiles / 2,
+                    largeur_tuiles / 2, null);
+        }
         // Doing borders by checking north / south and then west/east for corners
         // If there is no border north, then check if there is a border west for upper
         // left part of image
@@ -400,6 +407,32 @@ public class Simulateur implements Simulable {
     }
 
     /**
+     * Chooses a random image acoording to chances.
+     * For example, {@code randomImage(..., prefix, chance1)} will choose between
+     * two random images with the odds : {@code chance1} for the {@code prefix0}
+     * image, and {@code (1-chance1)} for the {@code prefix} image.
+     * 
+     * @param tiles   The tiles where all images are loaded ({@link #loadImages()}).
+     * @param prefix  The prefic common for all the wanted image names.
+     * @param chances The chances for the different one, except for {@code prefix}
+     *                which is 1 - (the rest of chances).
+     * @return
+     */
+    private BufferedImage randomImage(HashMap<String, BufferedImage> tiles, String prefix, double... chances) {
+        Random r = new Random();
+        double picked = r.nextDouble();
+        double comp = 0;
+        String suffix = "";
+        for (int i = 0; i < chances.length; i++) {
+            if ((comp += chances[i]) > picked) {
+                suffix += i;
+                break;
+            }
+        }
+        return tiles.get(prefix + suffix);
+    }
+
+    /**
      * Load images from file for drawing, and puts them in a convenient structure
      * for accessing them. This way, we are sure we don't have to reread a file
      * 
@@ -436,9 +469,23 @@ public class Simulateur implements Simulable {
             res.put("foret-sud", ImageIO.read(new File("assets/foret/sud.png")));
             res.put("foret", ImageIO.read(new File("assets/foret/foret.png")));
 
-            res.put("roche", ImageIO.read(new File("assets/roche.png")));
-            res.put("libre1", ImageIO.read(new File("assets/libre1.png")));
-            res.put("libre2", ImageIO.read(new File("assets/libre2.png")));
+            res.put("roche-est", ImageIO.read(new File("assets/roche/est.png")));
+            res.put("roche-ne", ImageIO.read(new File("assets/roche/ne.png")));
+            res.put("roche-no", ImageIO.read(new File("assets/roche/no.png")));
+            res.put("roche-nord", ImageIO.read(new File("assets/roche/nord.png")));
+            res.put("roche-not-ne", ImageIO.read(new File("assets/roche/not-ne.png")));
+            res.put("roche-not-no", ImageIO.read(new File("assets/roche/not-no.png")));
+            res.put("roche-not-se", ImageIO.read(new File("assets/roche/not-se.png")));
+            res.put("roche-not-so", ImageIO.read(new File("assets/roche/not-so.png")));
+            res.put("roche-ouest", ImageIO.read(new File("assets/roche/ouest.png")));
+            res.put("roche-se", ImageIO.read(new File("assets/roche/se.png")));
+            res.put("roche-so", ImageIO.read(new File("assets/roche/so.png")));
+            res.put("roche-sud", ImageIO.read(new File("assets/roche/sud.png")));
+            res.put("roche0", ImageIO.read(new File("assets/roche/roche0.png")));
+            res.put("roche", ImageIO.read(new File("assets/roche/roche.png")));
+
+            res.put("libre0", ImageIO.read(new File("assets/libre0.png")));
+            res.put("libre", ImageIO.read(new File("assets/libre.png")));
             res.put("habitat", ImageIO.read(new File("assets/habitat.png")));
             res.put("erreur", ImageIO.read(new File("assets/erreur.png")));
         } catch (IOException e) {
