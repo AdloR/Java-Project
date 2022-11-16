@@ -210,13 +210,20 @@ public class Simulateur implements Simulable {
                     drawContinued(carte, c, tiles, "eau", NatureTerrain.EAU, g);
                     break;
                 case FORET:
-                    drawContinued(carte, c, tiles, "foret", NatureTerrain.FORET, g, 0.05);
+                    drawContinued(carte, c, tiles, "foret", NatureTerrain.FORET, g, 0.08);
                     break;
                 case ROCHE:
                     drawContinued(carte, c, tiles, "roche", NatureTerrain.ROCHE, g, 0.1);
                     break;
                 case TERRAIN_LIBRE:
-                    g.drawImage(randomImage(tiles, "libre", 0.35), x, y, largeur_tuiles, largeur_tuiles, null);
+                    g.drawImage(randomImage(tiles, "libre", 0.35), x, y, largeur_tuiles / 2, largeur_tuiles / 2, null);
+                    g.drawImage(randomImage(tiles, "libre", 0.35), x + largeur_tuiles / 2, y, largeur_tuiles / 2,
+                            largeur_tuiles / 2, null);
+                    g.drawImage(randomImage(tiles, "libre", 0.35), x, y + largeur_tuiles / 2, largeur_tuiles / 2,
+                            largeur_tuiles / 2, null);
+                    g.drawImage(randomImage(tiles, "libre", 0.35), x + largeur_tuiles / 2, y + largeur_tuiles / 2,
+                            largeur_tuiles / 2,
+                            largeur_tuiles / 2, null);
                     break;
                 case HABITAT:
                     g.drawImage(tiles.get("habitat"), x, y, largeur_tuiles, largeur_tuiles, null);
@@ -267,9 +274,12 @@ public class Simulateur implements Simulable {
         // drawing interior everywhere, other images will draw on top
         if (chances.length > 0) {
             g.drawImage(randomImage(tiles, prefix, chances), x, y, largeur_tuiles / 2, largeur_tuiles / 2, null);
-            g.drawImage(randomImage(tiles, prefix, chances), x + largeur_tuiles / 2, y, largeur_tuiles / 2, largeur_tuiles / 2, null);
-            g.drawImage(randomImage(tiles, prefix, chances), x, y + largeur_tuiles / 2, largeur_tuiles / 2, largeur_tuiles / 2, null);
-            g.drawImage(randomImage(tiles, prefix, chances), x + largeur_tuiles / 2, y + largeur_tuiles / 2, largeur_tuiles / 2,
+            g.drawImage(randomImage(tiles, prefix, chances), x + largeur_tuiles / 2, y, largeur_tuiles / 2,
+                    largeur_tuiles / 2, null);
+            g.drawImage(randomImage(tiles, prefix, chances), x, y + largeur_tuiles / 2, largeur_tuiles / 2,
+                    largeur_tuiles / 2, null);
+            g.drawImage(randomImage(tiles, prefix, chances), x + largeur_tuiles / 2, y + largeur_tuiles / 2,
+                    largeur_tuiles / 2,
                     largeur_tuiles / 2, null);
         } else {
             g.drawImage(tiles.get(prefix), x, y, largeur_tuiles / 2, largeur_tuiles / 2, null);
@@ -467,6 +477,7 @@ public class Simulateur implements Simulable {
             res.put("foret-se", ImageIO.read(new File("assets/foret/se.png")));
             res.put("foret-so", ImageIO.read(new File("assets/foret/so.png")));
             res.put("foret-sud", ImageIO.read(new File("assets/foret/sud.png")));
+            res.put("foret0", ImageIO.read(new File("assets/foret/foret0.png")));
             res.put("foret", ImageIO.read(new File("assets/foret/foret.png")));
 
             res.put("roche-est", ImageIO.read(new File("assets/roche/est.png")));
