@@ -51,8 +51,9 @@ public class ElementaryFirefighterChief extends FireFighterChief {
                             /* search for shortest route with aStar algorithm. */
                             Path path = robot.Dijkstra(robot.getPosition(), (c) -> c.equals(incendie.getFireCase()));
                             robot.followPath(sim, path);
-                            robot.startIntervention(sim);
+                            robot.startIntervention(sim, false);
                         } catch (UnreachableCaseException e) {
+                            assert true;
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

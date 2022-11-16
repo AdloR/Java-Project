@@ -56,7 +56,7 @@ public class ImprovedFirefighterChief extends FireFighterChief {
                 try {
                     Path nearestIncendie = robot.Dijkstra(robot.getPosition(), this::CondIncendies);
                     robot.followPath(sim, nearestIncendie);
-                    robot.startIntervention(sim);
+                    robot.startIntervention(sim, true);
                 } catch (UnreachableCaseException e) {
                     assert true;
                 } catch (Exception e) {

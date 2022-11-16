@@ -127,9 +127,9 @@ public abstract class Robot extends SelfDriving {
      * 
      * @param sim The simulation in which the intervention will happen.
      */
-    public void startIntervention(Simulateur sim) {
+    public void startIntervention(Simulateur sim, boolean smart) {
         long timeEnd = Long.max(this.timeFree, sim.getDateSimulation()) + this.timeIntervention;
-        sim.ajouteEvenement(new InterventionEven(timeEnd, sim, this));
+        sim.ajouteEvenement(new InterventionEven(timeEnd, sim, this, smart));
         this.timeFree = timeEnd;
         trace += "Intervene (from startIntervention) until " + timeFree + "; ";
     }
@@ -163,10 +163,6 @@ public abstract class Robot extends SelfDriving {
      * @param sim The simulation in which the event will happen.
      */
     public void remplir(Simulateur sim) {
-
-        if (!this.findWater(this.position))
-            throw new IllegalStateException("There is no water accessible for the robot !");
-
         long timeEnd = Long.max(this.timeFree, sim.getDateSimulation()) + this.timeRefill;
         sim.ajouteEvenement(new RemplissageEven(timeEnd, this));
         this.timeFree = timeEnd;
