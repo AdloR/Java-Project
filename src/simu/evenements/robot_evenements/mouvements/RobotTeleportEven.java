@@ -13,7 +13,6 @@ import terrain.Direction;
 public class RobotTeleportEven extends Evenement {
     int robotIndex;
     Simulateur sim;
-    Direction dir;
     Robot robot;
     Case dest;
 
