@@ -20,8 +20,7 @@ class StrategieElementaire {
 
         Simulateur sim = new Simulateur(donnees);
 
-        FireFighterChief elem = new ElementaryFirefighterChief(donnees.getRobots(), donnees.getIncendies(),
-                donnees.getCarte());
+        FireFighterChief elem = new ElementaryFirefighterChief();
         sim.ajouteEvenement(new LancementStrategie(1, sim, elem, false));
         sim.draw();
     }
@@ -40,8 +39,7 @@ class StrategieAvancee {
 
         Simulateur sim = new Simulateur(donnees);
 
-        FireFighterChief elem = new AdvancedFireFighterChief(donnees.getRobots(), donnees.getIncendies(),
-                donnees.getCarte());
+        FireFighterChief elem = new AdvancedFireFighterChief();
         sim.ajouteEvenement(new LancementStrategie(1, sim, elem, false));
 
         sim.draw();
@@ -59,8 +57,7 @@ class StrategieMieux {
 
         Simulateur sim = new Simulateur(donnees);
 
-        FireFighterChief elem = new ImprovedFirefighterChief(donnees.getRobots(), donnees.getIncendies(),
-                donnees.getCarte());
+        FireFighterChief elem = new ImprovedFirefighterChief();
         sim.ajouteEvenement(new LancementStrategie(1, sim, elem, false));
 
         sim.draw();

@@ -5,35 +5,32 @@ import java.util.List;
 import exceptions.UnreachableCaseException;
 import pathfinding.Path;
 import robot.Robot;
+import simu.DonneesSimulation;
 import simu.Incendie;
 import simu.Simulateur;
-import terrain.Carte;
 
 /**
  * The firefighter chief that will apply the elementary strategy (first strategy
  * of the topic).
  */
 public class ElementaryFirefighterChief extends FireFighterChief {
-    public ElementaryFirefighterChief(List<Robot> robots, List<Incendie> incendies, Carte carte) {
-        super(robots, incendies, carte);
-    }
 
     /**
      * <ul>
-     * <li>The chief advises an unassigned {@code incendie}, to a robot.
-     * <li>If the robot is occupied, it refuses to go to the {@code incendie}
+     * <li>The chief advises an unassigned {@code Incendie}, to a {@code Robot}.
+     * <li>If the {@code Robot} is occupied, it refuses to go to the {@code Incendie}
      * advised,
-     * else it looks if it's possible top reach the {@code incendie} from its place.
+     * else it looks if it's possible top reach the {@code Incendie} from its place.
      * if not, it also refuses.
-     * <li>The chosen robot will go to the case of {@code incendie} and poor his
+     * <li>The chosen {@code Robot} will go to the case of {@code Incendie} and poor his
      * water.
      * <li>If its reservoir is empty, it remains as occupied to the chief and will
      * refuse all the new propositions.
-     * <li>The chief go back to steps 1-2-3 on another {@code incendie} and so on
+     * <li>The chief goes back to steps 1-2-3 on another {@code Incendie} and so on
      * until all the
-     * {@code incendie} are extincted.
+     * {@code Incendie}s are extincted.
      * </ul>
-     * NB : in this strategy the robots won't go fill their reservoirs so if they're
+     * NB : in this strategy the {@code Robot}s won't go fill their reservoirs so if they're
      * all empty,
      * the only ones that could extinct the remaining fires would be the
      * {@code RobotAPattes}
@@ -43,6 +40,9 @@ public class ElementaryFirefighterChief extends FireFighterChief {
      */
     @Override
     public void affectRobot(Simulateur sim) {
+        DonneesSimulation donnees = sim.getDonnees();
+        List<Incendie> incendies = donnees.getIncendies();
+        List<Robot> robots = donnees.getRobots();
         for (Incendie incendie : incendies) {
             if (incendie.getNbL() > 0) {
                 for (Robot robot : robots) {

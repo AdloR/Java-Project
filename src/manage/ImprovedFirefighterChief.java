@@ -1,49 +1,34 @@
 package manage;
 
-import pathfinding.Path;
-import robot.Robot;
-import simu.Incendie;
-import simu.Simulateur;
-import terrain.Carte;
-import terrain.Case;
-
 import java.util.List;
 
 import exceptions.UnreachableCaseException;
+import pathfinding.Path;
+import robot.Robot;
+import simu.DonneesSimulation;
+import simu.Simulateur;
 
 public class ImprovedFirefighterChief extends FireFighterChief {
 
     /**
-     * FireFighterChief constructor
-     *
-     * @param robots    List of robots of the map.
-     * @param incendies List of {@code Incendie} of the map.
-     * @param carte     The map ({@code Carte} type).
-     */
-    public ImprovedFirefighterChief(List<Robot> robots, List<Incendie> incendies, Carte carte) {
-        super(robots, incendies, carte);
-    }
-
-    /**
      * <ul>
-     * <li>The firefighterChief advises the nearest {@code incendie} to all robots
+     * <li>The firefighterChief advises the nearest {@code Incendie} to all {@code Robot}s
      * to extinct.
      *
-     * <li>The occupied robots refuse the proposition, the other ones compute the
-     * shortest route to go the {@code incendie} and return the time that they'll
+     * <li>The occupied {@code Robot}s refuse the proposition, the other ones compute the
+     * shortest route to go the {@code Incendie} and return the time that they'll
      * need to do so.
      *
-     * <li>The chief picks the fastest robot to extinct the {@code incendie}.
-     * The robot chosen programs the events necessaries to make his way to the
-     * {@code incendie}.
-     * Then he checks if the {@code incendie} was not extinct before pouring water.
-     * When the reservoir of a robot is empty, it goes refill it from his own.
+     * <li>The chief picks the fastest {@code Robot} to extinct the {@code Incendie}.
+     * The chosen{@code Robot} programs the events necessaries to make his way to the
+     * {@code Incendie}.
+     * Then he checks if the {@code Incendie} was not extinct before pouring water.
+     * When the reservoir of a {@code Robot} is empty, it goes refill it from his own.
      *
-     * <li>The chief can ask this for each {@code incendie}. If some remain
+     * <li>The chief can ask this for each {@code Incendie}. If some remain
      * unassigned,
-     * the fire chief waits for a certain amount of time and
-     * waits for a certain period of time and proposes the remaining
-     * {@code incendie} again.
+     * the fire chief waits for a certain amount of  and proposes the remaining
+     * {@code Incendie}s again.
      *
      * </ul>
      *
@@ -51,10 +36,12 @@ public class ImprovedFirefighterChief extends FireFighterChief {
      */
     @Override
     public void affectRobot(Simulateur sim) {
+        DonneesSimulation donnees = sim.getDonnees();
+        List<Robot> robots = donnees.getRobots();
         for (Robot robot : robots) {
             if (robot.isWaiting(sim)) {
                 try {
-                    Path nearestIncendie = robot.Dijkstra(robot.getPosition(), this::CondIncendies);
+                    Path nearestIncendie = robot.Dijkstra(robot.getPosition(), (c) -> c.getIncendie() != null);
                     robot.followPath(sim, nearestIncendie);
                     robot.startIntervention(sim, true);
                 } catch (UnreachableCaseException e) {
@@ -64,14 +51,5 @@ public class ImprovedFirefighterChief extends FireFighterChief {
                 }
             }
         }
-    }
-
-    public boolean CondIncendies(Case c) {
-        for (Incendie incendie : incendies) {
-            if (c.equals(incendie.getFireCase()) && incendie.getNbL() > 0) {
-                return true;
-            }
-        }
-        return false;
     }
 }

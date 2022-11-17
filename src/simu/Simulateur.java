@@ -7,8 +7,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
@@ -42,7 +42,7 @@ public class Simulateur implements Simulable {
     private long dateSimulation;
     private DonneesSimulation donnees;
     private PriorityQueue<Evenement> evenements = new PriorityQueue<>();
-    private List<Evenement> history = new LinkedList<>();
+    private Queue<Evenement> history = new LinkedList<>();
 
     /**
      * Simulateur constructor.
@@ -110,7 +110,7 @@ public class Simulateur implements Simulable {
             Evenement e = evenements.poll();
             e.execute();
             if (!e.isAuto())
-                history.add(e);
+                history.offer(e);
         }
         draw();
     }
@@ -126,6 +126,7 @@ public class Simulateur implements Simulable {
             e.printStackTrace();
             throw new RuntimeException(e.getCause());
         }
+        evenements.removeIf((e) -> e.isAuto());
         evenements.addAll(history);
         for (Evenement e : evenements) {
             if (e instanceof RobotEven) {
@@ -198,8 +199,6 @@ public class Simulateur implements Simulable {
 
         g.setColor(Color.RED);
         g.fillRect(0, 0, width, height);
-
-        Random r = new Random();
 
         for (Case c : carte.getCases()) {
             int x = c.getColonne() * largeur_tuiles;
