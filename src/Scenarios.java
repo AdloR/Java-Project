@@ -12,7 +12,10 @@ class Scenario0 {
     public static void main(String[] args) {
         DonneesSimulation donnees;
         try {
-            donnees = LecteurDonnees.lire("cartes/carteSujet.map");
+            if (args.length != 0)
+                donnees = LecteurDonnees.lire(args[0]);
+            else
+                donnees = LecteurDonnees.lire("cartes/carteSujet.map");
         } catch (Exception e) {
             e.printStackTrace();
             return;
@@ -37,7 +40,10 @@ class Scenario1 {
 
         DonneesSimulation donnees;
         try {
-            donnees = LecteurDonnees.lire("cartes/mushroomOfHell-20x20.map");
+            if (args.length != 0)
+                donnees = LecteurDonnees.lire(args[0]);
+            else
+                donnees = LecteurDonnees.lire("cartes/carteSujet.map");
         } catch (Exception e) {
             e.printStackTrace();
             return;
@@ -53,23 +59,6 @@ class Scenario1 {
         sim.ajouteEvenement(new DebRobotBougeEven(2971, sim, 1, Direction.EST));
         sim.ajouteEvenement(new DebRobotBougeEven(3425, sim, 1, Direction.EST));
         sim.ajouteEvenement(new DebInterventionEven(4000, sim, 1));
-
-        sim.draw();
-    }
-}
-
-class Inondation {
-    public static void main(String[] args) {
-
-        DonneesSimulation donnees;
-        try {
-            donnees = LecteurDonnees.lire("cartes/testEau.map");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return;
-        }
-
-        Simulateur sim = new Simulateur(donnees);
 
         sim.draw();
     }

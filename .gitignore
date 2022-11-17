@@ -1,6 +1,6 @@
-/.idea/
-.vscode
-/out/
-/bin/
+.idea/
+.vscode/
+out/
+build/
 .classpath
 .project
