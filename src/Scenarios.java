@@ -37,7 +37,7 @@ class Scenario1 {
 
         DonneesSimulation donnees;
         try {
-            donnees = LecteurDonnees.lire("cartes/carteSujet.map");
+            donnees = LecteurDonnees.lire("cartes/mushroomOfHell-20x20.map");
         } catch (Exception e) {
             e.printStackTrace();
             return;
