@@ -1,16 +1,27 @@
-Ensimag 2A POO - TP 2022/23
+##Ensimag 2A POO - TP 2022/23##
 ============================
 
-- src: contient les classes fournies par les enseignants
-  -> LecteurDonnees.java         : lit tous les elements d'un fichier de description de donnees (cases, incendies et robots) et les affiche.
-                                   A vous de MODIFIER cette classe (ou en ecrire une nouvelle) pour creer les objets correspondants à vos propres classes
-  -> TestLecteurDonnees.java     : lit un fichier de donnees et affiche son contenu
-  -> TestInvader                 : cree un simulateur "mini Invaders" dans une fenetre graphique
+Pour lancer les tests, faites `make testInvader` / `make testLecteurDonnees`
 
-- cartes: quelques exemples de fichiers de donnees
+Toutes les stratégies sont dans le fichier `Strategies.java`, sous forme de plusieurs classes dans le même fichier, et de même pour `Scenarios`.
 
-- build/gui.jar: archive Java contenant les classes de l'interface graphique. Voir un exemple d'utilisation dans TestInvader.java
+* ###Pour les lancer depuis un IDE, il suffit de chosir la bonne méthode main en target.
+  * **Sur IntelliJ Idea**
+    1. Appuyer sur le bouton Run au dessus de la méthode main choisie.
+  * **Sur Eclipse**
+    1. Appuyer sur Run >> Run Configurations, Créer un nouveau `Java Application` sur la fenêtre qui s'ouvre.
+    2. Choisir le bon Projet et la bonne classe.
+  * **Sur VSCode**
+    1. S'assurer d'avoir une extension Java (Celle de Microsoft par exemple).
+    2. Appuyer sur le bouton Run au dessus de la méthode main choisie.
+* ###Pour les lancer depuis le makefile
+  Il suffit de se mettre sur le répertoire racine (probablement poo-project) et faire l'une des commandes suivantes :
+    1. `$ make scenario0`
+    2. `$ make scenario1`
 
-- doc: la documentation (API) des classes de l'interface graphique contenues dans gui.jar. Point d'entrée: index.html
-
-- Makefile: quelques explications sur la compilation en ligne, notamment la notion de classpath et l'utilisation de gui.jar
+    3. `$ make strategieElem`
+    4. `$ make strategieAvancee`
+    5. `$ make strategieAmelioree`
+  
+* Les 2 scénarios sont ceux proposés par le sujet.
+* Les 2 1ères stratégies sont celles proposées par le sujet, la 3è est une version de la stratégie avancée où chaque robot est envoyé vers l'incendie le plus proche de lui. Vous pouvez vous reporter aux différents `FirefighterChief` qui implémentent chacun une stratégie, avec une javadoc plus détaillée.
