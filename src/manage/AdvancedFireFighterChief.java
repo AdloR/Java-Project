@@ -17,24 +17,26 @@ public class AdvancedFireFighterChief extends FireFighterChief {
 
     /**
      * <ul>
-     * <li>The firefighterChief advises to all robots an {@code incendie} to
+     * <li>The firefighterChief advises to all robots an {@code Incendie} to
      * extinct.
      *
-     * <li>The occupied robots refuse the proposition, the other ones compute the
-     * shortest route to go the {@code incendie} and return the time that they'll
+     * <li>The occupied {@code Robot}s refuse the proposition, the other ones
+     * compute the
+     * shortest route to go the {@code Incendie} and return the time that they'll
      * need to do so.
      *
-     * <li>The chief picks the fastest robot to extinct the {@code incendie}.
+     * <li>The chief picks the fastest {@code Robot} to extinct the
+     * {@code Incendie}.
      * The robot chosen programs the events necessaries to make his way to the
-     * {@code incendie}.
-     * Then he checks if the {@code incendie} was not extinct before pouring water.
-     * When the reservoir of a robot is empty, it goes refill it from his own.
+     * {@code Incendie}.
+     * Then he checks if the {@code Incendie} was not extinct before pouring water.
+     * When the reservoir of a {@code Robot} is empty, it goes refill it from his
+     * own.
      *
-     * <li>The chief can ask this for each {@code incendie}. If some remain
+     * <li>The chief can ask this for each {@code Incendie}. If some remain
      * unassigned,
-     * the fire chief waits for a certain amount of time and
-     * waits for a certain period of time and proposes the remaining
-     * {@code incendie} again.
+     * the fire chief waits for a certain amount of time and the remaining
+     * {@code Incendie}s again.
      *
      * </ul>
      * 
