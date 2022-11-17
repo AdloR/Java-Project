@@ -21,8 +21,8 @@ public class ImprovedFirefighterChief extends FireFighterChief {
      * shortest route to go the {@code Incendie} and return the time that they'll
      * need to do so.
      *
-     * <li>The chief picks the fastest {@code Robot} to extinct the
-     * {@code Incendie}.
+     * <li>The chief picks the nearest {@code Incendie} from the
+     * {@code Robot}.
      * The chosen{@code Robot} programs the events necessaries to make his way to
      * the
      * {@code Incendie}.
@@ -30,10 +30,10 @@ public class ImprovedFirefighterChief extends FireFighterChief {
      * When the reservoir of a {@code Robot} is empty, it goes refill it from his
      * own.
      *
-     * <li>The chief can ask this for each {@code Incendie}. If some remain
+     * <li>The chief can ask this for each {@code Robot}s. If some remain
      * unassigned,
-     * the fire chief waits for a certain amount of and proposes the remaining
-     * {@code Incendie}s again.
+     * the fire chief waits for a certain amount of and proposes the remaining {@code Incendie}s to the
+     * {@code Robot}s again.
      *
      * </ul>
      *
