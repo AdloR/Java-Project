@@ -5,18 +5,15 @@ import java.util.List;
 import exceptions.UnreachableCaseException;
 import pathfinding.Path;
 import robot.Robot;
+import simu.DonneesSimulation;
 import simu.Incendie;
 import simu.Simulateur;
-import terrain.Carte;
 
 /**
  * The firefighter chief that will apply the elementary strategy (first strategy
  * of the topic).
  */
 public class ElementaryFirefighterChief extends FireFighterChief {
-    public ElementaryFirefighterChief(List<Robot> robots, List<Incendie> incendies, Carte carte) {
-        super(robots, incendies, carte);
-    }
 
     /**
      * <ul>
@@ -43,6 +40,9 @@ public class ElementaryFirefighterChief extends FireFighterChief {
      */
     @Override
     public void affectRobot(Simulateur sim) {
+        DonneesSimulation donnees = sim.getDonnees();
+        List<Incendie> incendies = donnees.getIncendies();
+        List<Robot> robots = donnees.getRobots();
         for (Incendie incendie : incendies) {
             if (incendie.getNbL() > 0) {
                 for (Robot robot : robots) {

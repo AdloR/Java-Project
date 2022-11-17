@@ -1,28 +1,14 @@
 package manage;
 
-import pathfinding.Path;
-import robot.Robot;
-import simu.Incendie;
-import simu.Simulateur;
-import terrain.Carte;
-import terrain.Case;
-
 import java.util.List;
 
 import exceptions.UnreachableCaseException;
+import pathfinding.Path;
+import robot.Robot;
+import simu.DonneesSimulation;
+import simu.Simulateur;
 
 public class ImprovedFirefighterChief extends FireFighterChief {
-
-    /**
-     * FireFighterChief constructor
-     *
-     * @param robots    List of robots of the map.
-     * @param incendies List of {@code Incendie} of the map.
-     * @param carte     The map ({@code Carte} type).
-     */
-    public ImprovedFirefighterChief(List<Robot> robots, List<Incendie> incendies, Carte carte) {
-        super(robots, incendies, carte);
-    }
 
     /**
      * <ul>
@@ -51,10 +37,12 @@ public class ImprovedFirefighterChief extends FireFighterChief {
      */
     @Override
     public void affectRobot(Simulateur sim) {
+        DonneesSimulation donnees = sim.getDonnees();
+        List<Robot> robots = donnees.getRobots();
         for (Robot robot : robots) {
             if (robot.isWaiting(sim)) {
                 try {
-                    Path nearestIncendie = robot.Dijkstra(robot.getPosition(), this::CondIncendies);
+                    Path nearestIncendie = robot.Dijkstra(robot.getPosition(), (c) -> c.getIncendie() != null);
                     robot.followPath(sim, nearestIncendie);
                     robot.startIntervention(sim, true);
                 } catch (UnreachableCaseException e) {
@@ -64,14 +52,5 @@ public class ImprovedFirefighterChief extends FireFighterChief {
                 }
             }
         }
-    }
-
-    public boolean CondIncendies(Case c) {
-        for (Incendie incendie : incendies) {
-            if (c.equals(incendie.getFireCase()) && incendie.getNbL() > 0) {
-                return true;
-            }
-        }
-        return false;
     }
 }
