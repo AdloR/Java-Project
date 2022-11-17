@@ -22,6 +22,8 @@ Toutes les stratégies sont dans le fichier `Strategies.java`, sous forme de plu
     3. `$ make strategieElem`
     4. `$ make strategieAvancee`
     5. `$ make strategieAmelioree`
+
+  Dans ce cas, vous pouvez faire `$ make ... carte=fichierCarte` pour changer la carte utilisée. (utile seulement pour les stratégies)
   
 * Les 2 scénarios sont ceux proposés par le sujet.
 * Les 2 1ères stratégies sont celles proposées par le sujet, la 3è est une version de la stratégie avancée où chaque robot est envoyé vers l'incendie le plus proche de lui. Vous pouvez vous reporter aux différents `FirefighterChief` qui implémentent chacun une stratégie, avec une javadoc plus détaillée.

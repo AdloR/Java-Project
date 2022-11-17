@@ -12,7 +12,10 @@ class StrategieElementaire {
     public static void main(String[] args) {
         DonneesSimulation donnees;
         try {
-            donnees = LecteurDonnees.lire("cartes/carteSujet.map");
+            if (args.length != 0)
+                donnees = LecteurDonnees.lire(args[0]);
+            else
+                donnees = LecteurDonnees.lire("cartes/carteSujet.map");
         } catch (Exception e) {
             e.printStackTrace();
             return;
@@ -31,7 +34,10 @@ class StrategieAvancee {
     public static void main(String[] args) {
         DonneesSimulation donnees;
         try {
-            donnees = LecteurDonnees.lire("cartes/carteSujet.map");
+            if (args.length != 0)
+                donnees = LecteurDonnees.lire(args[0]);
+            else
+                donnees = LecteurDonnees.lire("cartes/carteSujet.map");
         } catch (Exception e) {
             e.printStackTrace();
             return;
@@ -45,11 +51,15 @@ class StrategieAvancee {
         sim.draw();
     }
 }
+
 class StrategieMieux {
     public static void main(String[] args) {
         DonneesSimulation donnees;
         try {
-            donnees = LecteurDonnees.lire("cartes/mushroomOfHell-20x20.map");
+            if (args.length != 0)
+                donnees = LecteurDonnees.lire(args[0]);
+            else
+                donnees = LecteurDonnees.lire("cartes/carteSujet.map");
         } catch (Exception e) {
             e.printStackTrace();
             return;

@@ -53,19 +53,19 @@ exeLecture: testLecture
 	java -classpath build:build/gui.jar TestLecteurDonnees cartes/carteSujet.map
 
 scenario0: build/Scenario0.class
-	java -cp build:build/gui.jar Scenario0
+	java -cp build:build/gui.jar Scenario0 $(carte)
 
 scenario1: build/Scenario1.class
-	java -cp build:build/gui.jar Scenario1
+	java -cp build:build/gui.jar Scenario1 $(carte)
 
 strategieElem: build/StrategieElementaire.class 
-	java -cp build:build/gui.jar StrategieElementaire
+	java -cp build:build/gui.jar StrategieElementaire $(carte)
 
 strategieAvancee: build/StrategieAvancee.class
-	java -cp build:build/gui.jar StrategieAvancee
+	java -cp build:build/gui.jar StrategieAvancee $(carte)
 
 strategieAmelioree: build/StrategieMieux.class
-	java -cp build:build/gui.jar StrategieMieux
+	java -cp build:build/gui.jar StrategieMieux $(carte)
 
 clean:
 	rm -rf build/*.class
