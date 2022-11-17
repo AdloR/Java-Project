@@ -181,7 +181,7 @@ public abstract class SelfDriving {
             if (isAccessible(place)) {
                 Node n = new Node(place, Integer.MAX_VALUE);
                 graph.put(place, n);
-                if (!place.equals(origin)) {
+                if (place.equals(origin)) {
                     vertexPriorityQueue.add(n);
                 }
             }
