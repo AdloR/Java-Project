@@ -1,8 +1,140 @@
 ```plantuml
-
 @startuml
-!theme plain
+left to right direction
 skinparam linetype ortho
+
+
+package simu {
+  class DonneesSimulation {
+    + getFichierDonnees(): String
+    + getRobots(): List<Robot>
+    + getIncendies(): List<Incendie>
+    + getCarte(): Carte
+  }
+  class Incendie {
+    + getFireCase(): Case
+    + setFireCase(Case): void
+    + setNbL(int): void
+    + toString(): String
+    + getNbL(): int
+  }
+  class Simulateur {
+    + largeur_tuiles: int
+    + restart(): void
+    + getDateSimulation(): long
+    + getDonnees(): DonneesSimulation
+    + incrementeDate(): void
+    + draw(): void
+    + ajouteEvenement(Evenement): void
+    + next(): void
+    + simulationTerminee(): boolean
+  }
+  package evenements {
+    abstract Evenement {
+      + isPriority(): boolean
+      + isAuto(): boolean
+      + getDate(): long
+      + execute(): void
+      + compareTo(Evenement): int
+    }
+    class LancementStrategie {
+      + execute(): void
+    }
+    package RobotEven {
+      abstract RobotEven {
+        + actualiserRobots(): void
+      }
+      package "" as ActionEven <<rectangle>> {
+        class InterventionEven {
+          + execute(): void
+        }
+        class RemplissageEven {
+          + execute(): void
+        }
+        class RobotBougeEven {
+          + execute(): void
+        }
+      }
+      package "" as DebEven <<rectangle>> {
+        class DebInterventionEven {
+          + execute(): void
+        }
+        class DebRemplissageEven {
+          + execute(): void
+        }
+        class DebRobotBougeEven {
+          + execute(): void
+        }
+      }
+      class RobotTeleportEven {
+        + execute(): void
+      }
+    }
+  }
+}
+
+
+package scenarios {
+  class Inondation {
+    ~ main(String[]): void
+  }
+  class Scenario0 {
+    ~ main(String[]): void
+  }
+  class Scenario1 {
+    ~ main(String[]): void
+  }
+}
+
+
+package Strategie <<rectangle>> {
+    class StrategieAvancee {
+      ~ main(String[]): void
+    }
+    class StrategieElementaire {
+      ~ main(String[]): void
+    }
+    class StrategieMieux {
+      ~ main(String[]): void
+    }
+    class TestInvader {
+      + main(String[]): void
+    }  
+}
+
+
+class Invader {
+  ~ next(): void
+  ~ restart(): void
+}
+
+
+
+package io {
+  class LecteurDonnees {
+    + lire(String): DonneesSimulation
+  }
+}
+
+
+package manage {
+  package "" as FireFighterChiefType <<rectangle>> {
+    class ImprovedFirefighterChief {
+      + CondIncendies(Case): boolean
+      + affectRobot(Simulateur): void
+    }
+    class ElementaryFirefighterChief {
+      + affectRobot(Simulateur): void
+    }
+    class AdvancedFireFighterChief {
+      + affectRobot(Simulateur): void
+    }
+  }
+  abstract FireFighterChief {
+    + affectRobot(Simulateur): void
+  }
+}
+
 
 package terrain {
   class Carte {
@@ -45,133 +177,8 @@ package terrain {
 }
 
 
-package simu {
-  class DonneesSimulation {
-    + getFichierDonnees(): String
-    + getRobots(): List<Robot>
-    + getIncendies(): List<Incendie>
-    + getCarte(): Carte
-  }
-  class Incendie {
-    + getFireCase(): Case
-    + setFireCase(Case): void
-    + setNbL(int): void
-    + toString(): String
-    + getNbL(): int
-  }
-  class Simulateur {
-    + largeur_tuiles: int
-    + restart(): void
-    + getDateSimulation(): long
-    + getDonnees(): DonneesSimulation
-    + incrementeDate(): void
-    + draw(): void
-    + ajouteEvenement(Evenement): void
-    + next(): void
-    + simulationTerminee(): boolean
-  }
-  package evenements {
-    class Evenement {
-      + isPriority(): boolean
-      + isAuto(): boolean
-      + getDate(): long
-      + execute(): void
-      + compareTo(Evenement): int
-    }
-    class LancementStrategie {
-      + execute(): void
-    }
-    package RobotEven {
-      class RobotEven {
-        + actualiserRobots(): void
-      }
-      package "" as ActionEven {
-        class InterventionEven {
-          + execute(): void
-        }
-        class RemplissageEven {
-          + execute(): void
-        }
-        class RobotBougeEven {
-          + execute(): void
-        }
-      }
-      package "" as DebEven {
-        class DebInterventionEven {
-          + execute(): void
-        }
-        class DebRemplissageEven {
-          + execute(): void
-        }
-        class DebRobotBougeEven {
-          + execute(): void
-        }
-      }
-      class RobotTeleportEven {
-        + execute(): void
-      }
-    }
-  }
-}
-
-
-package manage {
-  package "" as FireFighterChiefType <<rectangle>> {
-    class ImprovedFirefighterChief {
-      + CondIncendies(Case): boolean
-      + affectRobot(Simulateur): void
-    }
-    class ElementaryFirefighterChief {
-      + affectRobot(Simulateur): void
-    }
-    class AdvancedFireFighterChief {
-      + affectRobot(Simulateur): void
-    }
-  }
-  class FireFighterChief {
-    + affectRobot(Simulateur): void
-  }
-}
-
-package scenarios {
-  class Inondation {
-    ~ main(String[]): void
-  }
-  class Scenario0 {
-    ~ main(String[]): void
-  }
-  class Scenario1 {
-    ~ main(String[]): void
-  }
-}
-
-
-package io {
-  class LecteurDonnees {
-    + lire(String): DonneesSimulation
-  }
-}
-
-package pathfinding {
-  class Path {
-    + getCarte(): Carte
-    + addStep(Case): void
-    + getStart(): Case
-    + getDuration(): int
-    + getPath(): LinkedList<Direction>
-  }
-  class SelfDriving {
-    + getSpeedOn(Case): int
-    + findWater(Case): boolean
-    + getTimeOn(Case): int
-    + Dijkstra(Case, CaseCompareCond): Path
-    + isAccessible(Case): boolean
-  }
-}
-
-
 package robot {
-  class Robot {
+  abstract Robot {
     + getReservoir(): int
     + isAccessible(Case): boolean
     + followPath(Simulateur, Path): void
@@ -218,64 +225,78 @@ package robot {
   }
 }
 
-package Strategie <<rectangle>> {
-    class StrategieAvancee {
-      ~ main(String[]): void
-    }
-    class StrategieElementaire {
-      ~ main(String[]): void
-    }
-    class StrategieMieux {
-      ~ main(String[]): void
-    }
-    class TestInvader {
-      + main(String[]): void
-    }  
+
+package pathfinding {
+  class Path {
+    + getCarte(): Carte
+    + addStep(Case): void
+    + getStart(): Case
+    + getDuration(): int
+    + getPath(): LinkedList<Direction>
+  }
+  abstract SelfDriving {
+    + getSpeedOn(Case): int
+    + findWater(Case): boolean
+    + getTimeOn(Case): int
+    + Dijkstra(Case, CaseCompareCond): Path
+    + isAccessible(Case): boolean
+  }
 }
 
-class Invader {
-  ~ next(): void
-  ~ restart(): void
-}
+' Positionning
 
+scenarios --[hidden]> manage
+Strategie --[hidden]> simu
+
+manage --[hidden]> terrain
+simu --[hidden]> robot
+
+terrain --[hidden]> pathfinding
+robot --[hidden]> pathfinding
+
+NatureTerrain --down[hidden]> Direction
+SelfDriving --right[hidden]> Path
 
 ' ' Heritage relationships
 
 ' ## FireFighterChiefs
-AdvancedFireFighterChief   -up[#000082,plain]-^  FireFighterChief
-ElementaryFirefighterChief -up[#000082,plain]-^  FireFighterChief
-ImprovedFirefighterChief   -up[#000082,plain]-^  FireFighterChief
+AdvancedFireFighterChief   -[hidden]-^  FireFighterChief
+ElementaryFirefighterChief -[hidden]-^  FireFighterChief
+ImprovedFirefighterChief   -[hidden]-^  FireFighterChief
+FireFighterChiefType   -[#000082,plain]-^  FireFighterChief
 
 ' ## Evenement
-LancementStrategie        -left[#000082,plain]-^  Evenement
-RobotEven                 -up[#000082,plain]-^  Evenement
+LancementStrategie        -[#000082,plain]-^  Evenement
+RobotEven                 -[#000082,plain]-^  Evenement
 ' ### RobotEven
-RemplissageEven           -up[#000082,plain]-^  RobotEven
+RemplissageEven           -up[hidden]-^  RobotEven
 RobotTeleportEven         -[#000082,plain]-^  RobotEven
-DebInterventionEven       -[#000082,plain]-^  RobotEven
-DebRemplissageEven        -[#000082,plain]-^  RobotEven
-DebRobotBougeEven         -[#000082,plain]-^  RobotEven
-InterventionEven          -up[#000082,plain]-^  RobotEven
-RobotBougeEven            -up[#000082,plain]-^  RobotEven
+DebInterventionEven       -[hidden]-^  RobotEven
+DebRemplissageEven        -[hidden]-^  RobotEven
+DebRobotBougeEven         -[hidden]-^  RobotEven
+InterventionEven          -up[hidden]-^  RobotEven
+RobotBougeEven            -up[hidden]-^  RobotEven
+DebEven         -[#000082,plain]-^  RobotEven
+ActionEven            -up[#000082,plain]-^  RobotEven
 
 ' ' ## SelfDriving
 Robot                    -[#000082,plain]-^  SelfDriving
 ' ### Robot
-Drone              -up[#000082,plain]-^  Robot
-RobotAChenille     -up[#000082,plain]-^  Robot
-RobotAPattes       -up[#000082,plain]-^  Robot
-RobotARoues        -up[#000082,plain]-^  Robot
+Drone              -[#000082,plain]-^  Robot
+RobotAChenille     -[#000082,plain]-^  Robot
+RobotAPattes       -[#000082,plain]-^  Robot
+RobotARoues        -[#000082,plain]-^  Robot
 
 
 
 ' ## DonneesSimulation
-DonneesSimulation    "1" *-left[#595959,plain]-> Carte
-DonneesSimulation    "*" *-down[#595959,plain]-> Incendie
-DonneesSimulation    *-down[#595959,plain]-> "*" Robot
+DonneesSimulation    "1" *-[#595959,plain]-> Carte
+DonneesSimulation    "*" *-[#595959,plain]-> Incendie
+DonneesSimulation    *-[#595959,plain]-> "*" Robot
 
 Carte             "*" *-[#595959,plain]-> "1" Case
 
-Case              "1" o-right[#595959,plain]-> "0..1" Incendie
+Case              "1" o-[#595959,plain]-> "0..1" Incendie
 
 LancementStrategie   "1" -[#595959,plain]-> "1" FireFighterChief    : call
 
@@ -284,16 +305,16 @@ Path          "*" o-[#595959,plain]-> "1" SelfDriving
 
 RobotEven      "*" -[#595959,plain]-> "1" Robot
 
-Robot               "0..*" -left[#595959,plain]--> "1" Case                           : "localisation"
+Robot               "0..*" -[#595959,plain]--> "1" Case                           : "localisation"
 
 RobotTeleportEven    "1" -[#595959,plain]-> "1" Case
 
 Simulateur           "1" o-[#595959,plain]-> "1" DonneesSimulation
-Simulateur           "1" *-left[#595959,plain]-> "*" Evenement
+Simulateur           "1" *-[#595959,plain]-> "*" Evenement
 
 scenarios                    --[#595959,dashed]->  Simulateur                         : "«create»"
 
-LecteurDonnees             --down[#595959,dashed]->  DonneesSimulation                  : "«create»"
+LecteurDonnees             --[#595959,dashed]->  DonneesSimulation                  : "«create»"
 
 Robot                   --[#595959,dashed]->  ActionEven                   : "«create»"
 
@@ -302,12 +323,14 @@ scenarios                     --[#595959,dashed]->  DebEven                : "«
 
 SelfDriving       --[#595959,dashed]->  Path                        : "«create»"
 
-Strategie                       --right[#595959,dashed]->  LecteurDonnees                  : "calls"
+Strategie                       --[#595959,dashed]->  LecteurDonnees                  : "calls"
 Strategie                       --[#595959,dashed]->  FireFighterChiefType                  : "create"
 Strategie                       --[#595959,dashed]->  LancementStrategie                 : "create"
 Strategie                       --[#595959,dashed]->  Simulateur                         : "create"
 
 TestInvader                   --[#595959,dashed]->  Invader                                 : "«create»"
 
+
+
+
 @enduml
-```
