@@ -87,7 +87,6 @@ public abstract class Robot extends SelfDriving {
     public void startMove(Simulateur sim, Direction dir) {
         assert (sim.getDateSimulation() >= this.timeFree);
         long timeEnd = sim.getDateSimulation() + getTimeOn(getPosition());
-        System.out.println("FIN A " + timeEnd);
         sim.ajouteEvenement(new RobotBougeEven(timeEnd, sim, this, dir));
         this.timeFree = timeEnd;
         trace += "Move until " + timeFree + "; ";
@@ -106,7 +105,6 @@ public abstract class Robot extends SelfDriving {
      */
     public void startMove(Simulateur sim, Direction dir, Case plannedCase) {
         long timeEnd = Long.max(this.timeFree + 1, sim.getDateSimulation()) + getTimeOn(plannedCase);
-        System.out.println("FIN A " + timeEnd);
         sim.ajouteEvenement(new RobotBougeEven(timeEnd, sim, this, dir));
         this.timeFree = timeEnd;
         trace += "Move until " + timeFree + "; ";
