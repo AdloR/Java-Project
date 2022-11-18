@@ -157,7 +157,7 @@ package terrain {
     + getIncendie(): Incendie
     + getColonne(): int
   }
-  enum NatureTerrain << enumeration >> {
+  enum NatureTerrain {
     + TERRAIN_LIBRE:
     + FORET:
     + ROCHE:
@@ -166,7 +166,7 @@ package terrain {
     + valueOf(String): NatureTerrain
     + values(): NatureTerrain[]
   }
-  enum Direction << enumeration >> {
+  enum Direction {
     + EST:
     + SUD:
     + OUEST:
@@ -263,29 +263,29 @@ SelfDriving --right[hidden]> Path
 AdvancedFireFighterChief   -[hidden]-^  FireFighterChief
 ElementaryFirefighterChief -[hidden]-^  FireFighterChief
 ImprovedFirefighterChief   -[hidden]-^  FireFighterChief
-FireFighterChiefType   -[#000082,plain]-^  FireFighterChief
+FireFighterChiefType   -[#0000A2,plain]-^  FireFighterChief
 
 ' ## Evenement
-LancementStrategie        -[#000082,plain]-^  Evenement
-RobotEven                 -[#000082,plain]-^  Evenement
+LancementStrategie        -[#0000A2,plain]-^  Evenement
+RobotEven                 -[#0000A2,plain]-^  Evenement
 ' ### RobotEven
 RemplissageEven           -up[hidden]-^  RobotEven
-RobotTeleportEven         -[#000082,plain]-^  RobotEven
+RobotTeleportEven         -[#0000A2,plain]-^  RobotEven
 DebInterventionEven       -[hidden]-^  RobotEven
 DebRemplissageEven        -[hidden]-^  RobotEven
 DebRobotBougeEven         -[hidden]-^  RobotEven
 InterventionEven          -up[hidden]-^  RobotEven
 RobotBougeEven            -up[hidden]-^  RobotEven
-DebEven         -[#000082,plain]-^  RobotEven
-ActionEven            -up[#000082,plain]-^  RobotEven
+DebEven         -[#0000A2,plain]-^  RobotEven
+ActionEven            -up[#0000A2,plain]-^  RobotEven
 
 ' ' ## SelfDriving
-Robot                    -[#000082,plain]-^  SelfDriving
+Robot                    -[#0000A2,plain]-^  SelfDriving
 ' ### Robot
-Drone              -[#000082,plain]-^  Robot
-RobotAChenille     -[#000082,plain]-^  Robot
-RobotAPattes       -[#000082,plain]-^  Robot
-RobotARoues        -[#000082,plain]-^  Robot
+Drone              -[#0000A2,plain]-^  Robot
+RobotAChenille     -[#0000A2,plain]-^  Robot
+RobotAPattes       -[#0000A2,plain]-^  Robot
+RobotARoues        -[#0000A2,plain]-^  Robot
 
 
 
@@ -312,23 +312,23 @@ RobotTeleportEven    "1" -[#595959,plain]-> "1" Case
 Simulateur           "1" o-[#595959,plain]-> "1" DonneesSimulation
 Simulateur           "1" *-[#595959,plain]-> "*" Evenement
 
-scenarios                    --[#595959,dashed]->  Simulateur                         : "«create»"
+scenarios                    --[#595959]->  Simulateur                         : "«create»"
 
-LecteurDonnees             --[#595959,dashed]->  DonneesSimulation                  : "«create»"
+LecteurDonnees             --[#595959]->  DonneesSimulation                  : "«create»"
 
-Robot                   --[#595959,dashed]->  ActionEven                   : "«create»"
+Robot                   --[#595959]->  ActionEven                   : "«create»"
 
 
-scenarios                     --[#595959,dashed]->  DebEven                : "«create»"
+scenarios                     --[#595959]->  DebEven                : "«create»"
 
-SelfDriving       --[#595959,dashed]->  Path                        : "«create»"
+SelfDriving       --[#595959]->  Path                        : "«create»"
 
-Strategie                       --[#595959,dashed]->  LecteurDonnees                  : "calls"
-Strategie                       --[#595959,dashed]->  FireFighterChiefType                  : "create"
-Strategie                       --[#595959,dashed]->  LancementStrategie                 : "create"
-Strategie                       --[#595959,dashed]->  Simulateur                         : "create"
+Strategie                       --[#595959]->  LecteurDonnees                  : "calls"
+Strategie                       --[#595959]->  FireFighterChiefType                  : "create"
+Strategie                       --[#595959]->  LancementStrategie                 : "create"
+Strategie                       --[#595959]->  Simulateur                         : "create"
 
-TestInvader                   --[#595959,dashed]->  Invader                                 : "«create»"
+TestInvader                   --[#595959]->  Invader                                 : "«create»"
 
 
 
