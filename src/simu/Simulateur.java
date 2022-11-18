@@ -45,6 +45,17 @@ public class Simulateur implements Simulable {
     private Queue<Evenement> history = new LinkedList<>();
 
     /**
+     * The random generator used in background drawing
+     */
+    private Random r;
+    /**
+     * Where all the background images are stored.
+     * 
+     * @see #loadImages()
+     */
+    private HashMap<String, BufferedImage> tiles;
+
+    /**
      * Simulateur constructor.
      * 
      * @param donnees Simulations data.
@@ -59,7 +70,8 @@ public class Simulateur implements Simulable {
         }
         gui = new GUISimulator(width, height, Color.BLACK, this);
 
-        gui.setSize(Integer.max(width + 27, 830), height + 90);
+        gui.setSize(Integer.max(width + 27, 830), height + 110);
+        this.r = new Random();
 
         drawBackground();
         draw();
@@ -192,7 +204,7 @@ public class Simulateur implements Simulable {
      */
     private void drawBackground() {
         Carte carte = donnees.getCarte();
-        HashMap<String, BufferedImage> tiles = loadImages();
+        loadImages();
 
         BufferedImage background = new BufferedImage(width, height, BufferedImage.OPAQUE);
         Graphics g = background.getGraphics();
@@ -215,20 +227,47 @@ public class Simulateur implements Simulable {
                     drawContinued(carte, c, tiles, "roche", NatureTerrain.ROCHE, g, 0.1);
                     break;
                 case TERRAIN_LIBRE:
-                    g.drawImage(randomImage(tiles, "libre", 0.35), x, y, largeur_tuiles / 2, largeur_tuiles / 2, null);
-                    g.drawImage(randomImage(tiles, "libre", 0.35), x + largeur_tuiles / 2, y, largeur_tuiles / 2,
+                    g.drawImage(randomImage("libre", 0.35), x, y, largeur_tuiles / 2, largeur_tuiles / 2, null);
+                    g.drawImage(randomImage("libre", 0.35), x + largeur_tuiles / 2, y, largeur_tuiles / 2,
                             largeur_tuiles / 2, null);
-                    g.drawImage(randomImage(tiles, "libre", 0.35), x, y + largeur_tuiles / 2, largeur_tuiles / 2,
+                    g.drawImage(randomImage("libre", 0.35), x, y + largeur_tuiles / 2, largeur_tuiles / 2,
                             largeur_tuiles / 2, null);
-                    g.drawImage(randomImage(tiles, "libre", 0.35), x + largeur_tuiles / 2, y + largeur_tuiles / 2,
+                    g.drawImage(randomImage("libre", 0.35), x + largeur_tuiles / 2, y + largeur_tuiles / 2,
                             largeur_tuiles / 2,
                             largeur_tuiles / 2, null);
                     break;
                 case HABITAT:
-                    g.drawImage(tiles.get("habitat"), x, y, largeur_tuiles, largeur_tuiles, null);
+                    // Some tiles for HABITAT are 2x1, so we first have to decide whether we put a
+                    // 1x1 or 2x1 tile.
+                    if (r.nextDouble() < 0.8) {
+                        g.drawImage(randomImage("habitat", 0.3, 0.1, 0.07, 0.04, 0.025, 0.025, 0.02), x, y,
+                                largeur_tuiles / 2,
+                                largeur_tuiles / 2, null);
+                        g.drawImage(randomImage("habitat", 0.3, 0.1, 0.07, 0.04, 0.025, 0.025, 0.02),
+                                x + largeur_tuiles / 2, y,
+                                largeur_tuiles / 2,
+                                largeur_tuiles / 2, null);
+                    } else {
+                        g.drawImage(randomImage("habitat_2x1_", 0.4), x, y, largeur_tuiles,
+                                largeur_tuiles / 2, null);
+                    }
+                    if (r.nextDouble() < 0.8) {
+                        g.drawImage(randomImage("habitat", 0.3, 0.1, 0.07, 0.04, 0.025, 0.025, 0.02), x,
+                                y + largeur_tuiles / 2,
+                                largeur_tuiles / 2,
+                                largeur_tuiles / 2, null);
+                        g.drawImage(randomImage("habitat", 0.3, 0.1, 0.07, 0.04, 0.025, 0.025, 0.02),
+                                x + largeur_tuiles / 2,
+                                y + largeur_tuiles / 2,
+                                largeur_tuiles / 2,
+                                largeur_tuiles / 2, null);
+                    } else {
+                        g.drawImage(randomImage("habitat_2x1_", 0.4), x, y + largeur_tuiles / 2, largeur_tuiles,
+                                largeur_tuiles / 2, null);
+                    }
                     break;
                 default:
-                    g.drawImage(tiles.get("erreur"), x, y, largeur_tuiles, largeur_tuiles, null);
+                    g.drawImage(getImage("erreur"), x, y, largeur_tuiles, largeur_tuiles, null);
             }
         }
 
@@ -272,19 +311,19 @@ public class Simulateur implements Simulable {
 
         // drawing interior everywhere, other images will draw on top
         if (chances.length > 0) {
-            g.drawImage(randomImage(tiles, prefix, chances), x, y, largeur_tuiles / 2, largeur_tuiles / 2, null);
-            g.drawImage(randomImage(tiles, prefix, chances), x + largeur_tuiles / 2, y, largeur_tuiles / 2,
+            g.drawImage(randomImage(prefix, chances), x, y, largeur_tuiles / 2, largeur_tuiles / 2, null);
+            g.drawImage(randomImage(prefix, chances), x + largeur_tuiles / 2, y, largeur_tuiles / 2,
                     largeur_tuiles / 2, null);
-            g.drawImage(randomImage(tiles, prefix, chances), x, y + largeur_tuiles / 2, largeur_tuiles / 2,
+            g.drawImage(randomImage(prefix, chances), x, y + largeur_tuiles / 2, largeur_tuiles / 2,
                     largeur_tuiles / 2, null);
-            g.drawImage(randomImage(tiles, prefix, chances), x + largeur_tuiles / 2, y + largeur_tuiles / 2,
+            g.drawImage(randomImage(prefix, chances), x + largeur_tuiles / 2, y + largeur_tuiles / 2,
                     largeur_tuiles / 2,
                     largeur_tuiles / 2, null);
         } else {
-            g.drawImage(tiles.get(prefix), x, y, largeur_tuiles / 2, largeur_tuiles / 2, null);
-            g.drawImage(tiles.get(prefix), x + largeur_tuiles / 2, y, largeur_tuiles / 2, largeur_tuiles / 2, null);
-            g.drawImage(tiles.get(prefix), x, y + largeur_tuiles / 2, largeur_tuiles / 2, largeur_tuiles / 2, null);
-            g.drawImage(tiles.get(prefix), x + largeur_tuiles / 2, y + largeur_tuiles / 2, largeur_tuiles / 2,
+            g.drawImage(getImage(prefix), x, y, largeur_tuiles / 2, largeur_tuiles / 2, null);
+            g.drawImage(getImage(prefix), x + largeur_tuiles / 2, y, largeur_tuiles / 2, largeur_tuiles / 2, null);
+            g.drawImage(getImage(prefix), x, y + largeur_tuiles / 2, largeur_tuiles / 2, largeur_tuiles / 2, null);
+            g.drawImage(getImage(prefix), x + largeur_tuiles / 2, y + largeur_tuiles / 2, largeur_tuiles / 2,
                     largeur_tuiles / 2, null);
         }
         // Doing borders by checking north / south and then west/east for corners
@@ -297,29 +336,29 @@ public class Simulateur implements Simulable {
                     && carte.getVoisin(c, Direction.OUEST).getType() != toCheck) // And a border
             // west -> corner
             {
-                g.drawImage(tiles.get(prefix + "-no"), x, y, largeur_tuiles / 2, largeur_tuiles / 2, null);
+                g.drawImage(getImage(prefix + "-no"), x, y, largeur_tuiles / 2, largeur_tuiles / 2, null);
             } else // But no border west -> no corner
             {
-                g.drawImage(tiles.get(prefix + "-nord"), x, y, largeur_tuiles / 2, largeur_tuiles / 2, null);
+                g.drawImage(getImage(prefix + "-nord"), x, y, largeur_tuiles / 2, largeur_tuiles / 2, null);
             }
 
             if (carte.voisinExiste(c, Direction.EST)
                     && carte.getVoisin(c, Direction.EST).getType() != toCheck) {
-                g.drawImage(tiles.get(prefix + "-ne"), x + largeur_tuiles / 2, y, largeur_tuiles / 2,
+                g.drawImage(getImage(prefix + "-ne"), x + largeur_tuiles / 2, y, largeur_tuiles / 2,
                         largeur_tuiles / 2, null);
             } else {
-                g.drawImage(tiles.get(prefix + "-nord"), x + largeur_tuiles / 2, y, largeur_tuiles / 2,
+                g.drawImage(getImage(prefix + "-nord"), x + largeur_tuiles / 2, y, largeur_tuiles / 2,
                         largeur_tuiles / 2, null);
             }
         } else {
             if (carte.voisinExiste(c, Direction.OUEST)
                     && carte.getVoisin(c, Direction.OUEST).getType() != toCheck) {
-                g.drawImage(tiles.get(prefix + "-ouest"), x, y, largeur_tuiles / 2, largeur_tuiles / 2, null);
+                g.drawImage(getImage(prefix + "-ouest"), x, y, largeur_tuiles / 2, largeur_tuiles / 2, null);
             }
 
             if (carte.voisinExiste(c, Direction.EST)
                     && carte.getVoisin(c, Direction.EST).getType() != toCheck) {
-                g.drawImage(tiles.get(prefix + "-est"), x + largeur_tuiles / 2, y, largeur_tuiles / 2,
+                g.drawImage(getImage(prefix + "-est"), x + largeur_tuiles / 2, y, largeur_tuiles / 2,
                         largeur_tuiles / 2, null);
             }
         }
@@ -329,36 +368,36 @@ public class Simulateur implements Simulable {
                 && carte.getVoisin(c, Direction.SUD).getType() != toCheck) {
             if (carte.voisinExiste(c, Direction.OUEST)
                     && carte.getVoisin(c, Direction.OUEST).getType() != toCheck) {
-                g.drawImage(tiles.get(prefix + "-so"), x, y + largeur_tuiles / 2,
+                g.drawImage(getImage(prefix + "-so"), x, y + largeur_tuiles / 2,
                         largeur_tuiles / 2,
                         largeur_tuiles / 2, null);
             } else {
-                g.drawImage(tiles.get(prefix + "-sud"), x, y + largeur_tuiles / 2,
+                g.drawImage(getImage(prefix + "-sud"), x, y + largeur_tuiles / 2,
                         largeur_tuiles / 2,
                         largeur_tuiles / 2, null);
             }
 
             if (carte.voisinExiste(c, Direction.EST)
                     && carte.getVoisin(c, Direction.EST).getType() != toCheck) {
-                g.drawImage(tiles.get(prefix + "-se"), x + largeur_tuiles / 2, y + largeur_tuiles / 2,
+                g.drawImage(getImage(prefix + "-se"), x + largeur_tuiles / 2, y + largeur_tuiles / 2,
                         largeur_tuiles / 2,
                         largeur_tuiles / 2, null);
             } else {
-                g.drawImage(tiles.get(prefix + "-sud"), x + largeur_tuiles / 2, y + largeur_tuiles / 2,
+                g.drawImage(getImage(prefix + "-sud"), x + largeur_tuiles / 2, y + largeur_tuiles / 2,
                         largeur_tuiles / 2,
                         largeur_tuiles / 2, null);
             }
         } else {
             if (carte.voisinExiste(c, Direction.OUEST)
                     && carte.getVoisin(c, Direction.OUEST).getType() != toCheck) {
-                g.drawImage(tiles.get(prefix + "-ouest"), x, y + largeur_tuiles / 2,
+                g.drawImage(getImage(prefix + "-ouest"), x, y + largeur_tuiles / 2,
                         largeur_tuiles / 2,
                         largeur_tuiles / 2, null);
             }
 
             if (carte.voisinExiste(c, Direction.EST)
                     && carte.getVoisin(c, Direction.EST).getType() != toCheck) {
-                g.drawImage(tiles.get(prefix + "-est"), x + largeur_tuiles / 2, y + largeur_tuiles / 2,
+                g.drawImage(getImage(prefix + "-est"), x + largeur_tuiles / 2, y + largeur_tuiles / 2,
                         largeur_tuiles / 2,
                         largeur_tuiles / 2, null);
             }
@@ -373,7 +412,7 @@ public class Simulateur implements Simulable {
                         && carte.getVoisin(c, Direction.NORD).getType() == toCheck) {
                     Case no = carte.getVoisin(o, Direction.NORD);
                     if (no.getType() != toCheck) {
-                        g.drawImage(tiles.get(prefix + "-not-no"), x, y,
+                        g.drawImage(getImage(prefix + "-not-no"), x, y,
                                 largeur_tuiles / 2,
                                 largeur_tuiles / 2, null);
                     }
@@ -382,7 +421,7 @@ public class Simulateur implements Simulable {
                         && carte.getVoisin(c, Direction.SUD).getType() == toCheck) {
                     Case so = carte.getVoisin(o, Direction.SUD);
                     if (so.getType() != toCheck) {
-                        g.drawImage(tiles.get(prefix + "-not-so"), x, y + largeur_tuiles / 2,
+                        g.drawImage(getImage(prefix + "-not-so"), x, y + largeur_tuiles / 2,
                                 largeur_tuiles / 2,
                                 largeur_tuiles / 2, null);
                     }
@@ -397,7 +436,7 @@ public class Simulateur implements Simulable {
                         && carte.getVoisin(c, Direction.NORD).getType() == toCheck) {
                     Case ne = carte.getVoisin(e, Direction.NORD);
                     if (ne.getType() != toCheck) {
-                        g.drawImage(tiles.get(prefix + "-not-ne"), x + largeur_tuiles / 2, y,
+                        g.drawImage(getImage(prefix + "-not-ne"), x + largeur_tuiles / 2, y,
                                 largeur_tuiles / 2,
                                 largeur_tuiles / 2, null);
                     }
@@ -406,7 +445,7 @@ public class Simulateur implements Simulable {
                         && carte.getVoisin(c, Direction.SUD).getType() == toCheck) {
                     Case se = carte.getVoisin(e, Direction.SUD);
                     if (se.getType() != toCheck) {
-                        g.drawImage(tiles.get(prefix + "-not-se"), x + largeur_tuiles / 2, y + largeur_tuiles / 2,
+                        g.drawImage(getImage(prefix + "-not-se"), x + largeur_tuiles / 2, y + largeur_tuiles / 2,
                                 largeur_tuiles / 2,
                                 largeur_tuiles / 2, null);
                     }
@@ -421,14 +460,12 @@ public class Simulateur implements Simulable {
      * two random images with the odds : {@code chance1} for the {@code prefix0}
      * image, and {@code (1-chance1)} for the {@code prefix} image.
      * 
-     * @param tiles   The tiles where all images are loaded ({@link #loadImages()}).
      * @param prefix  The prefic common for all the wanted image names.
      * @param chances The chances for the different one, except for {@code prefix}
      *                which is 1 - (the rest of chances).
-     * @return
+     * @return a random {@code BufferedImage} based on the parameters
      */
-    private BufferedImage randomImage(HashMap<String, BufferedImage> tiles, String prefix, double... chances) {
-        Random r = new Random();
+    private BufferedImage randomImage(String prefix, double... chances) {
         double picked = r.nextDouble();
         double comp = 0;
         String suffix = "";
@@ -438,70 +475,91 @@ public class Simulateur implements Simulable {
                 break;
             }
         }
-        return tiles.get(prefix + suffix);
+        return getImage(prefix + suffix);
     }
 
     /**
      * Load images from file for drawing, and puts them in a convenient structure
-     * for accessing them. This way, we are sure we don't have to reread a file
-     * 
-     * @return HashMap of buffered images to draw;
+     * for accessing them. This way, we are sure we don't have to reread a file.
+     * All images will be put in {@code tiles}
      */
-    private HashMap<String, BufferedImage> loadImages() {
-        HashMap<String, BufferedImage> res = new HashMap<>();
+    private void loadImages() {
+        tiles = new HashMap<>();
         try {
-            res.put("eau-est", ImageIO.read(new File("assets/eau/est.png")));
-            res.put("eau-ne", ImageIO.read(new File("assets/eau/ne.png")));
-            res.put("eau-no", ImageIO.read(new File("assets/eau/no.png")));
-            res.put("eau-nord", ImageIO.read(new File("assets/eau/nord.png")));
-            res.put("eau-not-ne", ImageIO.read(new File("assets/eau/not-ne.png")));
-            res.put("eau-not-no", ImageIO.read(new File("assets/eau/not-no.png")));
-            res.put("eau-not-se", ImageIO.read(new File("assets/eau/not-se.png")));
-            res.put("eau-not-so", ImageIO.read(new File("assets/eau/not-so.png")));
-            res.put("eau-ouest", ImageIO.read(new File("assets/eau/ouest.png")));
-            res.put("eau-se", ImageIO.read(new File("assets/eau/se.png")));
-            res.put("eau-so", ImageIO.read(new File("assets/eau/so.png")));
-            res.put("eau-sud", ImageIO.read(new File("assets/eau/sud.png")));
-            res.put("eau", ImageIO.read(new File("assets/eau/eau.png")));
+            tiles.put("eau-est", ImageIO.read(new File("assets/eau/est.png")));
+            tiles.put("eau-ne", ImageIO.read(new File("assets/eau/ne.png")));
+            tiles.put("eau-no", ImageIO.read(new File("assets/eau/no.png")));
+            tiles.put("eau-nord", ImageIO.read(new File("assets/eau/nord.png")));
+            tiles.put("eau-not-ne", ImageIO.read(new File("assets/eau/not-ne.png")));
+            tiles.put("eau-not-no", ImageIO.read(new File("assets/eau/not-no.png")));
+            tiles.put("eau-not-se", ImageIO.read(new File("assets/eau/not-se.png")));
+            tiles.put("eau-not-so", ImageIO.read(new File("assets/eau/not-so.png")));
+            tiles.put("eau-ouest", ImageIO.read(new File("assets/eau/ouest.png")));
+            tiles.put("eau-se", ImageIO.read(new File("assets/eau/se.png")));
+            tiles.put("eau-so", ImageIO.read(new File("assets/eau/so.png")));
+            tiles.put("eau-sud", ImageIO.read(new File("assets/eau/sud.png")));
+            tiles.put("eau", ImageIO.read(new File("assets/eau/eau.png")));
 
-            res.put("foret-est", ImageIO.read(new File("assets/foret/est.png")));
-            res.put("foret-ne", ImageIO.read(new File("assets/foret/ne.png")));
-            res.put("foret-no", ImageIO.read(new File("assets/foret/no.png")));
-            res.put("foret-nord", ImageIO.read(new File("assets/foret/nord.png")));
-            res.put("foret-not-ne", ImageIO.read(new File("assets/foret/not-ne.png")));
-            res.put("foret-not-no", ImageIO.read(new File("assets/foret/not-no.png")));
-            res.put("foret-not-se", ImageIO.read(new File("assets/foret/not-se.png")));
-            res.put("foret-not-so", ImageIO.read(new File("assets/foret/not-so.png")));
-            res.put("foret-ouest", ImageIO.read(new File("assets/foret/ouest.png")));
-            res.put("foret-se", ImageIO.read(new File("assets/foret/se.png")));
-            res.put("foret-so", ImageIO.read(new File("assets/foret/so.png")));
-            res.put("foret-sud", ImageIO.read(new File("assets/foret/sud.png")));
-            res.put("foret0", ImageIO.read(new File("assets/foret/foret0.png")));
-            res.put("foret", ImageIO.read(new File("assets/foret/foret.png")));
+            tiles.put("foret-est", ImageIO.read(new File("assets/foret/est.png")));
+            tiles.put("foret-ne", ImageIO.read(new File("assets/foret/ne.png")));
+            tiles.put("foret-no", ImageIO.read(new File("assets/foret/no.png")));
+            tiles.put("foret-nord", ImageIO.read(new File("assets/foret/nord.png")));
+            tiles.put("foret-not-ne", ImageIO.read(new File("assets/foret/not-ne.png")));
+            tiles.put("foret-not-no", ImageIO.read(new File("assets/foret/not-no.png")));
+            tiles.put("foret-not-se", ImageIO.read(new File("assets/foret/not-se.png")));
+            tiles.put("foret-not-so", ImageIO.read(new File("assets/foret/not-so.png")));
+            tiles.put("foret-ouest", ImageIO.read(new File("assets/foret/ouest.png")));
+            tiles.put("foret-se", ImageIO.read(new File("assets/foret/se.png")));
+            tiles.put("foret-so", ImageIO.read(new File("assets/foret/so.png")));
+            tiles.put("foret-sud", ImageIO.read(new File("assets/foret/sud.png")));
+            tiles.put("foret0", ImageIO.read(new File("assets/foret/foret0.png")));
+            tiles.put("foret", ImageIO.read(new File("assets/foret/foret.png")));
 
-            res.put("roche-est", ImageIO.read(new File("assets/roche/est.png")));
-            res.put("roche-ne", ImageIO.read(new File("assets/roche/ne.png")));
-            res.put("roche-no", ImageIO.read(new File("assets/roche/no.png")));
-            res.put("roche-nord", ImageIO.read(new File("assets/roche/nord.png")));
-            res.put("roche-not-ne", ImageIO.read(new File("assets/roche/not-ne.png")));
-            res.put("roche-not-no", ImageIO.read(new File("assets/roche/not-no.png")));
-            res.put("roche-not-se", ImageIO.read(new File("assets/roche/not-se.png")));
-            res.put("roche-not-so", ImageIO.read(new File("assets/roche/not-so.png")));
-            res.put("roche-ouest", ImageIO.read(new File("assets/roche/ouest.png")));
-            res.put("roche-se", ImageIO.read(new File("assets/roche/se.png")));
-            res.put("roche-so", ImageIO.read(new File("assets/roche/so.png")));
-            res.put("roche-sud", ImageIO.read(new File("assets/roche/sud.png")));
-            res.put("roche0", ImageIO.read(new File("assets/roche/roche0.png")));
-            res.put("roche", ImageIO.read(new File("assets/roche/roche.png")));
+            tiles.put("roche-est", ImageIO.read(new File("assets/roche/est.png")));
+            tiles.put("roche-ne", ImageIO.read(new File("assets/roche/ne.png")));
+            tiles.put("roche-no", ImageIO.read(new File("assets/roche/no.png")));
+            tiles.put("roche-nord", ImageIO.read(new File("assets/roche/nord.png")));
+            tiles.put("roche-not-ne", ImageIO.read(new File("assets/roche/not-ne.png")));
+            tiles.put("roche-not-no", ImageIO.read(new File("assets/roche/not-no.png")));
+            tiles.put("roche-not-se", ImageIO.read(new File("assets/roche/not-se.png")));
+            tiles.put("roche-not-so", ImageIO.read(new File("assets/roche/not-so.png")));
+            tiles.put("roche-ouest", ImageIO.read(new File("assets/roche/ouest.png")));
+            tiles.put("roche-se", ImageIO.read(new File("assets/roche/se.png")));
+            tiles.put("roche-so", ImageIO.read(new File("assets/roche/so.png")));
+            tiles.put("roche-sud", ImageIO.read(new File("assets/roche/sud.png")));
+            tiles.put("roche0", ImageIO.read(new File("assets/roche/roche0.png")));
+            tiles.put("roche", ImageIO.read(new File("assets/roche/roche.png")));
 
-            res.put("libre0", ImageIO.read(new File("assets/libre0.png")));
-            res.put("libre", ImageIO.read(new File("assets/libre.png")));
-            res.put("habitat", ImageIO.read(new File("assets/habitat.png")));
-            res.put("erreur", ImageIO.read(new File("assets/erreur.png")));
+            tiles.put("libre0", ImageIO.read(new File("assets/libre0.png")));
+            tiles.put("libre", ImageIO.read(new File("assets/libre.png")));
+
+            tiles.put("habitat", ImageIO.read(new File("assets/habitat/habitat.png")));
+            tiles.put("habitat0", ImageIO.read(new File("assets/habitat/habitat0.png")));
+            tiles.put("habitat1", ImageIO.read(new File("assets/habitat/habitat1.png")));
+            tiles.put("habitat2", ImageIO.read(new File("assets/habitat/habitat2.png")));
+            tiles.put("habitat3", ImageIO.read(new File("assets/habitat/habitat3.png")));
+            tiles.put("habitat4", ImageIO.read(new File("assets/habitat/habitat4.png")));
+            tiles.put("habitat5", ImageIO.read(new File("assets/habitat/habitat5.png")));
+            tiles.put("habitat6", ImageIO.read(new File("assets/habitat/habitat6.png")));
+            tiles.put("habitat_2x1_", ImageIO.read(new File("assets/habitat/habitat_2x1_.png")));
+            tiles.put("habitat_2x1_0", ImageIO.read(new File("assets/habitat/habitat_2x1_0.png")));
+
+            tiles.put("erreur", ImageIO.read(new File("assets/erreur.png")));
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("This Error should not have happend. Sources are missing at assets");
         }
-        return res;
+    }
+
+    /**
+     * Gets the image associated with the name. If no image is found, it will return
+     * the error image to be displayed.
+     * 
+     * @param imageName name of the {@code BufferedImage} to find.
+     * 
+     * @see #loadImages()
+     */
+    private BufferedImage getImage(String imageName) {
+        return tiles.getOrDefault(imageName, tiles.get("erreur"));
     }
 }
