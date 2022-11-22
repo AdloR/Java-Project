@@ -1,4 +1,4 @@
-##Ensimag 2A POO - TP 2022/23
+Ensimag 2A POO - TP 2022/23
 ============================
 
 Pour lancer les tests, faites `make testInvader` / `make testLecteurDonnees`
