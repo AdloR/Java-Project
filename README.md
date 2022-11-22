@@ -1,11 +1,11 @@
-##Ensimag 2A POO - TP 2022/23##
+##Ensimag 2A POO - TP 2022/23
 ============================
 
 Pour lancer les tests, faites `make testInvader` / `make testLecteurDonnees`
 
 Toutes les stratégies sont dans le fichier `Strategies.java`, sous forme de plusieurs classes dans le même fichier, et de même pour `Scenarios`.
 
-* ###Pour les lancer depuis un IDE, il suffit de chosir la bonne méthode main en target.
+* Pour les lancer depuis un IDE, il suffit de chosir la bonne méthode main en target.
   * **Sur IntelliJ Idea**
     1. Appuyer sur le bouton Run au dessus de la méthode main choisie.
   * **Sur Eclipse**
@@ -14,7 +14,7 @@ Toutes les stratégies sont dans le fichier `Strategies.java`, sous forme de plu
   * **Sur VSCode**
     1. S'assurer d'avoir une extension Java (Celle de Microsoft par exemple).
     2. Appuyer sur le bouton Run au dessus de la méthode main choisie.
-* ###Pour les lancer depuis le makefile
+* Pour les lancer depuis le makefile
   Il suffit de se mettre sur le répertoire racine (probablement poo-project) et faire l'une des commandes suivantes :
     1. `$ make scenario0`
     2. `$ make scenario1`
